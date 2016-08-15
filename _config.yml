@@ -8,7 +8,7 @@ title:               'David Reed'
 tagline:             ''
 description:         ''
 url:                 http://www.ktema.org
-baseurl:             https://davidmreed.github.io
+baseurl:             http://www.ktema.org
 paginate:            5
 
 # About/contact
