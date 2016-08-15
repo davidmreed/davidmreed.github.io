@@ -1,0 +1,26 @@
+---
+layout: post
+title: Private Email Lists using MailChimp and Salesforce
+---
+
+One of the biggest challenges I've encountered in working with MailChimp and its MailChimp for Salesforce application is 'private email lists'. I mean by this email lists that aren't signup-based, but which allow communication with, for example, donors at a certain level, board members, or other small groups of contacts that are defined by relationships and specific CRM criteria rather than by a public-facing subscription. These groups may change composition regularly as new members are added or as old members drop out of the matching criteria. List members don't need to manually edit their subscriptions to these lists (although of course they may opt out entirely), and the lists aren't available to the public for subscription.
+
+MailChimp for Salesforce's overall integration model is *additive*. `MC Queries` in Salesforce identify groups of records that are part of a mailing list and pass those records into MailChimp. The reverse, however, is not the case. If a record ceases to match an `MC Query`, it is *not* removed from its corresponding list or groups. `MC Queries` are also fairly limited in the logic upon which they can match: criteria may only be combined by AND.
+
+For many private email lists, this won't work: donors stop giving and members rotate into and out of various groups with equal alacrity. Updating MailChimp private groups by hand is both error-prone and time-consuming. Here's the solution I worked out to support these private email lists natively in MailChimp without manual maintenance.
+
+ 1. Use formula fields in Salesforce to implement inclusion logic. For example, a courtesy invitation list for donors might be defined as those with a "VIP" checkbox selected or giving in excess of $1,000 either this year or last year. Those three criteria could not be represented in a MailChimp for Salesforce `MC Query`, which only allows AND logic, but a Salesforce formula field with type Checkbox easily encompasses them.
+  - It's worth noting that MailChimp's segment definition logic (see below) *does* allow for the use of OR-based logic. If you have many lists that are defined exclusively by ORing together different combinations or subsets of the same set of criteria, you may be able to skip this step.
+ 2. Create a new list in MailChimp to hold the private email lists. (It's possible to use an existing publication list, but I felt that these communications were different in kind and that a separate list would provide a better user experience). I called mine "Private Announcements and Invitations".
+  - If existing lists are mailed to as a whole (as opposed to groups or segments within the list), you'll definitely want to create a new list. Your Private Announcements list shouldn't be mailed to as a whole, since members will remain in the list even when they stop matching your segments.
+ 3. In MC Setup in Salesforce,  ensure that the formula fields you created to support list logic are mapped to MailChimp for this new list. Mapped fields, unlike list membership *per se*, are re-synced to MailChimp in a regular process, and Salesforce updates are reflected in the mapped data.
+  - If you're confident that your list logic can be reduced to ORing or ANDing together different subsets of the same criteria, you might choose to sync those criteria rather than formula fields.
+ 4. In MailChimp's settings interface, ensure that all of these fields are not marked Visible. This prevents users from viewing or editing these internal values by accessing MailChimp's profile update UI.
+ 5. Build MC Queries to match each of the list-definition formula fields and set them to run on a schedule. The queries don't need to be (and shouldn't be) associated with a group or segment.
+ 5. Use MailChimp's segment builder to create a segment for each private email list, matching on the value "true" in the mapped Salesforce formula field. (My formulas are all checkboxes, but they don't need to be).
+  - If you opted to use MailChimp logic rather than formula fields, do it here.
+ 6. Save each segment as an Auto-Update Segment. Auto-Update Segments *do* remove members who cease to match their defined criteria.
+
+The end result is a MailChimp list with one Auto-Update Segment per private email list, all of which maintain themselves based on the membership information that is calculated by the formula fields and synced hourly from Salesforce. List members who fail to match criteria do remain members of the containing MailChimp List, but will fall out of segments (the actual private email lists) to which they no longer belong as soon as the containing list syncs.
+
+The time resolution for list updates is between one and 24 hours. MailChimp syncs lists from Salesforce on an hourly basis, which updates all of the synchronized fields. However, the `MC Queries` which add new members to the lists only run every 24 hours. Hence, you can count on updated information, including changed criteria that will prompt a member to drop off an Auto-Update Segment, to propagate to MailChimp within one hour, but contacts who match list criteria for the first time may not be added for up to 24 hours. Fortunately, you can always force a list sync or a query run from the MC Settings tab in Salesforce. 
