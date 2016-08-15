@@ -3,7 +3,7 @@ layout: page
 title: About
 ---
 
-I am a Salesforce administrator and developer at the [Santa Fe Institute](http://www.santafe.edu).
+I am a Salesforce administrator and developer at the [Santa Fe Institute](http://www.santafe.edu). (I do not speak on SFI's behalf: opinions and mistakes are my own).
 I am also Head of Officials at [Duke City Roller Derby](http://dukecityderby.com).
 My other areas of interest include Ancient Greek, Plato, botanical gardens, and cryptography.
 
