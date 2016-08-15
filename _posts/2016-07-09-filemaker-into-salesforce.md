@@ -3,11 +3,11 @@ layout: post
 title: FileMaker into Salesforce
 ---
 
-I've been working on a project to integrate the new Salesforce-based CRM with data from
-a very important legacy database built in FileMaker ('AM'). For a number of reasons, I
-decided to perform this integration by building a read-only, one-to-one copy of the AM record (the
-legacy database is not relational), importing the entire database for posterity, and
-selectively merging information using Apex, DemandTools, and Apsona.
+I've been working on a project to integrate a very important legacy database built in FileMaker ('AM') into Salesforce. 
+I decided to perform this integration by building a read-only, one-to-one copy of 
+the AM record (the legacy database is not relational) and importing the entire database more or less unchanged. 
+This approach ensures full retention of critical historical information, while allowing me to selectively merge 
+information with Salesforce contacts using Apex, DemandTools, and Apsona.
 
 As I began building the 'AM Record' object in Salesforce to represent the legacy records, I realized
 that the source FileMaker database held even more fields than I thought - over 500. That number
@@ -19,14 +19,14 @@ information about the database structure in any format that can be manipulated. 
 export the entire column set and infer typing, both because it's easy to get wrong and because
 the database contained roughly 100 calculation and summary fields that did not need to be migrated
 to Salesforce. (About 80% of these fields were equivalent to Salesforce rollups or formula
-fields, but weren't being used or were calculating based on long-obsolete data. The other 20%
+fields, but weren't being used or were calculating based on obsolete data. The other 20%
 were providing values that were part of the user interface in the main FileMaker layout).
 I wanted to avoid hand-editing the column set in the export file, since I knew I would be
 iterating the import several times to get it right. I also couldn't pick and choose in
 building the export itself, since the export UI does not identify calculation fields or
 display sample data. I needed something that could be parsed and automated.
 
-It's possible to generate an XML schema for a FileMaker database - but only if you have FileMaker
+It's possible to generate an XML schema for a FileMaker database - but only in FileMaker
 Pro Advanced. With the Pro edition, my only option was the "Print" button in the Manage Database interface,
 yielding a PDF file with columns for Field Name, Field Type, and some additional details on picklist fields
 and calculations. I fed this PDF into an online PDF-Excel converter. (There are many; I used Nitro).
@@ -54,7 +54,7 @@ and can tell the difference between a Boolean-valued column that should become a
 and other text entries.
 
 [GenerateObject.py](https://gist.github.com/davidmreed/a7218caf92ab9cf363d4ada9063bab59) is
-available if anyone happens to be confronting the same problem. It's not polished, but it works!
+available if anyone happens to be confronting the same problem. It's not polished, but it works.
 
 Test imports went off with only a couple small hitches: Salesforce bounds the acceptable
 values for a Date entry more tightly than FileMaker does, revealing a number of data entry
