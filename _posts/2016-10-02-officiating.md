@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Officiating
+title: A year of officiating
 ---
 
 I'm very happy to have been elected to another year as Head of Officials for my roller derby league, 
