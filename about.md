@@ -9,7 +9,7 @@ My other areas of interest include Ancient Greek, Plato, botanical gardens, and 
 
 I hold the Salesforce Platform Developer I and Administrator certifications.
 
-![Salesforce Certified Platform Developer I](public/SFU_CRT_BDG_Pltfrm_Dev_I_RGB.png) ![Salesforce Certified Administrator](public/SFU_CRT_BDG_Admin_RGB.png)
+![Salesforce Certified Platform Developer I]({{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_I_RGB.png) ![Salesforce Certified Administrator]({{ site.baseurl }}/public/SFU_CRT_BDG_Admin_RGB.png)
 
 You can find me at [david@ktema.org](mailto:david@ktema.org); on [LinkedIn](https://www.linkedin.com/in/david-reed-16175b31);
 on Twitter [@aoristdual](https://twitter.com/aoristdual);
