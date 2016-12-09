@@ -61,7 +61,7 @@ Accessing the relationship path directly from the queried object simply results 
 However, this only works when you traverse the relationship via the queried sObject. If the intermediate object value (which is `null`) is assigned to another variable before dereferencing its field, you get a `NullPointerException`.
 
 Like Process Builder formulas, Apex supports short-circuit evaluation. The code below
-outputs the representation of `a`, `null`, and `false` before finally throwing
+outputs `null`, `null`, and `false` before finally throwing
 an exception at line 10.
 
 ![Bad Apex Code]({{ site.baseurl }}/public/null-relationship-screens/badapex.PNG)
