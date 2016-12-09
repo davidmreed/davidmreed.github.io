@@ -52,14 +52,16 @@ Formulas in Process Builder short-circuit in the same way, whether using the `AN
 ## Apex
 
 In most cases, Apex handles `null` relationships in the same way Process Builder
-formulas do. However, there's one variant case.
+formulas do. However, there's one variant case: the code below does not crash.
 
 ![Good Apex Code]({{ site.baseurl }}/public/null-relationship-screens/goodapex.PNG)
 
-Accessing the relationship path directly from the queried object simply results in a `null`; no exception is thrown. However, if the intermediate object is assigned to another variable before dereferencing its field, you get a `NullPointerException`.
+Accessing the relationship path directly from the queried object simply results in a `null`; no exception is thrown.
+
+However, this only works when you traverse the relationship via the queried sObject. If the intermediate object value (which is `null`) is assigned to another variable before dereferencing its field, you get a `NullPointerException`.
 
 Like Process Builder formulas, Apex supports short-circuit evaluation. The code below
-doesn't throw an exception until line 10, and outputs the representation of `a`, `null`,
-and `false`.
+outputs the representation of `a`, `null`, and `false` before finally throwing
+an exception at line 10.
 
 ![Bad Apex Code]({{ site.baseurl }}/public/null-relationship-screens/badapex.PNG)
