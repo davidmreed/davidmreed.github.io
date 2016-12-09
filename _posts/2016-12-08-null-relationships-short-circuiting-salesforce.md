@@ -5,7 +5,7 @@ title: Null Relationships and Short-Circuiting Behavior in Salesforce Formulas, 
 
 What happens when you refer to a field across a lookup relationship, and the lookup relationship is `null`? The answer turns out to vary across contexts in some non-obvious ways. In the course of debugging some Process Builder logic, I came up with a summary. In all of the examples below, I'm using a custom object called `Test Base Object` with a nullable lookup relationship `Account__c`.
 
-![Object Setup]({{ site.baseurl }}/public/null-relationship-screens/testobjectsetup.png)
+![Object Setup]({{ site.baseurl }}/public/null-relationship-screens/testobjectsetup.PNG)
 
 ## Formula Fields
 
@@ -25,13 +25,13 @@ formula always results in an exception*. With complex logic in conditions for ru
 this can be tricky to debug. The errors it produces for users are opaque and
 frustrating, preventing any mutation of the involved object.
 
-![Process Builder Error]({{ site.baseurl }}/public/null-relationship-screens/pberror.png)
+![Process Builder Error]({{ site.baseurl }}/public/null-relationship-screens/pberror.PNG)
 
 Fortunately, Boolean operators and functions (`AND` and `OR`, including the implicit logical operations used in condition-based triggers) in the Process Builder context perform *short-circuit evaluation*. In other words, references across the lookup relationship can be guarded by checks against `null` lookups earlier in the evaluation order such that evaluation will stop *before* reaching the cross-object relationship, avoiding an exception. The evaluation order is
 left-to-right for the `AND()` and `OR()` functions and the `&&` and `||` operators,
 and top-to-bottom for condition lists.
 
-![Safe Process Builder Condition Pattern]({{ site.baseurl }}/public/null-relationship-screens/safepbcriteria.png)
+![Safe Process Builder Condition Pattern]({{ site.baseurl }}/public/null-relationship-screens/safepbcriteria.PNG)
 
 Using conditions in Process Builder, always precede a cross-object field reference
 (assuming a nullable lookup relationship) with a null check. As in this example,
@@ -47,14 +47,14 @@ may be more straightforward.
 
 Formulas in Process Builder short-circuit in the same way, whether using the `AND()` and `OR()` functions or the `&&` and `||` operators. The following pattern is safe.
 
-![Safe Process Builder Formula Pattern]({{ site.baseurl }}/public/null-relationship-screens/safepbformula.png)
+![Safe Process Builder Formula Pattern]({{ site.baseurl }}/public/null-relationship-screens/safepbformula.PNG)
 
 ## Apex
 
 In most cases, Apex handles `null` relationships in the same way Process Builder
 formulas do. However, there's one variant case.
 
-![Good Apex Code]({{ site.baseurl }}/public/null-relationship-screens/goodapex.png)
+![Good Apex Code]({{ site.baseurl }}/public/null-relationship-screens/goodapex.PNG)
 
 Accessing the relationship path directly from the queried object simply results in a `null`; no exception is thrown. However, if the intermediate object is assigned to another variable before dereferencing its field, you get a `NullPointerException`.
 
@@ -62,4 +62,4 @@ Like Process Builder formulas, Apex supports short-circuit evaluation. The code 
 doesn't throw an exception until line 10, and outputs the representation of `a`, `null`,
 and `false`.
 
-![Bad Apex Code]({{ site.baseurl }}/public/null-relationship-screens/badapex.png)
+![Bad Apex Code]({{ site.baseurl }}/public/null-relationship-screens/badapex.PNG)
