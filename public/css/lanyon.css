@@ -132,16 +132,18 @@ h1, h2, h3, h4, h5, h6 {
 /* Header nav */
 .header-nav {
     display: inline;
-    font-size: 75%;
 }
 
 .header-nav-item {
-  padding-right: 3rem;
+  margin-right: 3rem;
+  font-size: 75%;
 }
 
-.header-nav-item.active,
-a.header-nav-item:focus {
-  text-decoration: none;
+.header-nav-item.base {
+    font-size: 100%;
+}
+
+.header-nav-item.active {
   color: black;
 }
 

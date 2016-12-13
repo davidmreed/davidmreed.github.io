@@ -5,19 +5,17 @@
 
   <body class="ktema">
 
-    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
-         content to avoid any CSS collisions with our real content. -->
     <div class="wrap">
       <div class="masthead">
         <div class="container">
           <h3 class="masthead-title">
             <nav class="header-nav">
-              <a class="header-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="{{ site.baseurl }}/">{{ site.title }}</a>
+              <a class="header-nav-item{% if page.url == site.baseurl %} active{% endif %} base" href="{{ site.baseurl }}/">{{ site.title }}</a>
               {% assign pages_list = site.pages | sort:"url" %}
               {% for node in pages_list %}
                 {% if node.title != null %}
                   {% if node.layout == "page" %}
-                    &middot; <a class="header-nav-item{% if page.url == node.url %} active{% endif %}" href="{{ node.url }}">{{ node.title }}</a>
+                    <a class="header-nav-item{% if page.url == node.url %} active{% endif %}" href="{{ node.url }}">{{ node.title }}</a>
                   {% endif %}
                 {% endif %}
               {% endfor %}
