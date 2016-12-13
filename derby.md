@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Derby Resources
+title: Derby
 ---
 
 ## WFTDA Penalty Codes and Verbal Cues Reference

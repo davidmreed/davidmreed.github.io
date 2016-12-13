@@ -13,7 +13,7 @@ paginate:            5
 
 # About/contact
 author:
-  name:              David Reed
+  name:              'David Reed'
   url:               http://www.ktema.org
   email:             david@ktema.org
 

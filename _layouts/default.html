@@ -3,9 +3,7 @@
 
   {% include head.html %}
 
-  <body class="layout-reverse ktema">
-
-    {% include sidebar.html %}
+  <body class="ktema">
 
     <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
          content to avoid any CSS collisions with our real content. -->
@@ -13,8 +11,18 @@
       <div class="masthead">
         <div class="container">
           <h3 class="masthead-title">
-            <a href="{{ site.baseurl }}" title="Home">{{ site.title }}</a> &middot;
-            <span style="font-size:75%;"><a href="{{ site.baseurl }}/about/" title="Home">About</a></span>
+            <nav class="header-nav">
+              <a class="header-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="{{ site.baseurl }}/">{{ site.title }}</a>
+              {% assign pages_list = site.pages | sort:"url" %}
+              {% for node in pages_list %}
+                {% if node.title != null %}
+                  {% if node.layout == "page" %}
+                    &middot; <a class="header-nav-item{% if page.url == node.url %} active{% endif %}" href="{{ node.url }}">{{ node.title }}</a>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+
+            </nav>
           </h3>
         </div>
       </div>
@@ -23,25 +31,5 @@
         {{ content }}
       </div>
     </div>
-
-    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
-
-    <script>
-      (function(document) {
-        var toggle = document.querySelector('.sidebar-toggle');
-        var sidebar = document.querySelector('#sidebar');
-        var checkbox = document.querySelector('#sidebar-checkbox');
-
-        document.addEventListener('click', function(e) {
-          var target = e.target;
-
-          if(!checkbox.checked ||
-             sidebar.contains(target) ||
-             (target === checkbox || target === toggle)) return;
-
-          checkbox.checked = false;
-        }, false);
-      })(document);
-    </script>
   </body>
 </html>
