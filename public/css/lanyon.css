@@ -171,7 +171,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Header nav */
 
-@media (min-width:30.1em) {
+@media (min-width:451px) {
     .header-nav {
         display: inline;
     }
@@ -194,7 +194,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-@media (max-width:30em) {
+@media (max-width:450px) {
     .header-nav {
         display: none;
     }
