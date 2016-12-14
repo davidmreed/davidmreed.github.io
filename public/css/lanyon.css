@@ -195,8 +195,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width:450px) {
-    .header-nav {
+    .header-nav-item {
         display: none;
+    }
+
+    .header-nav-item.base {
+        display: inline;
     }
 
     /* Sidebar content */
