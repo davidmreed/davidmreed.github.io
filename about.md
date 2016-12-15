@@ -15,7 +15,7 @@ You can find me at [david@ktema.org](mailto:david@ktema.org); [@aoristdual](http
 and as [davidmreed](https://github.com/davidmreed) on GitHub.
 You can find my public key at [Keybase](https://keybase.io/davidreed).
 
-> κτῆμά τε ἐς αἰεὶ μᾶλλον ἢ ἀγώνισμα ἐς τὸ παραχρῆμα ἀκούειν ξύγκειται.<br />
+> <span class="greek">κτῆμά τε ἐς αἰεὶ μᾶλλον ἢ ἀγώνισμα ἐς τὸ παραχρῆμα ἀκούειν ξύγκειται.</span><br />
   &mdash; Thucydides, <cite>History of the Peloponnesian War</cite> 1.22
 
   Made using [Poole](http://getpoole.com) with the Lanyon theme and hosted with GitHub Pages.
