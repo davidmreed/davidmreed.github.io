@@ -9,7 +9,7 @@ My other interests include Ancient Greek, Plato, botanical gardens, and cryptogr
 
 I hold the [Salesforce Platform Developer I and Administrator](http://certification.salesforce.com/verification-email?init=1&email=david@ktema.org) certifications.
 
-![Salesforce Certified Platform Developer I]({{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_I_RGB.png) ![Salesforce Certified Administrator]({{ site.baseurl }}/public/SFU_CRT_BDG_Admin_RGB.png)
+<img src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_I_RGB.png" alt="Salesforce Certified Platform Developer I" /> <img src="{{ site.baseurl }}/public/SFU_CRT_BDG_Admin_RGB.png" alt="Salesforce Certified Administrator" />
 
 You can find me at [david@ktema.org](mailto:david@ktema.org); [@aoristdual](https://twitter.com/aoristdual); on [LinkedIn](https://www.linkedin.com/in/david-reed-16175b31);
 and as [davidmreed](https://github.com/davidmreed) on GitHub.
