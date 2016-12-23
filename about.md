@@ -20,4 +20,4 @@ You can find my public key at [Keybase](https://keybase.io/davidreed).
 > <span class="greek">κτῆμά τε ἐς αἰεὶ μᾶλλον ἢ ἀγώνισμα ἐς τὸ παραχρῆμα ἀκούειν ξύγκειται.</span><br />
   &mdash; Thucydides, <cite>History of the Peloponnesian War</cite> 1.22
 
-<span style="font-size:80%;">Made using [Poole](http://getpoole.com), [Atom](https://atom.io/) and [GitHub Pages](https://pages.github.com/).</span>
+<span style="font-size:80%;">Made using [Poole](http://getpoole.com), [Atom](https://atom.io/), and [GitHub Pages](https://pages.github.com/).</span>
