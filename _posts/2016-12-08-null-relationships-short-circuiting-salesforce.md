@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Null Relationships and Short-Circuiting Behavior in Salesforce Formulas, Process Builder, and Apex
+title: Null Relationships and Short-Circuiting Behavior in Salesforce Formulas, Process Builder, Flow, and Apex
 ---
 
 What happens when you refer to a field across a lookup relationship, and the lookup relationship is `null`? The answer turns out to vary across contexts in non-obvious ways. In the course of debugging some Process Builder logic, I came up with a summary. In all of the examples below, I'm using a custom object called `Test Base Object` with a nullable lookup relationship `Account__c`.
