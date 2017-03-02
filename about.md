@@ -4,10 +4,10 @@ title: About
 ---
 
 I am a Salesforce developer at the [Santa Fe Institute](http://www.santafe.edu). (I do not speak on SFI's behalf: opinions and mistakes are my own).
-I am also Head of Officials at [Duke City Roller Derby](http://dukecityderby.com).
+I am also Head of Officials at [Duke City Roller Derby](http://dukecityderby.com) and lead the Santa Fe Salesforce users' group.
 My other interests include Ancient Greek, Plato, botanical gardens, and cryptography.
 
-I hold the [Salesforce Platform Developer I and Administrator](http://certification.salesforce.com/verification-email?init=1&email=david@ktema.org) certifications.
+I hold the [Salesforce Platform Developer I and Administrator](http://certification.salesforce.com/verification-email?init=1&email=david@ktema.org) certifications. I occasionally consult on Salesforce and welcome inquiries.
 
 <div>
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_I_RGB.png" alt="Salesforce Certified Platform Developer I" /> <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Admin_RGB.png" alt="Salesforce Certified Administrator" />
