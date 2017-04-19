@@ -3,9 +3,7 @@ layout: page
 title: About
 ---
 
-I am a Salesforce developer at the [Santa Fe Institute](http://www.santafe.edu). (I do not speak on SFI's behalf: opinions and mistakes are my own).
-I am also Head of Officials at [Duke City Roller Derby](http://dukecityderby.com) and lead the Santa Fe Salesforce users' group.
-My other interests include Ancient Greek, Plato, botanical gardens, and cryptography.
+I am a Salesforce developer and administrator. My other interests include roller derby officiating, Ancient Greek, Plato, botanical gardens, and cryptography.
 
 I hold the [Salesforce Platform Developer I and Administrator](http://certification.salesforce.com/verification-email?init=1&email=david@ktema.org) certifications. I occasionally consult on Salesforce and welcome inquiries.
 
