@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Null Relationships and Short-Circuiting Behavior in Salesforce Formulas, Process Builder, and Apex
+title: Null Relationships and Short-Circuiting Behavior in Salesforce Formulas, Process Builder, Flow, and Apex
 ---
 
 What happens when you refer to a field across a lookup relationship, and the lookup relationship is `null`? The answer turns out to vary across contexts in non-obvious ways. In the course of debugging some Process Builder logic, I came up with a summary. In all of the examples below, I'm using a custom object called `Test Base Object` with a nullable lookup relationship `Account__c`.
@@ -23,7 +23,7 @@ triggers *appear* to operate like formulas, but actually handle `null` relations
 very differently. *Dereferencing a `null` field in a Process Builder condition or
 formula always results in an exception*. With complex logic in conditions for running actions,
 this can be tricky to debug. The errors it produces for users are opaque and
-frustrating, preventing any mutation of the involved object.
+frustrating, often preventing any mutation of the involved object.
 
 ![Process Builder Error]({{ site.baseurl }}/public/null-relationship-screens/pberror.PNG)
 
@@ -48,6 +48,19 @@ may be more straightforward.
 Formulas in Process Builder short-circuit in the same way, whether using the `AND()` and `OR()` functions or the `&&` and `||` operators. The following pattern is safe.
 
 ![Safe Process Builder Formula Pattern]({{ site.baseurl }}/public/null-relationship-screens/safepbformula.PNG)
+
+## Flow
+
+sObject variables in Flow present a challenge. While sObject variables can be `null`, and cross-object field references that traverse
+a `null` variable *will* result in an exception being thrown, one cannot directly test an sObject variable's nullity within a Flow formula. `ISBLANK(sObjectVariable)` and `ISNULL(sObjectVariable)` aren't legal and will prevent your Flow from being activated.
+
+There are a couple of ways to work around this limitation.
+
+One is to check the sObject variable's nullity using a Decision element before using any formulas that references its fields. (See the [release notes](https://releasenotes.docs.salesforce.com/en-us/summer14/release-notes/rn_forcecom_process_flow_crossobject.htm) on cross-object references in Flow). Unfortunately, this may not be practicable in a flow where formulas make complex decisions or calculate across a number of different objects (see my discussion of [bridging Click & Pledge with Salesforce Campaigns]({{ site.baseurl}}/2016/12/28/bridging-click-and-pledge-and-salesforce-campaigns) for an example).
+
+Another option, if the variable is populated using a lookup element from a given Id value, is to check the nullity of the Id value field in the formula that performs the cross-object reference. Like in Process Builder, logical functions in Flow formulas use short-circuit evaluation. This allows you to effectively guard cross-object references against nulls in the circumstance that the potentially-null sObject variable is looked up from an Id field, rather than other criteria.
+
+Finally, as discussed in the [Summer '14 release notes](https://releasenotes.docs.salesforce.com/en-us/summer14/release-notes/rn_forcecom_process_flow_crossobject.htm), you can provide a fault path. While this offers less of an opportunity to handle decision-making or conditional data within a single formula, it permits clearly expressing error- and null-handling within the logic of the flow itself.
 
 ## Apex
 

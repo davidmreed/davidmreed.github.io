@@ -16,6 +16,6 @@ and as [davidmreed](https://github.com/davidmreed) on GitHub.
 You can find my public key at [Keybase](https://keybase.io/davidreed).
 
 > <span class="greek">κτῆμά τε ἐς αἰεὶ μᾶλλον ἢ ἀγώνισμα ἐς τὸ παραχρῆμα ἀκούειν ξύγκειται.</span><br />
-  &mdash; Thucydides, <cite>History of the Peloponnesian War</cite> 1.22
+  &mdash; Thucydides, [<cite>History of the Peloponnesian War</cite> 1.22](http://www.perseus.tufts.edu/hopper/text?doc=Thuc.+1.22&fromdoc=Perseus%3Atext%3A1999.01.0247)
 
-  Made using [Poole](http://getpoole.com) with the Lanyon theme and hosted with GitHub Pages.
+<span style="font-size:80%;">Made using [Poole](http://getpoole.com), [Atom](https://atom.io/), and [GitHub Pages](https://pages.github.com/).</span>
