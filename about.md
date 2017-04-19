@@ -3,6 +3,7 @@ layout: page
 title: About
 ---
 
+I am a Salesforce developer and administrator. My other interests include roller derby officiating, Ancient Greek, Plato, botanical gardens, and cryptography.
 
 I hold the [Salesforce Platform Developer I and Administrator](http://certification.salesforce.com/verification-email?init=1&email=david@ktema.org) certifications. I occasionally consult on Salesforce and welcome inquiries.
 
