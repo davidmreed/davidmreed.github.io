@@ -3,9 +3,11 @@ layout: page
 title: About
 ---
 
-I am a Salesforce developer and administrator. My other interests include roller derby officiating, Ancient Greek, Plato, botanical gardens, and cryptography.
+I am a Salesforce developer at the [American Civil Liberties Union](https://www.aclu.org/). (All opinions and positions expressed are my own). My other interests include roller derby officiating, Ancient Greek, Plato, botanical gardens, and cryptography.
 
-I hold the [Salesforce Platform Developer I and Administrator](http://certification.salesforce.com/verification-email?init=1&email=david@ktema.org) certifications. I occasionally consult on Salesforce and welcome inquiries.
+I occasionally consult on Salesforce, particularly for nonprofit organizations, and welcome inquiries.
+
+I hold the [Salesforce Platform Developer I and Administrator](http://certification.salesforce.com/verification-email?init=1&email=david@ktema.org) certifications.
 
 <div>
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_I_RGB.png" alt="Salesforce Certified Platform Developer I" /> <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Admin_RGB.png" alt="Salesforce Certified Administrator" />
