@@ -3,9 +3,9 @@ layout: page
 title: About
 ---
 
-I am a Salesforce developer at the [American Civil Liberties Union](https://www.aclu.org/). (All opinions and positions expressed are my own). My other interests include roller derby officiating, Ancient Greek, Plato, botanical gardens, and cryptography.
+I am a Salesforce developer at the [American Civil Liberties Union](https://www.aclu.org/). (All opinions and positions expressed are my own). My other interests include officiating roller derby, Ancient Greek, Plato, botanical gardens, and cryptography.
 
-I occasionally consult on Salesforce, particularly for nonprofit organizations, and welcome inquiries.
+I [consult]({{site.baseurl}}/consulting) on Salesforce, particularly for nonprofit organizations, and welcome inquiries.
 
 I hold the [Salesforce Platform Developer I and Administrator](http://certification.salesforce.com/verification-email?init=1&email=david@ktema.org) certifications.
 
@@ -19,5 +19,3 @@ You can find my public key at [Keybase](https://keybase.io/davidreed).
 
 > <span class="greek">κτῆμά τε ἐς αἰεὶ μᾶλλον ἢ ἀγώνισμα ἐς τὸ παραχρῆμα ἀκούειν ξύγκειται.</span><br />
   &mdash; Thucydides, [<cite>History of the Peloponnesian War</cite> 1.22](http://www.perseus.tufts.edu/hopper/text?doc=Thuc.+1.22&fromdoc=Perseus%3Atext%3A1999.01.0247)
-
-<span style="font-size:80%;">Made using [Poole](http://getpoole.com), [Atom](https://atom.io/), and [GitHub Pages](https://pages.github.com/).</span>
