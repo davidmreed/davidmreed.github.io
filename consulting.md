@@ -9,4 +9,4 @@ Long experience on the ground raising funds, writing proposals, and planning eve
 
 Services I provide include application development, customization, implementation of AppExchange solutions, data import and cleaning, migration, and integration with external systems.
 
-Whether you're looking for new development or enhancement of an existing solution, I'd be delighted to help you advance your mission. Please [get in touch](mailto:david@ktema.org). I look forward to chatting about how we can accomplish your objectives, and I'd be delighted to share case studies I've worked on.
+Whether you're looking for new development or enhancement of an existing solution, I'd be delighted to help you advance your mission. Please [get in touch](mailto:david@ktema.org). I look forward to chatting about how we can accomplish your objectives, and I'd be happy to share case studies I've worked on.
