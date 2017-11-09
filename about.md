@@ -3,7 +3,7 @@ layout: page
 title: About
 ---
 
-I am a Salesforce developer at the [American Civil Liberties Union](https://www.aclu.org/). (All opinions and positions expressed are my own). My other interests include officiating roller derby, Ancient Greek, Plato, botanical gardens, and cryptography.
+I am a Salesforce developer, with special interest in nonprofit Salesforce and devops. My other interests include officiating roller derby, Ancient Greek, Plato, botanical gardens, and cryptography.
 
 I [consult]({{site.baseurl}}/consulting) on Salesforce, particularly for nonprofit organizations, and welcome inquiries.
 
