@@ -40,10 +40,8 @@ text format or using the GUI tool, and `bouncingbots` will offer a list of solut
 I am no longer an active Macintosh developer, so all Mac code should be considered unmaintained.
 Please contact me if you're interested in taking over a project.
 
-### iMan — a Cocoa manpage viewer.
+### [iMan](https://github.com/davidmreed/iman)
 
-[Download](https://github.com/davidmreed/iman/releases/download/0.4/iMan0.4.zip), [Source](https://github.com/davidmreed/iman)
-
-iMan is a GUI application designed to replace the terminal `man(1)` program.
+iMan is a a Cocoa manpage viewer designed to replace the terminal `man(1)` program.
 iMan offers a browser-inspired interface to the system manpages with fast display and searching,
 UTF-8 support, caching, and other features. I no longer actively develop this project.
