@@ -3,14 +3,14 @@ layout: page
 title: About
 ---
 
-I am a Salesforce developer, with special interest in nonprofit Salesforce and devops. My other interests include officiating roller derby, Ancient Greek, Plato, botanical gardens, and cryptography.
+I am a Salesforce developer, with special interests in nonprofit Salesforce and devops. My other interests include officiating roller derby, Ancient Greek, Plato, botanical gardens, and cryptography.
 
 I [consult]({{site.baseurl}}/consulting) on Salesforce, particularly for nonprofit organizations, and welcome inquiries.
 
-I hold the [Salesforce Platform Developer I and Administrator](http://certification.salesforce.com/verification-email?init=1&email=david@ktema.org) certifications.
+I hold the [Salesforce Platform Developer II and Administrator](http://certification.salesforce.com/verification-email?init=1&email=david@ktema.org) certifications.
 
 <div>
-<img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_I_RGB.png" alt="Salesforce Certified Platform Developer I" /> <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Admin_RGB.png" alt="Salesforce Certified Administrator" />
+<img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_II_RGB.png" alt="Salesforce Certified Platform Developer II" /> <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Admin_RGB.png" alt="Salesforce Certified Administrator" />
 </div>
 
 You can find me at [david@ktema.org](mailto:david@ktema.org); [@aoristdual](https://twitter.com/aoristdual); on [LinkedIn](https://www.linkedin.com/in/david-reed-16175b31);
