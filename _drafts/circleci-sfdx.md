@@ -90,9 +90,9 @@ Finally, CircleCI itself must be configured to talk to the Dev Hub using the pri
 1. Add your project to CircleCI after authenticating with GitHub.
 2. In the Settings for your project in CircleCI, choose Environment Variables.
 3. Add the following environment variables:
-  - CONSUMERKEY, with the consumer key from your Connected App in Salesforce.
-  - KEY, with the value of the key used to encrypt `server.key`.
-  - USERNAME, with the user name of your Dev Hub user account.
+    - CONSUMERKEY, with the consumer key from your Connected App in Salesforce.
+    - KEY, with the value of the key used to encrypt `server.key`.
+    - USERNAME, with the user name of your Dev Hub user account.
   Since CircleCI won't allow you to access the values of these variables later, make sure to retain `$KEY` in a secure store, like a password manager.
 
 ## Build `config.yml`
@@ -111,11 +111,13 @@ Add `.circleci` to Git and push:
     $ git commit -m "Add CircleCI integration"
     $ git push
     
-The project builds in SFDX on CircleCI, and if all goes well, you get a green checkmark in your commit log in GitHub. CircleCI will monitor commits to the repository and immediately test, and provide feedback on, every single commit, using and disposing a fresh scratch org to make sure code can be cleanly deployed and teste dat all times. You'll also get code coverage reports in Codecov.io, and each commit will show your progressive changes in coverage. 
+The project builds in SFDX on CircleCI, and if all goes well, you get a green checkmark in your commit log in GitHub! 
+
+CircleCI will monitor commits to the repository and immediately test, and provide feedback on, every single commit, using and disposing a fresh scratch org to make sure code can be cleanly deployed and tested at all times. You'll also get code coverage reports in Codecov.io, and each commit will show your progressive changes in coverage. 
 
 Congratulations - you have a fully-fledged CI solution in place!
 
-If you later need to alter the Dev Hub org for the project, simply create a new Dev Hub user account, ensure that a Connected App is in place (you can use the same certificate), and update the `CONSUMERKEY` and `USERNAME` variables on CircleCI. The remainder of the setup can remain constant.
+If you later need to alter the Dev Hub org for the project, simply create a new Dev Hub user account, ensure that a Connected App is in place in that org (you can use the same certificate), and update the `CONSUMERKEY` and `USERNAME` variables on CircleCI. The remainder of the setup can remain constant.
 
 ## `config.yml` for CircleCI
 
