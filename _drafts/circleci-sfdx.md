@@ -119,7 +119,7 @@ If you later need to alter the Dev Hub org for the project, simply create a new 
 
 ## `config.yml` for CircleCI
 
-This `config.yml` builds each commit in a new scratch org using SFDX and runs all Apex tests, storing test results in CircleCI. After completing the build, the scratch org is thrown away. It also includes optional functionality to monitor code coverage using [Codecov.io](https://codecov.io).
+This `config.yml` builds each commit in a new scratch org using SFDX and runs all Apex tests, storing test results in CircleCI. After completing the build, the scratch org is thrown away. It also includes optional functionality to monitor code coverage.
 
 ### Base Setup
 
@@ -188,7 +188,7 @@ We'll use a `when: always` step to make sure that the unencrypted version of the
                   mkdir ~/apex_tests
                   node_modules/sfdx-cli/bin/run force:apex:test:run -u scratch -c -r human -d ~/apex_tests
                   
-Next, we push our source up to the new scratch org and ask SFDX to run all Apex tests. With a `-r` argument, this command is run synchronously in SFDX v.41, which we've preferentially cached. When a new version of SFDX is released, we'll update `config.yml` accordingly. Despite `-r human`, SFDX will provide a JUnit XML file that CircleCI can interpret, as well as a human-compatible readout.
+Next, we push our source up to the new scratch org and ask SFDX to run all Apex tests. With a `-r` argument, this command is run synchronously in SFDX v.41, which we've preferentially cached. When a new version of SFDX is released, we'll update `config.yml` accordingly. Despite `-r human`, SFDX will provide a JUnit XML file that CircleCI can interpret, as well as a human-compatible readout. Note that we're also supplying `-c` to request a code coverage JSON file.
 
 ### Teardown, Store Artifacts and Test Results
                   
@@ -198,7 +198,7 @@ Next, we push our source up to the new scratch org and ask SFDX to run all Apex 
                   cp ~/apex_tests/test-result-codecoverage.json .
                   bash <(curl -s https://codecov.io/bash)
                   
-We're using [codecov.io](Codecov.io) for code coverage metrics (they added Apex/SFDX support by request). This section is easily separable or replaceable if you prefer another coverage service.
+We're using [codecov.io](https://codecov.io) for code coverage metrics because they support the SFDX code coverage file format. This section is easily separable if you don't want to track code coverage.
                   
           - run: 
               name: Clean Up
