@@ -7,7 +7,7 @@ This is the first in a series looking at setting up a Salesforce project with a 
 
 As a test-bed, I'm using a project called [septaTrains](https://github.com/davidmreed/septaTrains), a transit tracker application for Lightning. The application is built with Lightning components and uses Apex to call various REST APIs to display information about commuter trains in the Philadelphia area.
 
-We're going to walk through, from the very first step, the tooling for this project. Here, we'll focus on setting up Salesforce DX and Git, and establishing a continuous integration architecture, using CircleCI, with testing automation (for Apex) and code coverage metrics using Codecov.io. In later articles, we'll cover tooling on the IDE side and add the Lightning Testing Service to the mix, so our JavaScript can be covered too.
+We're going to walk through, from the very first step, the tooling for this project. Here, we'll focus on setting up Salesforce DX and Git, and establishing a continuous integration architecture, using CircleCI, with testing automation (for Apex) and code coverage metrics using Codecov.io. In later articles, we'll cover tooling on the IDE side, incorporate PMD static analysis, and add the Lightning Testing Service to the mix, so our JavaScript can be covered too.
 
 Command line snippets below assume a Unix-like environment, but should work the same in Git Bash on Windows.
 
