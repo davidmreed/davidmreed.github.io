@@ -13,11 +13,14 @@ Command line snippets below assume a Unix-like environment (Linux/Mac OS X), but
 
 ## Set Up Infrastructure
 
-If you're not using a Dev Hub through a paid Salesforce account, create a new Dev Hub [trial account](https://developer.salesforce.com/promotions/orgs/dx-signup). Trial accounts are good for 30 days, after which they're deleted. Our CI setup is largely resilient to dev hub changes, with minor setup needed but no commits.
+If you're working with an existing Salesforce DX project, start by setting up the Dev Hub, project structure, and Git repository. 
 
-Create an SFDX project: 
+Every paid Salesforce instance can have the Dev Hub functionality activated. If you don't have access to a paid Salesforce instance or cannot activate Dev Hub, create a new Dev Hub [trial account](https://developer.salesforce.com/promotions/orgs/dx-signup). Trial accounts are good for 30 days, after which they're deleted. Our CI setup is largely resilient to dev hub changes, with minor setup needed but no commits.
+
+Create an SFDX project and connect to your Dev Hub: 
 
     $ sfdx force:project:create --projectname proj
+    $ sfdx force:auth:web:login -a DevHub -d
 
 If your Dev Hub isn't on `login.salesforce.com`, change the parameter "sfdcLoginUrl" in the `sfdx-project.json` configuration file appropriately.
 
@@ -31,12 +34,16 @@ Create your Git repository on GitHub and copy its URL.
 Configure your local repository to communicate with GitHub and commit your project structure:
 
     $ git remote add origin <GITHUB_URL>
-    $ git add * && git commit -m "Initial commit"
+    $ git add force-app && git commit -m "Initial commit"
+    
+You may also wish to add a `.gitignore` file to ensure that support files, like the `.sfdx` directory, aren't inadvertently added to Git.
 
 
 ## Create Keys
 
-CircleCI will need to talk to the dev hub at commit time to create a new SFDX scratch org and run  tests. To make this possible, we need to set up the infrastructure for authorizing CircleCI with the JWT flow. JWT doesn't involve any user interaction or require storage of user credentials, making it ideal for CI. To use this solution, we need to create a certificate, which will be stored in a Connected App in our dev hub, and an associated private key, which we'll store in encrypted form in our repository and use to authenticate.
+If you're working with an existing Salesforce DX/Git project, start here.
+
+CircleCI will need to talk to the dev hub at commit time to create a new SFDX scratch org and run tests. To make this possible, we need to set up the infrastructure for authorizing CircleCI with the JWT flow. JWT doesn't involve any user interaction or require storage of user credentials, making it ideal for CI. We'll create a certificate, which will be stored in a Connected App in our Dev Hub, and an associated private key, which we'll store in encrypted form in our repository and use to authenticate.
 
 Create your key pair and server certificate as described in the [SFDX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_key_and_cert.htm).
 
@@ -82,10 +89,15 @@ Commit the `assets` directory and encrypted private key to Git:
  10. Click "Manage", then "Edit Policies".
  11. Set Permitted Users under "OAuth policies" to "Admin approved users are pre-authorized".
  12. Click "Save", then "Manage Profiles" (or Permission Sets) and add the Profile or Permission Set assigned to the user you'd like to connect CircleCI under. If you're using a Dev Hub trial, add the System Administrator profile.
+ 
+ Here's what the Connected App will look like at the end of the process.
+ 
+ ![Connected App screenshot]({{ site.baseurl }}/public/sfdx-circleci/connected-app.png)
+
 
 ## Set up CircleCI for Authentication
 
-Finally, CircleCI itself must be configured to talk to the Dev Hub using the private key. We'll do this using CircleCI Environment Variables, which are stored securely and aren't part of the repository. Follow these steps to complete the CircleCI setup:
+CircleCI itself must be configured to talk to the Dev Hub using the private key before continuous integration can begin. We'll do this using CircleCI Environment Variables, which are stored securely and aren't part of the repository. Follow these steps to complete the CircleCI setup:
 
 1. Add your project to CircleCI after authenticating with GitHub (Projects->Add Project).
 2. In the Settings for your project in CircleCI, choose Environment Variables.
@@ -94,16 +106,24 @@ Finally, CircleCI itself must be configured to talk to the Dev Hub using the pri
     - KEY, with the value of the key used to encrypt `server.key`.
     - USERNAME, with the user name of your Dev Hub user account.
   Since CircleCI won't allow you to access the values of these variables later, make sure to retain `$KEY` in a secure store, like a password manager.
+  
+![CircleCI screenshot]({{ site.baseurl }}/public/sfdx-circleci/circleci-environment.png)
 
-## Build `config.yml`
+## Add the Project to Codecov.io
 
-We'll need a `config.yml` file to tell CircleCI how to build and test our project. We're using CircleCI 2.0, which is very different in format from CircleCI 1.0.
+Tracking test coverage on a commit-by-commit basis is a nice extra to add to our continuous integration and testing flow. [Codecov.io](https://codecov.io) provides full support for Apex and Salesforce DX development. If you want to push and track coverage statistics, login to Codecov via GitHub and add the project repository. A section in our `config.yml`, below, will update the statistics on each build.
+
+If you don't want to track code coverage, omit this step, and remove the corresponding section from `config.yml`.
+
+## Build `config.yml` for SFDX Deploys and Test Runs
+
+We'll need a `config.yml` file to tell CircleCI how to build and test our project. We're using CircleCI 2.0.
 
 First, create the CircleCI directory and YAML file:
 
     $ mkdir .circleci && touch .circleci/config.yml
 
-Next, construct your `config.yml` file. The `config.yml` for this septaTrains is designed as a [template](https://github.com/davidmreed/septaTrains/blob/master/.circleci/config.yml). It is broken down section-by-section below.
+Next, construct your `config.yml` file. The `config.yml` for septaTrains is designed as a [template](https://github.com/davidmreed/septaTrains/blob/master/.circleci/config.yml), which you're welcome to copy and modify. It is broken down section-by-section below.
 
 Add `.circleci` to Git and push: 
 
@@ -111,11 +131,13 @@ Add `.circleci` to Git and push:
     $ git commit -m "Add CircleCI integration"
     $ git push
     
-The project builds in SFDX on CircleCI, and if all goes well, you get a green checkmark in your commit log in GitHub! 
+The project builds in SFDX on CircleCI, and if all goes well, you get a green checkmark in your commit log in GitHub.
 
-CircleCI will monitor commits to the repository and immediately test, and provide feedback on, every single commit, using and disposing a fresh scratch org to make sure code can be cleanly deployed and tested at all times. You'll also get code coverage reports in Codecov.io, and each commit will show your progressive changes in coverage. 
+![CI success on GitHub]({{ site.baseurl }}/public/sfdx-circleci/ci-success.png)
 
 Congratulations - you have a fully-fledged CI solution in place!
+
+CircleCI will monitor commits to the repository and immediately test, and provide feedback on, every single commit, using and disposing a fresh scratch org to make sure code can be cleanly deployed and tested at all times. You'll get immediate visibility into build problems, regressions, and (optionally) test coverage, helping to streamline the development process and raise issues early.
 
 If you later need to alter the Dev Hub org for the project, simply create a new Dev Hub user account, ensure that a Connected App is in place in that org (you can use the same certificate), and update the `CONSUMERKEY` and `USERNAME` variables on CircleCI. The remainder of the setup can remain constant.
 
@@ -190,7 +212,9 @@ We'll use a `when: always` step to make sure that the unencrypted version of the
                   mkdir ~/apex_tests
                   node_modules/sfdx-cli/bin/run force:apex:test:run -u scratch -c -r human -d ~/apex_tests
                   
-Next, we push our source up to the new scratch org and ask SFDX to run all Apex tests. With a `-r` argument, this command is run synchronously in SFDX v.41, which we've preferentially cached. When a new version of SFDX is released, we'll update `config.yml` accordingly. Despite `-r human`, SFDX will provide a JUnit XML file that CircleCI can interpret, as well as a human-compatible readout. Note that we're also supplying `-c` to request a code coverage JSON file.
+Next, we push our source up to the new scratch org. Any compilation errors will be caught at this step and will abort the process. 
+
+We ask SFDX to run all Apex tests. With a `-r` argument, this command is run synchronously in SFDX v.41, which we've preferentially cached. When a new version of SFDX is released, we'll update `config.yml` accordingly. Despite `-r human`, SFDX will provide a JUnit XML file that CircleCI can interpret, as well as a human-compatible readout. Note that we're also supplying `-c` to request a code coverage JSON file.
 
 ### Teardown, Store Artifacts and Test Results
                   
