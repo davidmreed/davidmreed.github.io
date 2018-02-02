@@ -9,7 +9,7 @@ As a test-bed, I'm using a project called [septaTrains](https://github.com/david
 
 We're going to walk through, from the very first step, the tooling for this project. Here, we'll focus on setting up Salesforce DX and Git, and establishing a continuous integration architecture, using CircleCI, with testing automation (for Apex) and code coverage metrics using Codecov.io. In later articles, we'll cover tooling on the IDE side, incorporate PMD static analysis, and add the Lightning Testing Service to the mix, so our JavaScript can be covered too.
 
-Command line snippets below assume a Unix-like environment, but should work the same in Git Bash on Windows.
+Command line snippets below assume a Unix-like environment (Linux/Mac OS X), but should work the same in Git Bash on Windows. PowerShell users will need to make more adaptations.
 
 ## Set Up Infrastructure
 
@@ -87,7 +87,7 @@ Commit the `assets` directory and encrypted private key to Git:
 
 Finally, CircleCI itself must be configured to talk to the Dev Hub using the private key. We'll do this using CircleCI Environment Variables, which are stored securely and aren't part of the repository. Follow these steps to complete the CircleCI setup:
 
-1. Add your project to CircleCI after authenticating with GitHub.
+1. Add your project to CircleCI after authenticating with GitHub (Projects->Add Project).
 2. In the Settings for your project in CircleCI, choose Environment Variables.
 3. Add the following environment variables:
     - CONSUMERKEY, with the consumer key from your Connected App in Salesforce.
