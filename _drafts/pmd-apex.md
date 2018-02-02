@@ -31,7 +31,11 @@ Unlike the Visual Studio Code extension, Eclipse's PMD plugin runs on-demand onl
 
 ## Static Analysis with Continuous Integration: Code Climate
 
-Code Climate does not officially support Apex. Fortunately, an open source engine called [ApexMetrics](https://github.com/rsoesemann/codeclimate-apexmetrics) can be activated within Code Climate to apply PMD static analysis in an automated, CI-compatible fashion.
+Code Climate does not officially support Apex. An open source engine called [ApexMetrics](https://github.com/rsoesemann/codeclimate-apexmetrics) can be activated within Code Climate to apply PMD static analysis in an automated, CI-compatible fashion.
+
+Code Climate does provide a low-setup, automated mechanism for running static analysis and tracking flaws. Unfortunately, the service is geared towards its own internal engines (which don't support Apex), and its integration with ApexMetrics leaves something to be desired in both user interface and functionality. 
+
+Code Climate requires a `.codeclimate.yml` configuration file. This file should be committed to the repository *before* adding the repository to Code Climate, so that the initial run will take Apex settings into account. An example `.codeclimate.yml` file is available on a [branch](https://github.com/davidmreed/septaTrains/blob/codeclimate/.codeclimate.yml) of septaTrains. It simply disables all build-in checks provided by Code Climate and activates the ApexMetrics engine.
 
 ## Static Analysis with Continuous Integration: CircleCI
 
