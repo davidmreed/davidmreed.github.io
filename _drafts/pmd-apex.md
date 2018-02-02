@@ -5,7 +5,7 @@ title: Integrating Static Analysis with PMD in the Salesforce Development Lifecy
 
 Static analysis is a powerful complement to unit tests, helping to identify bugs early in the development lifecycle and root out dangerous code practices - even before the source is compiled. [PMD](http://pmd.github.io/) is a multi-language static analysis tool that includes support for Apex and, to a limited extent, Visualforce.
 
-Static analysis can be added to the development lifecycle at multiple levels. PMD can be run within the IDE as code is being written to identify flaws before they're even compiled or pushed to the server. It can also run across an entire codebase as part of a continuous integration solution. 
+Static analysis can be added to the development lifecycle at multiple levels. PMD can be run within the IDE as code is being written to identify flaws before they're even compiled or pushed to the server. It can also run across an entire codebase as part of a continuous integration solution, to head off problems merging in, enforce code style and good practices, identify locations of technical debt, and surface subtle bugs that may not be flagged by unit tests.
 
 ## Static Analysis in the IDE: Visual Studio Code
 
@@ -17,7 +17,13 @@ You can also configure the `apexPMD.runOnFileOpen` and `apexPMD.runOnFileSave` s
 
 ## Static Analysis in the IDE: Eclipse
 
+PMD provides an official plugin for Eclipse, which works well with Apex. Install the plugin within Eclipse by following the instructions [supplied by PMD](https://pmd.github.io/latest/pmd_userdocs_tools.html#eclipse)
+
 ## Static Analysis with Continuous Integration: Code Climate
 
-## Developing a Rule Set
+Code Climate does not officially support Apex. Fortunately, an open source engine called [ApexMetrics](https://github.com/rsoesemann/codeclimate-apexmetrics) can be activated within Code Climate to apply PMD static analysis in an automated, CI-compatible fashion.
+
+## Static Analysis with Continuous Integration: CircleCI
+
+## Developing Rule Sets
 
