@@ -17,9 +17,7 @@ Then, install the extension in Visual Studio Code. Open your User Preferences an
 
 You can also configure the `apexPMD.runOnFileOpen` and `apexPMD.runOnFileSave` settings to determine when static analysis is performed. Apex PMD feeds all static analysis warnings into the Visual Studio Code Problems view, and they're also surfaced as green underlines in the source code view. You can invoke the static analyzer explicitly from the command palette with `Apex Static Analysis: On File` or `Apex Static Analysis: On Workspace` to get a codebase-wide analysis.
 
-Apex PMD comes with a comprehensive rule set. However, you'll likely want to define your own, to silence warnings that aren't relevant or change the warning level for specific rules. See the section below on Developing Rule Sets to create a rule set. 
-
-Once you've created your own rule set, enable it by setting `apexPMD.useDefaultRuleset` to `false`, and populating the path to your rule set in `apexPMD.rulesetPath`.
+Apex PMD comes with a comprehensive rule set. However, you'll likely want to define your own, to silence warnings that aren't relevant or change the warning level for specific rules. See the section below on Developing Rule Sets to create a rule set. Once you've created your own rule set, enable it by setting `apexPMD.useDefaultRuleset` to `false`, and populating the path to your rule set in `apexPMD.rulesetPath`.
 
 ## Static Analysis in the IDE: Eclipse
 
@@ -33,15 +31,15 @@ Unlike the Visual Studio Code extension, Eclipse's PMD plugin runs on-demand onl
 
 Code Climate does not officially support Apex. An open source engine called [ApexMetrics](https://github.com/rsoesemann/codeclimate-apexmetrics) can be activated within Code Climate to apply PMD static analysis in an automated, CI-compatible fashion.
 
-Code Climate does provide a low-setup, automated mechanism for running static analysis and tracking flaws. Unfortunately, the service is geared towards its own internal engines (which don't support Apex), and its integration with ApexMetrics leaves something to be desired in both user interface and functionality. 
+Code Climate does provide a low-setup, automated mechanism for running static analysis and tracking flaws. Unfortunately, the service is geared towards its own internal engines (which don't support Apex), and its integration with ApexMetrics leaves something to be desired in both user interface and functionality. Apex issues will be surfaced only in an "Other Issues" section and don't count towards maintainability metrics.
 
-Code Climate requires a `.codeclimate.yml` configuration file. This file should be committed to the repository *before* adding the repository to Code Climate, so that the initial run will take Apex settings into account. An example `.codeclimate.yml` file is available on a [branch](https://github.com/davidmreed/septaTrains/blob/codeclimate/.codeclimate.yml) of septaTrains. It simply disables all build-in checks provided by Code Climate and activates the ApexMetrics engine.
+Code Climate requires a `.codeclimate.yml` configuration file. This file should be committed to the repository *before* adding the repository to Code Climate, so that the initial run will take Apex settings into account. An example `.codeclimate.yml` file is available on a [branch](https://github.com/davidmreed/septaTrains/blob/codeclimate/.codeclimate.yml) of septaTrains. It simply disables all built-in checks provided by Code Climate and activates the ApexMetrics engine.
 
 ## Static Analysis with Continuous Integration: CircleCI
 
-PMD can be run directly within CircleCI. Plugging the static analyzer directly into the build can be useful if, for example, the build should fail based upon a rule violation, like performing SOQL in a loop. Since CircleCI has no built-in functionality for tracking PMD's defect reports, however, codebase-level static analysis is better delegated to a service like Code Climate unless the (1) the existing codebase is clean for the rule set being used and (2) any new results for the chosen rule set should flag the build as a failure.
+PMD can be run directly within CircleCI. Plugging the static analyzer directly into the build can be useful if, for example, the build should fail based upon a rule violation, like performing SOQL in a loop. Since CircleCI has no built-in functionality for tracking PMD's defect reports,however, codebase-level static analysis is better delegated to a service like Code Climate unless the (1) the existing codebase is clean for the rule set being used and (2) any new results for the chosen rule set should flag the build as a failure.
 
-Since static analysis can run in parallel with the Salesforce DX build/test operation, this is a great fit for CircleCI 2.0's Workflows. We can define a PMD job that runs independently of Salesforce DX with a new entry under `jobs` in our `config.yml`:
+Since static analysis can run in parallel with the Salesforce DX build/test operation, this is a great fit for CircleCI 2.0's Workflows. We can define a PMD job that runs independently of Salesforce DX with a new entry under `jobs` in our `config.yml` (starting from the same `config.yml` we used in [setting up CI](http://www.ktema.org/2018/02/02/salesforce-dx-circleci/))
 
     jobs:
       static-analysis:
@@ -50,7 +48,7 @@ Since static analysis can run in parallel with the Salesforce DX build/test oper
         steps:
           - checkout
           - restore_cache:
-              keys: 
+              keys:
                 - pmd-v6.0.1
           - run:
               name: Install PMD
@@ -62,16 +60,16 @@ Since static analysis can run in parallel with the Salesforce DX build/test oper
                   fi
           - save_cache:
               key: pmd-v6.0.1
-              paths: 
+              paths:
                   - pmd-bin-6.0.1
-          - run: 
+          - run:
               name: Run Static Analysis
               command: |
-                  pmd-bin-6.0.1/bin/run.sh pmd -d . -R $RULESET -f text -l apex -r static-analysis.txt 
+                  pmd-bin-6.0.1/bin/run.sh pmd -d . -R $RULESET -f text -l apex -r static-analysis.txt
           - store_artifacts:
               path: static-analysis.txt
 
-All we need to do, then, is add an XML rule set file to our repository and put its name in the CircleCI `$RULESET` environment variable. A simple workflow definition at the end of `config.yml` ensures that the static analysis runs alongside the existing build process:
+All we need to do, then, is commit an XML rule set file to our repository and put its name in the CircleCI `$RULESET` environment variable. A simple workflow definition at the end of `config.yml` ensures that the static analysis runs alongside the existing build process:
 
     workflows:
       version: 2
@@ -79,8 +77,9 @@ All we need to do, then, is add an XML rule set file to our repository and put i
         jobs:
           - build
           - static-analysis
-          
-A failure in either job then marks our build as failed in CircleCI and in GitHub.
+
+A failure in either job - build and test with Salesforce DX, or static analysis with PMD - then marks our build as failed in CircleCI and in GitHub.
 
 ## Developing Rule Sets
 
+PMD rule sets are XML files that define which of the built-in rules should be run on source code, and the severity assigned to violations of those rules. Because rule set files comprise semi-cryptic references to PMD's internal hierarchy of rules in a verbose XML format, it's easiest to start with a broad preexisting rule set and trim it down to suit your needs.
