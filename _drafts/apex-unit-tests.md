@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Against 75% Code Coverage 
+title: Code Coverage Is Not A Fungible Resource
 ---
 
 Salesforce prescribes a code coverage metric for every deployment you make to a production system. 
@@ -39,7 +39,7 @@ There are cases where a bulk test isn't meaningful. Most Visualforce action meth
 
   It's important to establish that code does what it purports to do. In a shared database environment, though, it's just as important to demonstrate that it doesn't do what it does not purport to do and what it purports not to do (two different qualities!) Take a method like this, for example:
 
-    public static void queryAndUpdateOpportunitiesWithOwners(List<Id> accountIds) {
+    public static void queryAndUpdateOpportunitiesForAccounts(List<Id> accountIds) {
     	List<Opportunity> opps = [SELECT Id FROM Opportunity];
 
     	// ... update records ...
@@ -47,7 +47,7 @@ There are cases where a bulk test isn't meaningful. Most Visualforce action meth
     	update opps;
     }
   
-  A good test will exercise this functionality with a single-record list, a bulk list, an empty list, and a null list. And most likely, all four will pass, even though the SOQL query in this method is incorrect. That's why it's critical to test behavior with input records that should be unaffected. If, like this method, the code performs SOQL queries or DML, it's also critical to test it in a situation where the database contains non-matching records that shouldn't be affected, and to verify that those records that shouldn't be affected *weren't* affected with appropriate assertions. 
+  A good test will exercise this functionality with a single-record list, a bulk list, an empty list, and a null list. And most likely, all four will pass, even though the SOQL query in this method is incorrect (it's missing its `WHERE` clause). That's why it's critical to test behavior with input records that should be unaffected. If, like this method, the code performs SOQL queries or DML, it's also critical to test it in a situation where the database contains non-matching records that shouldn't be affected, and to verify that those records that shouldn't be affected *weren't* affected with appropriate assertions. 
 
   It's very easy for logic errors and underselective SOQL queries to slip by positive test cases. It's natural for `@testSetup` methods to insert carefully tailored data sets that match the conditions you're looking for in your tests. But if your SOQL isn't correctly limited or your matching logic is faulty, you could potentially push a data corruption bug - or worse - to production. A negative case will help you ferret out those issues early.
 
