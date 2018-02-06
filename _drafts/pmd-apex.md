@@ -41,7 +41,11 @@ Code Climate requires a `.codeclimate.yml` configuration file. This file should 
 
 ## Static Analysis in the Cloud: Clayton.io
 
-Clayton.io does not advertise itself as a PMD-based service, but its code results strongly suggest this is the case. Unfortunately, Clayton in my testing proved to be fairly unreliable, although it does offer a nice graphical rule set editor. Its open source offering is also limited to 25,000 lines of code and metadata reviewed per month, a limit that's fairly easy to hit. The service may become much more valuable as it matures.
+Clayton.io does not advertise itself as a PMD-based service, but its code review rules strongly suggest this is the case. Clayton does offer a significant number of extra rules for Apex, Visualforce, metadata, and JavaScript that are not part of the open-source PMD project, and it provides a nice graphical rule set editor. (Dear Clayton: please contribute back to the open source project!)
+
+Unfortunately, Clayton in my testing proved to be fairly unreliable, with projects often getting "stuck" for days on end and unable to be reviewed. Its "personal" offering is also limited to 25,000 lines of code and metadata reviewed per month, a limit that's easy to hit even for small projects. (The service actually locked my account at 25,000 lines total and never reopened). 
+
+Clayton may become much more valuable as it matures, but I don't recommend it now - at least not for open source projects.
 
 ## Static Analysis with Continuous Integration: CircleCI
 
