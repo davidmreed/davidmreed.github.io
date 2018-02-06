@@ -33,11 +33,22 @@ Unlike the Visual Studio Code extension, Eclipse's PMD plugin runs on demand. To
 
 Code Climate does not officially support Apex. An open source engine called [ApexMetrics](https://github.com/rsoesemann/codeclimate-apexmetrics) can be activated within Code Climate to apply PMD static analysis in an automated, CI-compatible fashion.
 
-Code Climate does provide a low-setup, automated mechanism for running static analysis and tracking flaws. Unfortunately, the service is geared towards its own internal engines (which don't support Apex), and its integration with ApexMetrics leaves something to be desired in both user interface and functionality. Apex issues are surfaced only in an "Other Issues" section and don't count towards maintainability metrics. Rule application is controlled by rule set files only; the GUI options for suppressing specific warnings have no effect.
+Code Climate does provide a low-setup, automated mechanism for running static analysis and tracking flaws. Unfortunately, the service is geared towards its own internal engines (which don't support Apex), and its integration with ApexMetrics leaves something to be desired in both user interface and functionality. Apex issues are surfaced only in an "Other Issues" section and don't count towards maintainability metrics. Rule application is controlled by rule set files or by entries in the `.codeconfig.yml` configuration file.
 
-A larger challenge is that Code Climate uses a fairly old version of PMD ([5.5.3, dated to January 2017](https://github.com/pmd/pmd/releases/tag/pmd_releases%2F5.5.3)). In additional to significant new development on Apex rules, PMD has undergone a revamp of its rule set format since 5.5.3. This means that rule sets used in other PMD contexts (including ApexMetrics' own examples, based on PMD 6.0) won't work in Code Climate, and it's necessary to source a rule set file from an old release of PMD as a starting point for designing your own rule set. (The [full rule set](https://github.com/pmd/pmd/blob/847ea1c0843eec2d35923e71f4bc904c1c4ed601/pmd-apex/src/main/resources/rulesets/apex/ruleset.xml) from PMD 5.5.3 is a good starting point).
+A larger challenge is that Code Climate uses a fairly old version of PMD ([5.5.3, dated to January 2017](https://github.com/pmd/pmd/releases/tag/pmd_releases%2F5.5.3)). In additional to significant new development on Apex rules, PMD has undergone a revamp of its rule set format since 5.5.3. This means that rule sets used in other PMD contexts (including ApexMetrics' own examples, based on PMD 6.0) won't work in Code Climate, and it's necessary to either source a rule set file from an old release of PMD as a starting point for designing your own rule set or to use `.codeclimate.yml` to manage rule selection. (The [full rule set](https://github.com/pmd/pmd/blob/847ea1c0843eec2d35923e71f4bc904c1c4ed601/pmd-apex/src/main/resources/rulesets/apex/ruleset.xml) from PMD 5.5.3 is a good starting point).
 
 Code Climate requires a `.codeclimate.yml` configuration file. This file should be committed to the repository *before* adding the repository to Code Climate, so that the initial run will take Apex settings into account. An example `.codeclimate.yml` file is available on a [branch](https://github.com/davidmreed/septaTrains/blob/codeclimate/.codeclimate.yml) of septaTrains. It simply disables all built-in checks provided by Code Climate and activates the ApexMetrics engine. Note that Code Climate has updated their configuration file format and examples provided by ApexMetrics are no longer valid.
+
+`.codeclimate.yml` can also tailor the ruleset further, if you don't want to generate your own rule set or just prefer to avoid editing the XML. Adding a `checks` map under the `apexmetrics` plugin allows suppression of specific rules by name. For example, 
+
+    plugins:
+      apexmetrics:
+        enabled: true
+        checks:
+          StdCyclomaticComplexity:
+            enabled: false
+            
+results in suppression of the `StdCyclomaticComplexity` rule, even if it's present in the XML ruleset file. To find a rule name in Code Climate, mouse over a violation entry and then the right-most context button ('Exclude Checks'). Click 'Disable Check' to see instructions for modifying `.codeclimate.yml` to suppress that specific warning.
 
 ## Static Analysis in the Cloud: Clayton.io
 
