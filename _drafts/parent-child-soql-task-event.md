@@ -30,7 +30,7 @@ This sample implementation sets a checkbox field called `High_Priority__c` on th
         for (Task t : Trigger.new) {
             if (String.isNotBlank(t.WhatId)) {
                 // 001 is the Key Prefix for Account. 006 is Opportunity.
-                // The Describe API can provide the prefixes for custom objects.
+                // The getKeyPrefix() method on DescribeSObjectResult can provide the prefixes for custom objects.
                 if (t.WhatId.startsWith('001')) {
                     accountIds.add(t.WhatId);
                 } else if (t.WhatId.startsWith('006') {
