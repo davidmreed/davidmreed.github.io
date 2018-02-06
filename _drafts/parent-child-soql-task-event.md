@@ -3,16 +3,16 @@ layout: post
 title: Everyday Salesforce Patterns: Child-Parent SOQL on Task and Event 
 ---
 
-Performing child-parent and parent-child SOQL is more complex than usual when the `Task` and `Event` objects are involved. That's because these objects include *polymorphic lookup fields*, `WhoId` and `WhatId`, which can point to any one of a number of different objects.
+Performing child-parent SOQL is more complex than usual when the `Task` and `Event` objects are involved. That's because these objects include *polymorphic lookup fields*, `WhoId` and `WhatId`, which can point to any one of a number of different objects.
 
 While a feature called SOQL polymorphism is in Developer Preview and would offer a SOQL-only way to obtain details about `Task` and `Event` parents in pure SOQL, until it's made generally available, Apex is required to query parent details for these objects. Here's an example of this pattern as it might be applied in a trigger. The key is the following steps:
 
- 1. Iterating over the `Task` or `Event` records and accumulating the `WhatId` values on a per-object basis;
+ 1. Iterating over the `Task` or `Event` records and accumulating the `WhatId` or `WhoId` values on a per-object basis;
  1. performing a single SOQL query per parent object type;
  1. using a `Map<Id, sObject>` to index into query results;
  1. and finally re-iterating over the `Task` or `Event` records to perform work.
 
-This sample implementation sets a checkbox field called `High_Priority__c` on the `Task` when it's `WhatId` is either an open `Opportunity` or an Account whose `AnnualRevenue` is greater than one million dollars.
+This sample implementation sets a checkbox field called `High_Priority__c` on the `Task` when it's `WhatId` is either an open `Opportunity` or an Account whose `AnnualRevenue` is greater than one million dollars. Note that the pattern works the same way whether we're looking at `WhoId` or `WhatId`, and whether or not we're in a trigger context.
 
     trigger TaskTrigger on Task (before insert) {
         // In production, we would use a trigger framework; this is a simple example.
