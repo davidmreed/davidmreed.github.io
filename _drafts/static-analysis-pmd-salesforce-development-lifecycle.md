@@ -11,11 +11,11 @@ Static analysis can be added to the development lifecycle at multiple levels. PM
 
 PMD works by applying *rules*, which define specific issues to look for in a code base. Rules are supplied as part of the application. (Contributors can write new rules in Java). *Rule sets*, however, can be defined by end user on an application-by-application basis. Part of the work of incorporating static analysis into the development lifecycle is defining the most effective rule set for each engagement point (IDE, continuous integration). We'll discuss rule set definition at the end; you may end up with several different rule sets to be applied at different stages of the development lifecycle.
 
-Be aware that PMD is significantly less "plug-and-play" than other current-generation Salesforce tools. It's a valuable asset, but it does take some iteration and research to set up and use effectively. Below, we'll look at several different options for integration points in the Salesforce development lifecycle.
+Be aware that PMD is not a truly "plug-and-play" tool, and while its support for Apex is good, it may not be at the level of source review that you expect from other platforms. PMD is particularly useful for highlighting some of the most dangerous practices, like SOQL and DML in loops, and for enforcing fairly basic stylistic rules. (Note that it can't enforce fine-grained brace style). Below, we'll look at several different options for integration points in the Salesforce development lifecycle.
 
 ## Static Analysis in the IDE: Visual Studio Code
 
-Visual Studio Code offers the [Apex PMD](https://marketplace.visualstudio.com/items?itemName=chuckjonas.apex-pmd) extension by Charlie Jonas. To set up the extension, first [download PMD](https://pmd.github.io/#downloads) and decompress the ZIP file into a location where the application can live (you'll need to provide its path to the extension). PMD requires Java, which is likely already installed as part of the Salesforce DX setup process.
+Visual Studio Code can use the [Apex PMD](https://marketplace.visualstudio.com/items?itemName=chuckjonas.apex-pmd) extension by Charlie Jonas. To set up the extension, first [download PMD](https://pmd.github.io/#downloads) and decompress the ZIP file into a location where the application can live (you'll need to provide its path to the extension). PMD requires Java, which is likely already installed as part of the Salesforce DX setup process.
 
 Then, install the extension in Visual Studio Code. Open your User Preferences and search for `apexPMD`. Beside the setting `apexPMD.pmdPath`, click the pencil icon and copy it your settings. Add the path to the extracted PMD directory here. (For example, `/Users/dreed/Projects/pmd-bin-6.0.1` - you want the full path to the top-level PMD directory).
 
@@ -41,7 +41,7 @@ Unlike the Visual Studio Code extension, Eclipse's PMD plugin runs on demand. To
 
 Code Climate does not officially support Apex, but an open source engine called [ApexMetrics](https://github.com/rsoesemann/codeclimate-apexmetrics) can be activated to apply PMD static analysis in an automated, CI-compatible fashion.
 
-Code Climate offers a low-setup, automated mechanism for running static analysis and tracking flaws visually. Unfortunately, the integration with ApexMetrics could be a little bit smoother. Apex issues are surfaced only in an "Other Issues" section and don't count towards maintainability metrics. Rule application is controlled by rule set files or by entries in the `.codeconfig.yml` configuration file, or both.
+Code Climate offers a low-setup, automated mechanism for running static analysis and tracking flaws visually. Unfortunately, the integration with ApexMetrics could be a bit smoother. Apex issues are surfaced only in an "Other Issues" section and don't count towards maintainability metrics. Rule application is controlled by rule set files or by entries in the `.codeconfig.yml` configuration file, or both, but not through the web application.
 
 Code Climate uses a fairly old version of PMD ([5.5.3, dated to January 2017](https://github.com/pmd/pmd/releases/tag/pmd_releases%2F5.5.3)). Many important rules have been added to PMD since that release, and further, the rule set format has been revamped. This means that rule sets used in other PMD contexts (including ApexMetrics' own examples, based on PMD 6.0) won't work in Code Climate. It's necessary to either source a rule set file from an old release of PMD as a starting point for designing your own rule set or to exclusively use `.codeclimate.yml` to manage rule selection. The [full rule set](https://github.com/pmd/pmd/blob/847ea1c0843eec2d35923e71f4bc904c1c4ed601/pmd-apex/src/main/resources/rulesets/apex/ruleset.xml) from PMD 5.5.3 is a good starting point for building a rule set file.
 
@@ -62,15 +62,7 @@ results in suppression of the `StdCyclomaticComplexity` rule, even if it's prese
 
 ![Code Climate Configuration]({{ site.baseurl }}/public/apex-pmd/code-climate-disable-check.png)
 
-To find a rule name in Code Climate, mouse over a violation entry and then the right-most context button ('Exclude Checks'). Click 'Disable Check' to see instructions for modifying `.codeclimate.yml` to suppress that specific warning.
-
-## Static Analysis in the Cloud: Clayton.io
-
-Clayton.io does not advertise itself as a PMD-based service, but its code review rules strongly suggest this is the case. Clayton does offer a significant number of extra rules for Apex, Visualforce, metadata, and JavaScript that are not part of the open-source PMD project, and it provides a nice graphical rule set editor. (Dear Clayton: please consider contributing back to the open source project!)
-
-Unfortunately, Clayton in my testing proved to be fairly unreliable, with projects often getting "stuck" for days on end and unable to be reviewed. Its "personal" offering is also limited to 25,000 lines of code and metadata reviewed per month, a limit that's easy to hit even for small projects. (The service actually locked my account at 25,000 lines total and never reopened). 
-
-Clayton may become much more valuable as it matures, but I don't recommend it now - at least not for open source projects.
+To find a rule name in Code Climate, mouse over a violation entry and then the right-most context button ('Exclude Checks'). Click 'Disable Check' to see instructions for modifying `.codeclimate.yml` to suppress that specific warning. Rule names are also included in the `<rule>` entries of a rule set file, as the final element of the path that specifies the rule. (See below for details).
 
 ## Static Analysis with Continuous Integration: CircleCI
 
@@ -125,7 +117,7 @@ PMD rule sets are XML files that define which of the built-in rules should be ru
 
 A great place to start is the global [rule set](https://github.com/pmd/pmd/blob/master/pmd-apex/src/main/resources/rulesets/apex/ruleset.xml) provided with PMD.
 
-Within the rule set file, each rule is activated by an XML `<rule>` element:
+Within the rule set file, each rule is activated by an XML `<rule>` element. Note that the `ref` attribute is a reference to PMD's internal rule categorization, terminating in the rule's name.
 
     <rule ref="category/apex/performance.xml/AvoidSoqlInLoops" message="Avoid Soql queries inside loops">
         <priority>3</priority>
@@ -143,6 +135,8 @@ Depending on where you choose to integrate PMD in your development lifecycle, yo
 
 ## Recommendations
 
-PMD is a useful tool for maintaining visibility into Apex code quality. It's not a panacea: there are many stylistic and functional issues it won't catch, and it can flag a lot of false positives if you enable its entire rule set. Despite those caveats, it has a place in the development lifecycle: static analysis can highlight critical issues before they bite, and increased usage and development of PMD will build its utility for the Salesforce developer.
+PMD is a useful tool for maintaining visibility into Apex code quality. It's not a panacea: there are many stylistic and functional issues it won't catch, and it can flag a lot of false positives if you enable its entire rule set. Despite those caveats, it has a place in the development lifecycle as an early warning of risky code practices, and an enforcer of a basic code style.
 
-PMD is perhaps best when applied with a very broad ruleset at the IDE level (support being somewhat nicer in Visual Studio Code than Eclipse) and a very narrow ruleset at the CI level. Optionally, a cloud service integrating PMD for Apex might provide a broader codebase overview, although both Code Climate and Clayton.io have significant limitations. 
+PMD is perhaps best when applied with a very broad ruleset at the IDE level and a very narrow ruleset at the CI level. Optionally, a cloud service integrating PMD for Apex might provide a broader codebase overview, although Code Climate does have significant limitations. 
+
+I am excited about the promise of a newer tool, Clayton.io, which offers Salesforce-specific static analysis over and above what PMD can do. Clayton is under active development and I understand improvements are forthcoming.
