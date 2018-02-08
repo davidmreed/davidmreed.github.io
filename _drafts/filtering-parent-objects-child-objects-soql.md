@@ -28,7 +28,7 @@ Suppose, for example, that we do have a custom object `Project__c`. A second cus
 
 This pattern is appropriate for use when the filtration criteria for child objects are very complex or involve relationships that cannot be easily expressed in SOQL, and for situations where we are looking for the absence of child objects. It is a simple pattern and can implement all three of our requirements, although it may not be the most elegant or performant solution for cases 2 and 3.
 
-This can be an anti-pattern for situations with significant data volume in the parent or child object, when query performance will be a huge concern and heap size could become an issue. Adding selective filters on the parent object in the SOQL query will help obviate this concern; adding filters on the child object will also address issues caused by heap size constraints if child volume is substantial.
+This can be an anti-pattern for situations with high data volume in the parent or child object, when query performance will be a huge concern and heap size could become an issue. Adding selective filters on the parent object in the SOQL query will help obviate this concern; adding filters on the child object will also address issues caused by heap size constraints if child volume is substantial.
 
 ## Parent Query with `IN` or `NOT IN` Child Subquery
 

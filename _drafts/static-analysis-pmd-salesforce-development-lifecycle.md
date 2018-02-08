@@ -3,7 +3,7 @@ layout: post
 title: Integrating Static Analysis with PMD in the Salesforce Development Lifecycle
 ---
 
-This is the second in a series looking at setting up a Salesforce project with a full suite of modern software engineering tools and services. (See the first for more on [setting up CI in Salesforce](http://www.ktema.org/2018/02/02/salesforce-dx-circleci/))
+This is the second in a series looking at setting up a Salesforce project with a full suite of modern software engineering tools and services. (See the first for more on [setting up CI with Salesforce DX](http://www.ktema.org/2018/02/02/salesforce-dx-circleci/))
 
 Static analysis is a powerful complement to unit tests, helping to identify bugs early in the development lifecycle and root out dangerous code practices - even before the source is compiled. [PMD](http://pmd.github.io/) is a multi-language static analysis tool that includes support for [Apex](https://pmd.github.io/pmd-6.0.1/pmd_rules_apex.html) and, to a limited extent, [Visualforce](https://pmd.github.io/pmd-6.0.1/pmd_rules_vf.html).
 
@@ -11,7 +11,7 @@ Static analysis can be added to the development lifecycle at multiple levels. PM
 
 PMD works by applying *rules*, which define specific issues to look for in a code base. Rules are supplied as part of the application. (Contributors can write new rules in Java). *Rule sets*, however, can be defined by end user on an application-by-application basis. Part of the work of incorporating static analysis into the development lifecycle is defining the most effective rule set for each engagement point (IDE, continuous integration). We'll discuss rule set definition at the end; you may end up with several different rule sets to be applied at different stages of the development lifecycle.
 
-Be aware that PMD is not a truly "plug-and-play" tool, and while its support for Apex is good, it may not be at the level of source review that you expect from other platforms. PMD is particularly useful for highlighting some of the most dangerous practices, like SOQL and DML in loops, and for enforcing fairly basic stylistic rules. (Note that it can't enforce fine-grained brace style). Below, we'll look at several different options for integration points in the Salesforce development lifecycle.
+Be aware that PMD is not a truly "plug-and-play" tool, and while its support for Apex is good, it may not be at the level of source review that you expect from other platforms. PMD is particularly useful for highlighting some of the most dangerous practices, like SOQL and DML in loops, and for enforcing fairly basic stylistic rules. (Note that it can't enforce fine-grained brace or whitespace styles). Below, we'll look at several different options for integration points in the Salesforce development lifecycle.
 
 ## Static Analysis in the IDE: Visual Studio Code
 
