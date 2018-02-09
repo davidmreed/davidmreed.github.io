@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Everyday Salesforce Patterns: The Wrapper Class 
+title: "Everyday Salesforce Patterns: The Wrapper Class"
 ---
 
 It's extremely common in Visualforce development to need to perform some transformation on data queried out of Salesforce before displaying that data. This can include things like enriching one object with data from another (which is not its parent or child), 'framing' or presenting multiple unrelated objects in a single flat list, such as an `<apex:pageBlockTable>`, applying a mapping table to values in an object's fields, or appending summary data calculated in Apex.
