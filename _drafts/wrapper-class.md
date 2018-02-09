@@ -9,57 +9,56 @@ An apt solution to all of these needs is the *wrapper class* pattern. Every wrap
 
 Wrapper classes are in some ways similar to *structures*, *union types*, or *algebraic types* provided by other languages, to the extent such patterns are possible with the limited introspection and dynamism available in Apex.
 
-	public with sharing class ApexController {
-      public class Wrapper implements Comparable {
-          Lead ld;
-          Contact ct;
-          String dataType; // Included for easier conditional rendering.
-          String calculatedTitle; // and so on... include more calculated fields here.
+    public with sharing class ApexController {
+        public class Wrapper implements Comparable {
+            Lead ld;
+            Contact ct;
+            String dataType; // Included for easier conditional rendering.
+            String calculatedTitle; // and so on... include more calculated fields here.
 
-          public Wrapper(Lead l) {
-              ld = l;
-              dataType = 'Lead';
-              calculatedTitle = 'Lead: ' + ld.Name; // Note that we are assuming the Name field is queried.
-          }
+            public Wrapper(Lead l) {
+                ld = l;
+                dataType = 'Lead';
+                calculatedTitle = 'Lead: ' + ld.Name; // Note that we are assuming the Name field is queried.
+            }
 
-          public Wrapper(Contact c) {
-            ct = c;
-            dataType = 'Contact';
-            calculatedTitle = 'Contact: ' + ct.Name;
-          }
+            public Wrapper(Contact c) {
+                ct = c;
+                dataType = 'Contact';
+                calculatedTitle = 'Contact: ' + ct.Name;
+            }
 
-          public Integer compareTo(Object other) {
-              Wrapper o = (Wrapper)other;
+            public Integer compareTo(Object other) {
+                Wrapper o = (Wrapper)other;
 
-              // Perform some comparison logic here, such as comparing the `SystemModStamp`
-              // of the embedded sObjects, or comparing the calculatedTitle properties.
-              // You can even sort by type by inspecting dataType field, or,
-              // if storing sObject instances, with their `sobjectType` field.
+                // Perform some comparison logic here, such as comparing the `SystemModStamp`
+                // of the embedded sObjects, or comparing the calculatedTitle properties.
+                // You can even sort by type by inspecting dataType field, or,
+                // if storing sObject instances, with their `sobjectType` field.
 
-              return 0;
-          }
-      }
+                return 0;
+            }
+        }
 
-      // Declare our public property for Visualforce as a list of Wrappers (not List<sObject>)
-      public List<Wrapper> wrappers { get; private set; }
+        // Declare our public property for Visualforce as a list of Wrappers (not List<sObject>)
+        public List<Wrapper> wrappers { get; private set; }
 
-      public ApexController() {
-          List<Contact> cts = [SELECT Id, Name, Account.Name FROM Contact WHERE LastName LIKE 'Test%']0;
-          
-          wrappers = new List<Wrapper>();
-          
-          for (Contact ct : cts) {
-              wrappers.add(new Wrapper(ct));
-          }
+        public ApexController() {
+            List<Contact> cts = [SELECT Id, Name, Account.Name FROM Contact WHERE LastName LIKE 'Test%']0;
 
-          List<Lead> leads = [SELECT Id, Name, LeadSource FROM Lead WHERE LeadSource = 'Web'];
+            wrappers = new List<Wrapper>();
 
-          for (Lead l : leads) {
-              wrappers.add(new Wrapper(l));
-          }
-      }
-	}
+            for (Contact ct : cts) {
+                wrappers.add(new Wrapper(ct));
+            }
 
+            List<Lead> leads = [SELECT Id, Name, LeadSource FROM Lead WHERE LeadSource = 'Web'];
+
+            for (Lead l : leads) {
+                wrappers.add(new Wrapper(l));
+            }
+        }
+    }
 
 In your Visualforce page, you can use conditional rendering to select which set of data points to show based on whether you have an `Contact` or a `Lead` inside each wrapper. For example:
 
