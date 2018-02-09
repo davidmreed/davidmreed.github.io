@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Use INDEX/MATCH, Not VLOOKUP, with Salesforce Data Loader 
+title: Use `INDEX()/MATCH()`, Not `VLOOKUP()`, with Salesforce Data Loader 
 ---
 
 I just completed a major org-to-org migration on Salesforce and I did not use `VLOOKUP()` once. I want to encourage you to add `INDEX()/MATCH()` to your toolbox for using the Salesforce Data Loader.
