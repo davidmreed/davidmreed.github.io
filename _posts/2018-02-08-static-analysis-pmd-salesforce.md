@@ -3,7 +3,7 @@ layout: post
 title: Integrating Static Analysis with PMD in the Salesforce Development Lifecycle
 ---
 
-This is the second in a series looking at setting up a Salesforce project with a full suite of modern software engineering tools and services. (See the first for more on [setting up CI with Salesforce DX](http://www.ktema.org/2018/02/02/salesforce-dx-circleci/))
+This is the second in a series looking at setting up a Salesforce project with a full suite of modern software engineering tools and services. (See the first for more on [setting up CI with Salesforce DX](https://www.ktema.org/2018/02/02/salesforce-dx-circleci/))
 
 Static analysis is a powerful complement to unit tests, helping to identify bugs early in the development lifecycle and root out dangerous code practices - even before the source is compiled. [PMD](http://pmd.github.io/) is a multi-language static analysis tool that includes support for [Apex](https://pmd.github.io/pmd-6.0.1/pmd_rules_apex.html) and, to a limited extent, [Visualforce](https://pmd.github.io/pmd-6.0.1/pmd_rules_vf.html).
 
