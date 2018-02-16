@@ -7,14 +7,14 @@ permalink:           pretty
 title:               'David Reed'
 tagline:             ''
 description:         ''
-url:                 http://www.ktema.org
-baseurl:             http://www.ktema.org
+url:                 https://www.ktema.org
+baseurl:             https://www.ktema.org
 paginate:            5
 
 # About/contact
 author:
   name:              'David Reed'
-  url:               http://www.ktema.org
+  url:               https://www.ktema.org
   email:             david@ktema.org
 
 # Custom vars
