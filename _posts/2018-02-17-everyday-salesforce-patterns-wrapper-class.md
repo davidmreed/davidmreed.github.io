@@ -23,7 +23,8 @@ Wrapper classes are in some ways similar to *structures*, *union types*, or *alg
             public Wrapper(Lead l) {
                 ld = l;
                 dataType = 'Lead';
-                calculatedTitle = 'Lead: ' + ld.Name; // Note that we are assuming the Name field is queried.
+                // Note that we are assuming the Name field is queried.
+                calculatedTitle = 'Lead: ' + ld.Name; 
             }
 
             public Wrapper(Contact c) {
@@ -35,20 +36,25 @@ Wrapper classes are in some ways similar to *structures*, *union types*, or *alg
             public Integer compareTo(Object other) {
                 Wrapper o = (Wrapper)other;
 
-                // Perform some comparison logic here, such as comparing the `SystemModStamp`
-                // of the embedded sObjects, or comparing the calculatedTitle properties.
-                // You can even sort by type by inspecting dataType field, or,
-                // if storing sObject instances, with their `sobjectType` field.
+                // Perform some comparison logic here, such as comparing 
+                // the `SystemModStamp` of the embedded sObjects, or 
+                // comparing the `calculatedTitle` properties.
+                // You can even sort by type by inspecting dataType field, 
+                // or, if storing sObject instances, with their 
+                // `sobjectType` field.
 
                 return 0;
             }
         }
 
-        // Declare our public property for Visualforce as a list of Wrappers (not List<sObject>)
+        // Declare our public property for Visualforce as a list of 
+        // Wrappers (not List<sObject>)
         public List<Wrapper> wrappers { get; private set; }
 
         public ApexController() {
-            List<Contact> cts = [SELECT Id, Name, Account.Name FROM Contact WHERE LastName LIKE 'Test%'];
+            List<Contact> cts = [SELECT Id, Name, Account.Name 
+                                 FROM Contact 
+                                 WHERE LastName LIKE 'Test%'];
 
             wrappers = new List<Wrapper>();
 
@@ -56,7 +62,9 @@ Wrapper classes are in some ways similar to *structures*, *union types*, or *alg
                 wrappers.add(new Wrapper(ct));
             }
 
-            List<Lead> leads = [SELECT Id, Name, LeadSource FROM Lead WHERE LeadSource = 'Web'];
+            List<Lead> leads = [SELECT Id, Name, LeadSource 
+                                FROM Lead
+                                WHERE LeadSource = 'Web'];
 
             for (Lead l : leads) {
                 wrappers.add(new Wrapper(l));
