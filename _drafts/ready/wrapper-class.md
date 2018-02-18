@@ -3,6 +3,8 @@ layout: post
 title: "Everyday Salesforce Patterns: The Wrapper Class"
 ---
 
+The Salesforce platform has great reference documentation, great intro training, and some excellent resources on enterprise design patterns. What's less canonically-covered, at least in the resources I'm familiar with, are everyday patterns: the idiomatic implementation tools that are used and adapted every day by experienced developers. I want to make a contribution to filling this void with this series, starting with some discussion of wrapper classes.
+
 It's extremely common in Visualforce development to need to perform some transformation on data queried out of Salesforce before displaying that data. This can include things like enriching one object with data from another (which is not its parent or child), 'framing' or presenting multiple unrelated objects in a single flat list, such as an `<apex:pageBlockTable>`, applying a mapping table to values in an object's fields, or appending summary data calculated in Apex.
 
 An apt solution to all of these needs is the *wrapper class* pattern. Every wrapper class looks a little different, because it's highly specific to the individual use case and Visualforce page. The overall pattern often looks rather like this example, which wraps either a Contact or a Lead in an inner class, called `Wrapper`, of the page controller. Wrapper classes do not have to be inner classes, and larger, more complex wrappers in particular may be independent, but the use of an inner class is common and effective.
@@ -11,10 +13,12 @@ Wrapper classes are in some ways similar to *structures*, *union types*, or *alg
 
     public with sharing class ApexController {
         public class Wrapper implements Comparable {
-            Lead ld;
-            Contact ct;
-            String dataType; // Included for easier conditional rendering.
-            String calculatedTitle; // and so on... include more calculated fields here.
+            public Lead ld { get; private set; }
+            public Contact ct { get; private set; }
+            // Included for easier conditional rendering.
+            public String dataType { get; private set; }
+            public String calculatedTitle { get; private set; } 
+            // and so on... include more calculated fields here.
 
             public Wrapper(Lead l) {
                 ld = l;
@@ -44,7 +48,7 @@ Wrapper classes are in some ways similar to *structures*, *union types*, or *alg
         public List<Wrapper> wrappers { get; private set; }
 
         public ApexController() {
-            List<Contact> cts = [SELECT Id, Name, Account.Name FROM Contact WHERE LastName LIKE 'Test%']0;
+            List<Contact> cts = [SELECT Id, Name, Account.Name FROM Contact WHERE LastName LIKE 'Test%'];
 
             wrappers = new List<Wrapper>();
 
@@ -73,4 +77,4 @@ In your Visualforce page, you can use conditional rendering to select which set 
 
 This is a very simple example; you can do quite a bit with conditional rendering to present the wrapper's information most appropriately.
 
-In the case that you're using an `<apex:pageBlockTable>` with `<apex:column>` entries, you might simplify your presentation by creating more calculated properties within your wrapper and keying your columns directly to those `Wrapper` instance variables, rather than using extremely complex conditional rendering.
+In the case that you're using an `<apex:pageBlockTable>` with `<apex:column>` entries, you might simplify your presentation by creating more calculated properties within your wrapper and keying your columns directly to those `Wrapper` instance variables, rather than using extremely complex conditional rendering. For example, if you were presenting a synthetic Contact "timeline" composed of Activities and Campaign Member records, your wrapper object might consist almost entirely of a set of calculated properties like `Title`, `Date`, and `Description` - you might not even store the sObjects at all!
