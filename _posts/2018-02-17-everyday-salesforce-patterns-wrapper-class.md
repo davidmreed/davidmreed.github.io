@@ -3,11 +3,11 @@ layout: post
 title: "Everyday Salesforce Patterns: The Wrapper Class"
 ---
 
-The Salesforce platform has great reference documentation, great intro training, and some excellent resources on enterprise design patterns. What's less canonically-covered, at least in the resources I'm familiar with, are everyday patterns: the idiomatic implementation tools that are used and adapted every day by experienced developers. I want to make a contribution to filling this void with this series, starting with some discussion of wrapper classes.
+The Salesforce platform has great reference documentation, great intro training through Trailhead, and some excellent books and resources on enterprise design patterns. What's less-canonically covered, in the resources I'm familiar with, are everyday patterns: the idiomatic implementation tools that are used and adapted every day by experienced developers. I want to make a contribution to filling this void with this series, starting with some discussion of wrapper classes.
 
 It's extremely common in Visualforce development to need to perform some transformation on data queried out of Salesforce before displaying that data. This can include things like enriching one object with data from another (which is not its parent or child), 'framing' or presenting multiple unrelated objects in a single flat list, such as an `<apex:pageBlockTable>`, applying a mapping table to values in an object's fields, or appending summary data calculated in Apex.
 
-An apt solution to all of these needs is the *wrapper class* pattern. Every wrapper class looks a little different, because it's highly specific to the individual use case and Visualforce page. The overall pattern often looks rather like this example, which wraps either a Contact or a Lead in an inner class, called `Wrapper`, of the page controller. Wrapper classes do not have to be inner classes, and larger, more complex wrappers in particular may be independent, but the use of an inner class is common and effective.
+An apt solution to all of these needs is the *wrapper class* pattern. Every wrapper class looks a little different, because it's highly specific to the individual use case and Visualforce page. The overall pattern often looks rather like this example, which wraps either a Contact or a Lead in an inner class, called `Wrapper`, of the page controller. Wrapper classes do not have to be inner classes, but the use of an inner class is common and effective.
 
 Wrapper classes are in some ways similar to *structures*, *union types*, or *algebraic types* provided by other languages, to the extent such patterns are possible with the limited introspection and dynamism available in Apex.
 
