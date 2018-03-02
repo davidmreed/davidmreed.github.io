@@ -19,11 +19,11 @@ We'd like to be able to handle several query requirements:
 
  There are several basic ways to approach constructing these queries: 
 
- - Using a parent-child query and performing filtering in Apex.
- - Using a parent query with an `IN` or `NOT IN` child subquery with filter (semi-join/anti-join).
- - Using a child aggregate query and postprocessing in Apex.
+- Using a parent-child query and performing filtering in Apex.
+- Using a parent query with an `IN` or `NOT IN` child subquery with filter (semi-join/anti-join).
+- Using a child aggregate query and postprocessing in Apex.
 
-## Parent-Child Query 
+## Parent-Child Query
 
     for (Project__c sr : [SELECT Id, (SELECT Id FROM Subject_Areas__r WHERE Name LIKE '%Industry%') FROM Project__c WHERE Client__c = :clientId]) {
         if (sr.Subject_Areas__r.size() == 0) {
@@ -45,16 +45,16 @@ Parent queries with `IN` and `NOT IN` child subqueries are particularly useful f
 
 See [Semi Joins and Anti-Joins](https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql_select_comparisonoperators.htm#semijoin_and_antijoin) for more in-depth information, including the numerous restrictions that apply to this type of query.
 
-This pattern is particularly suitable for case 3, where we're looking for parent objects based on specific criteria (but not volume) of child objects. Note that it can return parent object data but doesn't include child object data unless we include a separate sub-select.
+This pattern is particularly suitable for case 3, where we're looking for parent objects based on specific criteria (but not volume) of child objects. Note that it can return parent object data but doesn't include child object data unless we include a separate sub-select, which may or may not be possible depending upon the relationship between the objects in the main query and subquery.
 
 In particularly complex cases or if multiple levels of subquery are required, it's necessary to run the subqueries separately in Apex and accumulate relevant Ids in a `Set` for inclusion in the next query layer. Salesforce only allows one level of semi-join or anti-join. For example, we can cover case 5 in a fashion like this:
 
 // 1. Locating `Subject_Area__c` records that have at least one `Subject_Area_Expert__c` assignment with current dates to a Contact whose Title is "Solution Architect".
 
-    List<Subject_Area_Expert__c> experts = [SELECT Subject_Area__c 
-                                            FROM Subject_Area_Expert__c 
+    List<Subject_Area_Expert__c> experts = [SELECT Subject_Area__c
+                                            FROM Subject_Area_Expert__c
                                             WHERE Contact__c.Title = 'Solution Architect'
-                                                  AND Start_Date__c <= TODAY 
+                                                  AND Start_Date__c <= TODAY
                                                   AND End_Date__c >= TODAY];
     Set<Id> projectIds = new Set<Id>();
 
@@ -64,8 +64,7 @@ In particularly complex cases or if multiple levels of subquery are required, it
 
     List<Project__c> = [SELECT Id FROM Project__c WHERE Id NOT IN :projectIds];
 
-The same Apex/SOQL pattern can be extended to cover multiple levels of subquery. The code above could be adapted to 
-
+The same Apex/SOQL pattern can be extended to cover multiple levels of subquery. The code above could be adapted to FIXME
 
 ## Child Aggregate Query
 

@@ -12,7 +12,7 @@ While a feature called [SOQL polymorphism](https://developer.salesforce.com/docs
  1. creating a `Map<Id, sObject>` to allowing indexing the `WhoId`/`WhatId` into query results;
  1. and finally iterating a second time over the `Task` or `Event` records to perform work with the parent information available.
 
-This sample implementation sets a checkbox field called `High_Priority__c` on the `Task` when its `WhatId` is either an open `Opportunity` or an `Account` whose `AnnualRevenue` is greater than one million dollars. Note that the pattern works the same way whether we're looking at `WhoId` or `WhatId`, and whether or not we're in a trigger context.
+This sample implementation sets a checkbox field called `High_Priority__c` on the `Task` when its `WhatId` is either an open `Opportunity` or an `Account` whose `AnnualRevenue` is greater than one million dollars. For an Account, we also set a field to indicate that a high-priority task is present on the parent. Note that the pattern works the same way whether we're looking at `WhoId` or `WhatId`, and whether or not we're in a trigger context.
 
     trigger TaskTrigger on Task (before insert) {
         // In production, we would use a trigger framework; this is a simple example.
@@ -29,7 +29,7 @@ This sample implementation sets a checkbox field called `High_Priority__c` on th
         
         for (Task t : Trigger.new) {
             if (String.isNotBlank(t.WhatId)) {
-                if ((String)t.What.Type == 'Account') {
+                if (t.What.Type == 'Account') {
                     accountIds.add(t.WhatId);
                 } else if (t.What.Type == 'Opportunity') {
                     oppIds.add(t.WhatId);
@@ -39,6 +39,7 @@ This sample implementation sets a checkbox field called `High_Priority__c` on th
         
         // We will query into Maps so that we can easily index into the parent with our WhatIds
         Map<Id, Account> acts;
+        Map<Id, Account> actsToUpdate = new Map<Id, Account>();
         Map<Id, Opportunity> opps;
         
         // Now we can query for the parent objects.
@@ -53,11 +54,21 @@ This sample implementation sets a checkbox field called `High_Priority__c` on th
         for (Task t : Trigger.new) {
             if (acts.containsKey(t.WhatId) || opps.containsKey(t.WhatId)) {
                 // With more complex requirements, we could source data from the parent object
-                // Rather than simply making a decision based upon it.
+                // Rather than simply making a decision based upon the logic in the parent queries.
                 
                 t.High_Priority__c = true;
+
+                // We also want to update the parent object if it's an Account.
+                if (t.What.Type == 'Account') {
+                    Account a = acts.get(t.WhatId);
+
+                    a.Has_High_Priority_Task__c = true;
+                    actsToUpdate.put(a.Id, a);
+                }
             }
         }
+
+        update actsToUpdate.values();
     }
 
 This example of the pattern assumes we're starting from the `Task` and making some decision based on information in the parent. In other situations, we might query first for a set of Tasks in which we're interested (perhaps applying a filter on `WhatId` or `WhoId`), follow a similar pattern to source parent information, and then update the parent records - or a different object entirely. The skeleton of the solution, however, will remain the same.

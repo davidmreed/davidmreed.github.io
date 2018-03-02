@@ -14,10 +14,10 @@ Given some incoming data with Contact email addresses but no Salesforce Ids, alo
 ![Mapping Data]({{ site.baseurl }}/public/index-match/index-match-mapping-data.png)
 ![INDEX/MATCH Formula Setup]({{ site.baseurl }}/public/index-match/index-match-formula.png)
 
-`INDEX()` takes the value from a column (its first argument) at a specific row (the second argument). Hence, for the first argument we provide the column in which we've stored the Salesforce Ids we want to look up. For the second, the row, we use `MATCH()`. `MATCH()` takes its first argument (here, the email address) and returns the row where that value is found in the column identified by the second argument.  
- 
+`INDEX()` takes the value from a column (its first argument) at a specific row (the second argument). Hence, for the first argument we provide the column in which we've stored the Salesforce Ids we want to look up. For the second, the row, we use `MATCH()`. `MATCH()` takes its first argument (here, the email address) and returns the row where that value is found in the column identified by the second argument.
+
 Because we use column references rather than rectangular ranges, you can fill the formula down a column without breaking references, even without making them absolute. The construct can index to the right, as it does here, and it's resilient to changes in your data sheets. `INDEX()/MATCH()` is the way to go.
 
 ![INDEX/MATCH Results]({{ site.baseurl }}/public/index-match/index-match-results.png)
 
-Of course, nothing in the Excel world can be quite perfect. `INDEX()/MATCH()` still isn't case-safe, so we're stuck with 18-character Salesforce Ids - or elaborate workarounds to avoid collisions when Excel treats `001000000000aaj` and `001000000000aaJ` as equivalent values. 
+Of course, nothing in the Excel world can be quite perfect. `INDEX()/MATCH()` still isn't case-safe, so we're stuck with 18-character Salesforce Ids - or elaborate workarounds to avoid collisions when Excel treats `001000000000aaj` and `001000000000aaJ` as equivalent values.
