@@ -12,7 +12,7 @@ While a feature called [SOQL polymorphism](https://developer.salesforce.com/docs
  1. creating a `Map<Id, sObject>` to allowing indexing the `WhoId`/`WhatId` into query results;
  1. and finally iterating a second time over the `Task` or `Event` records to perform work with the parent information available.
 
-This sample implementation sets a checkbox field called `High_Priority__c` on the `Task` when its `WhatId` is either an open `Opportunity` or an `Account` whose `AnnualRevenue` is greater than one million dollars. For an Account, we also set a field to indicate that a high-priority task is present on the parent. Note that the pattern works the same way whether we're looking at `WhoId` or `WhatId`, and whether or not we're in a trigger context.
+This skeleton implementation sets a checkbox field called `High_Priority__c` on the `Task` when its `WhatId` is either an open `Opportunity` or an `Account` whose `AnnualRevenue` is greater than one million dollars. For an Account, we also set a field to indicate that a high-priority task is present on the parent. (This requirement, of course, is contrived). Note that the pattern works the same way whether we're looking at `WhoId` or `WhatId`, and whether or not we're in a trigger context.
 
     trigger TaskTrigger on Task (before insert) {
         // In production, we would use a trigger framework; this is a simple example.
@@ -39,8 +39,8 @@ This sample implementation sets a checkbox field called `High_Priority__c` on th
         
         // We will query into Maps so that we can easily index into the parent with our WhatIds
         Map<Id, Account> acts;
-        Map<Id, Account> actsToUpdate = new Map<Id, Account>();
         Map<Id, Opportunity> opps;
+        Map<Id, Account> actsToUpdate = new Map<Id, Account>();
         
         // Now we can query for the parent objects.
         // Here, the parent object logic is entirely contained in the query;
