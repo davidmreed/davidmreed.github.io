@@ -71,4 +71,4 @@ This skeleton implementation sets a checkbox field called `High_Priority__c` on 
         update actsToUpdate.values();
     }
 
-This example of the pattern assumes we're starting from the `Task` and making some decision based on information in the parent. In other situations, we might query first for a set of Tasks in which we're interested (perhaps applying a filter on `WhatId` or `WhoId`), follow a similar pattern to source parent information, and then update the parent records - or a different object entirely. The skeleton of the solution, however, will remain the same.
+This example of the pattern assumes we're starting from the `Task` and making some decision based on information in the parent. In other situations, we might query first for a set of Tasks in which we're interested (perhaps applying a filter on `WhatId` or `WhoId`, or `What.Type` or `Who.Type`), follow a similar pattern to source parent information, and then update the parent records - or a different object entirely. The skeleton of the solution, however, will remain the same.
