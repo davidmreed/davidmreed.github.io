@@ -3,8 +3,10 @@ layout: post
 title: Instance-to-Instance Migration with `ContentDocument` 
 ---
 
+I recently completed an instance-to-instance data migration wherein the source organization used new-style attachments ("Files") pervasively. De
+
 1. Perform a Scheduled Data Export on the source organization, making sure to check the box to include attachments and content files.
-1. Use a Python script to iteratively query all of the `ContentDocumentLink` records in the source organization for the exported `ContentVersion` records (which include their `ContentDocumentLinkId` values). `ContentDocumentLink` can only be queried if an `Id` filter is included.
+1. Use a Python script to iteratively query all of the `ContentDocumentLink` records in the source organization for the exported `ContentVersion` records (which include their `ContentDocumentLinkId` values). `ContentDocumentLink` can only be queried if an `Id` filter is included. For efficiency, the script batches 
 1. Optionally, filter on `IsLatest` = 1 to remove old versions. 
 1. Construct an import file for the new organization, with a `Body` column referencing the content version's directory and the Id.
 1. Import the `ContentVersion` objects into the target organization, which inherently creates `ContentDocument` records.

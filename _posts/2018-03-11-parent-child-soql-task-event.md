@@ -5,12 +5,12 @@ title: "Everyday Salesforce Patterns: Child-Parent SOQL on Task and Event"
 
 Performing child-parent SOQL is more complex than usual when the `Task` and `Event` objects are involved. That's because these objects include *polymorphic lookup fields*, `WhoId` and `WhatId`, which can point to any one of a number of different objects.
 
-While a feature called [SOQL polymorphism](https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql_relationships_and_polymorph_keys.htm) is in Developer Preview and would offer a SOQL-only way to obtain details about `Task` and `Event` parents in pure SOQL, unless and until it's made generally available, Apex is required to query parent details for these objects other than a tiny subset of Name-related fields. Here's an example of this pattern as it might be applied in a trigger. The key is the following steps:
+While a feature called [SOQL polymorphism](https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql_relationships_and_polymorph_keys.htm) is in Developer Preview and would offer a SOQL-only way to obtain details about `Task` and `Event` parents in pure SOQL, unless and until it's made generally available, Apex is required to query parent details for these objects other than a tiny subset of Name-related fields. This is an example of this pattern as it might be applied in a trigger. The core of the pattern is the following steps:
 
  1. Iterating over the `Task` or `Event` records and accumulating the `WhatId` or `WhoId` values on a per-object basis;
  1. performing a single SOQL query per parent object type;
  1. creating a `Map<Id, sObject>` to allowing indexing the `WhoId`/`WhatId` into query results;
- 1. and finally iterating a second time over the `Task` or `Event` records to perform work with the parent information available.
+ 1. and finally iterating a second time over the `Task` or `Event` records to perform work with the parent information available through the `Map`.
 
 This skeleton implementation sets a checkbox field called `High_Priority__c` on the `Task` when its `WhatId` is either an open `Opportunity` or an `Account` whose `AnnualRevenue` is greater than one million dollars. For an Account, we also set a field to indicate that a high-priority task is present on the parent. (This requirement, of course, is contrived). Note that the pattern works the same way whether we're looking at `WhoId` or `WhatId`, and whether or not we're in a trigger context.
 
