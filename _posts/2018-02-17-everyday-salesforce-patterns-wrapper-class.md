@@ -24,13 +24,22 @@ Wrapper classes are in some ways similar to *structures*, *union types*, or *alg
                 ld = l;
                 dataType = 'Lead';
                 // Note that we are assuming the Name field is queried.
-                calculatedTitle = 'Lead: ' + ld.Name; 
+                // We must enforce Field-Level Security ourselves here (see below).
+                if (Schema.sObjectType.Lead.fields.Name.isAccessible()) {
+                    calculatedTitle = 'Lead: ' + ld.Name; 
+                } else {
+                    calculatedTitle = 'Lead';
+                }
             }
 
             public Wrapper(Contact c) {
                 ct = c;
                 dataType = 'Contact';
-                calculatedTitle = 'Contact: ' + ct.Name;
+                if (Schema.sObjectType.Contact.fields.Name.isAccessible()) {
+                    calculatedTitle = 'Contact: ' + ct.Name;
+                } else {
+                    calculatedTitle = 'Contact';
+                }
             }
 
             public Integer compareTo(Object other) {
@@ -86,3 +95,5 @@ In your Visualforce page, you can use conditional rendering to select which set 
 This is a very simple example; you can do quite a bit with conditional rendering to present the wrapper's information most appropriately.
 
 In the case that you're using an `<apex:pageBlockTable>` with `<apex:column>` entries, you might simplify your presentation by creating more calculated properties within your wrapper and keying your columns directly to those `Wrapper` instance variables, rather than using extremely complex conditional rendering. For example, if you were presenting a synthetic Contact "timeline" composed of Activities and Campaign Member records, your wrapper object might consist almost entirely of a set of calculated properties like `Title`, `Date`, and `Description` - you might not even store the sObjects at all!
+
+It's important to bear in mind that processing sObject results into other data structures, like wrapper classes, makes it necessary to [manually enforce CRUD and FLS permissions](https://developer.salesforce.com/page/Enforcing_CRUD_and_FLS). The automatic support provided by Visualforce relies upon using sObjects and fields directly, so wrapper objects that restructure this data come with a requirement to enforce these permissions appropriately. An example of this enforcement is present on the `calculatedTitle` field of the wrapper object in this pattern.
