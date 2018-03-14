@@ -39,30 +39,15 @@ Unlike the Visual Studio Code extension, Eclipse's PMD plugin runs on demand. To
 
 ## Static Analysis in the Cloud: Code Climate
 
-Code Climate does not officially support Apex, but an open source engine called [ApexMetrics](https://github.com/rsoesemann/codeclimate-apexmetrics) can be activated to apply PMD static analysis in an automated, CI-compatible fashion.
+Code Climate's core engine does not support Apex, but the service does support pluggable engines, including an implementation of [PMD](https://github.com/codeclimate/codeclimate-pmd). An older, PMD-based Code Climate engine called [ApexMetrics](https://github.com/rsoesemann/codeclimate-apexmetrics) is now **deprecated** and should not be used, as it harnesses a very out-of-date version of PMD.
 
-Code Climate offers a low-setup, automated mechanism for running static analysis and tracking flaws visually. Unfortunately, the integration with ApexMetrics could be a bit smoother. Apex issues are surfaced only in an "Other Issues" section and don't count towards maintainability metrics. Rule application is controlled by rule set files or by entries in the `.codeconfig.yml` configuration file, or both, but not through the web application.
+Code Climate offers a low-setup, automated mechanism for running static analysis and tracking flaws visually, although the integration with PMD could be a bit smoother. Apex issues are surfaced only in an "Other Issues" section and don't count towards the application's core maintainability metrics. 
 
-Code Climate uses a fairly old version of PMD ([5.5.3, dated to January 2017](https://github.com/pmd/pmd/releases/tag/pmd_releases%2F5.5.3)). Many important rules have been added to PMD since that release, and further, the rule set format has been revamped. This means that rule sets used in other PMD contexts (including ApexMetrics' own examples, based on PMD 6.0) won't work in Code Climate. It's necessary to either source a rule set file from an old release of PMD as a starting point for designing your own rule set or to exclusively use `.codeclimate.yml` to manage rule selection. The [full rule set](https://github.com/pmd/pmd/blob/847ea1c0843eec2d35923e71f4bc904c1c4ed601/pmd-apex/src/main/resources/rulesets/apex/ruleset.xml) from PMD 5.5.3 is a good starting point for building a rule set file.
+Rule application is controlled by a rule set file that's specified in the `.codeconfig.yml` configuration file at the root of the repository. This file should be committed to the repository *before* adding the repository to Code Climate, so that the initial run will take Apex settings into account. An example `.codeclimate.yml` file is available on a [branch](https://github.com/davidmreed/septaTrains/blob/codeclimate/.codeclimate.yml) of septaTrains. It simply disables all built-in checks provided by Code Climate (which don't apply well to Apex), ignores static resources, and activates the PMD engine. 
 
-Additional attributes can be included in the `ruleset.xml` file to categorize violations for Code Climate. The stock Apex rule sets from PMD, which are designed for use with ApexMetrics, provides examples of this configuration.
+Read below for details on development of rule sets, and note that you are not required to use the same PMD rule set with Code Climate as you do in other PMD contexts.
 
-Code Climate requires a `.codeclimate.yml` configuration file. This file should be committed to the repository *before* adding the repository to Code Climate, so that the initial run will take Apex settings into account. An example `.codeclimate.yml` file is available on a [branch](https://github.com/davidmreed/septaTrains/blob/codeclimate/.codeclimate.yml) of septaTrains. It simply disables all built-in checks provided by Code Climate, ignores static resources, and activates the ApexMetrics engine. Note that Code Climate has updated their configuration file format and examples provided by ApexMetrics are no longer valid.
-
-`.codeclimate.yml` can also tailor the ruleset further, if you don't want to generate your own rule set or just prefer to avoid editing the XML. Adding a `checks` map under the `apexmetrics` plugin allows suppression of specific rules by name. For example, 
-
-    plugins:
-      apexmetrics:
-        enabled: true
-        checks:
-          StdCyclomaticComplexity:
-            enabled: false
-            
-results in suppression of the `StdCyclomaticComplexity` rule, even if it's present in the XML ruleset file. 
-
-![Code Climate Configuration]({{ site.baseurl }}/public/apex-pmd/code-climate-disable-check.png)
-
-To find a rule name in Code Climate, mouse over a violation entry and then the right-most context button ('Exclude Checks'). Click 'Disable Check' to see instructions for modifying `.codeclimate.yml` to suppress that specific warning. Rule names are also included in the `<rule>` entries of a rule set file, as the final element of the path that specifies the rule. (See below for details).
+Code Climate can also be run from the command line as a Docker image, if desired. Below, we'll explore how to run PMD directly within CircleCI.
 
 ## Static Analysis with Continuous Integration: CircleCI
 
@@ -131,12 +116,12 @@ Within the rule set file, each rule is activated by an XML `<rule>` element. Not
 
 Rules can be deactivated by simply removing the entire `<rule>` element, or by commenting it out. If necessary, the priority and Code Climate properties can also be changed. Note however that in the CircleCI setup described here, any violation (regardless of priority) marks the build as a failure; a command line option to PMD (`-minimumpriority`) can filter on this basis.
 
-Depending on where you choose to integrate PMD in your development lifecycle, you may have zero, one, or several rule sets. Eclipse and Code Climate don't need them (but can use them); Apex PMD and the CircleCI workflow do need rule sets.
+Depending on where you choose to integrate PMD in your development lifecycle, you may have zero, one, or several rule sets. Eclipse doesn't need them (but can use them); Apex PMD, Code Climate, and the CircleCI workflow do require rule sets.
 
 ## Recommendations
 
 PMD is a useful tool for maintaining visibility into Apex code quality. It's not a panacea: there are many stylistic and functional issues it won't catch, and it can flag a lot of false positives if you enable its entire rule set. Despite those caveats, it has a place in the development lifecycle as an early warning of risky code practices, and an enforcer of a basic code style.
 
-PMD is perhaps best when applied with a very broad ruleset at the IDE level and a very narrow ruleset at the CI level. Optionally, a cloud service integrating PMD for Apex might provide a broader codebase overview, although Code Climate does have significant limitations. 
+PMD is perhaps best when applied with a very broad ruleset at the IDE level and a very narrow ruleset at the CI level. Optionally, a cloud service integrating PMD for Apex can provide a broader codebase overview, with "warning" level rules surfacing violations that should not block the build, but deserve attention. 
 
 I am excited about the promise of a newer tool, Clayton.io, which offers Salesforce-specific static analysis over and above what PMD can do. Clayton is under active development and I understand improvements are forthcoming.
