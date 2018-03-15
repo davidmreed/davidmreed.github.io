@@ -9,7 +9,7 @@ Enter `simple_salesforce`. `simple_salesforce` is a Python module providing low-
 
     #!/usr/bin/env python
 
-    from simple_salesforce import Salesforce 
+    from simple_salesforce import Salesforce
     import csv
 
     sf = Salesforce(username='YOUR_USER_NAME', password='YOUR_PASSWORD', security_token = 'YOUR_SECURITY_TOKEN')
