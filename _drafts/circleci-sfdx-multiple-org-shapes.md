@@ -24,10 +24,12 @@ Salesforce DX and CircleCI make it very easy to automate running tests against t
         }
     }
 
-The feature set that is accessible through the org definition file is still somewhat in flux. New features are being added, and some important facets are still not available. In some cases you may be able to perform Metadata API deploys to help rectify these shortfalls. The best references for what's available are the [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_scratch_orgs_def_file_config_values.htm) and the [Salesforce DX](https://success.salesforce.com/_ui/core/chatter/groups/GroupProfilePage?g=0F93A000000HTp1) group in the Trailblazer Community.
+The feature set that is accessible through the org definition file is still somewhat in flux. New features are being added, and some important facets are still not available (at the time of this writing, `AccountContactRelation` is one of them). In some cases you may be able to perform Metadata API deploys to help rectify these shortfalls. The best references for what's available are the [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_scratch_orgs_def_file_config_values.htm) and the [Salesforce DX](https://success.salesforce.com/_ui/core/chatter/groups/GroupProfilePage?g=0F93A000000HTp1) group in the Trailblazer Community.
 
 Org definition files live in the `config` directory in a DX project. When you create a scratch org, you provide a definition file with the `-f` switch; you're free to add multiple definition files to your repository.
 
 ## Define Jobs in CircleCI
+
+
 
 ## Complete the Process with CircleCI Workflow
