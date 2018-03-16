@@ -28,8 +28,32 @@ The feature set that is accessible through the org definition file is still some
 
 Org definition files live in the `config` directory in a DX project. When you create a scratch org, you provide a definition file with the `-f` switch; you're free to add multiple definition files to your repository.
 
+Note that we're not here discussing the Org Shape feature, which is currently in pilot. Once Org Shape becomes publicly available, more capabilities will become available for defining and creating types of environment.
+
 ## Define Jobs in CircleCI
 
+Each organization definition we want to test against is represented as a `job` entry in the CircleCI `config.yml`.
 
-
+    version: 2
+    jobs:
+      - org-definition-one
+      - org-definition-two
+      
+      
 ## Complete the Process with CircleCI Workflow
+
+The final step is to create a `workflow` entry in `config.yml`. The workflow ties together the different build jobs and expresses any dependencies between them. Lacking dependencies, the jobs will run in parallel, using as many containers as you have available.
+
+    workflows:
+      version: 2
+      test_and_static:
+        jobs:
+          - build-enterprise
+          - build-developer
+          - static-analysis
+          
+Here, we define three jobs - one each for the two org definitions against which we want to test, and a third job for our PMD static analysis (see [PMD post FIXME]()). When we push to Git, CircleCI will initiate these three jobs in parallel. Each will succeed or fail individually, and you'll get status indicators in GitHub for each job.
+
+FIXME: screenshot
+
+The workflow as a whole shows success or failure aggregated from its component jobs, and you can rerun the entire workflow or individual failed jobs as needed.
