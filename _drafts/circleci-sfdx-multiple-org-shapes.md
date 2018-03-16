@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Salesforce DX Continuous Integration: Testing on Multiple Org Types with CircleCI Workflows"
+title: "Salesforce Lifecycle and Tooling: Testing on Multiple Org Types with Salesforce DX and CircleCI Workflows"
 ---
 
 Let's suppose you're running a successful continuous integration program, using [Salesforce DX and CircleCI]({{ site.baseurl }}{% post_url 2018-02-02-salesforce-dx-circleci %}) or another continuous integration provider. Your automated testing is in place, and working well. But the code you're building has to work in a number of different environments. You might be an ISV, an open-source project, or an organization with multiple Salesforce instances and a shared codebase, and you need to make sure your tests pass in both a standard Enterprise edition and a Person Accounts instance, or in Multi-Currency, or a Professional edition, or any number of other combinations of Salesforce editions and features.
@@ -10,6 +10,8 @@ Salesforce DX and CircleCI make it very easy to automate running tests against t
      - Optionally, define additional Metadata API or package installation steps to complete preparation of a specific org for testing.
  1. Define jobs in CircleCI configuration file, either by scripting each environment's unique setup individually or by referencing a common build sequence in the context of each org type.
  1. Define a workflow in CircleCI configuration file that runs these jobs in parallel.
+ 
+This article assumes that you've read [Salesforce Lifecycle and Tooling: CircleCI and Salesforce DX]({{ site.baseurl }}{% post_url 2018-02-02-salesforce-dx-circleci %}) and are using a fairly similar `config.yml`. However, the principles are transferable to other continuous integration environments.
  
  ## Defining Organization Types and Features
  
@@ -42,7 +44,7 @@ Each organization definition we want to test against is represented as a `job` e
       
 We can define an arbitrary number of these jobs. 
 
-If we define jobs by copying and pasting the [core SFDX build job]({{ site.baseurl }}{% post_url 2018-02-02-salesforce-dx-circleci %}), our `config.yml` is going to become unwieldy. If there's a lot of setup work that significantly differs between the org definitions, it might be necessary nonetheless. But if the job definitions vary by little more than the name of the scratch org definition file, we can take advantage of YAML's aliasing feature to "template" our core build instructions into each job, while using environment variables to define the differences between them.
+If we define jobs by copying and pasting the [core SFDX build job]({{ site.baseurl }}{% post_url 2018-02-02-salesforce-dx-circleci %}), our `config.yml` can become unwieldy. If there's a lot of setup work that significantly differs between the org definitions, it might be necessary nonetheless. But if the job definitions vary by little more than the name of the scratch org definition file, we can take advantage of YAML's aliasing feature to "template" our core build instructions into each job, while using environment variables to define the differences between them.
 
 Here's what it looks like. (The complete `config.yml` file is available on GitHub).
 
