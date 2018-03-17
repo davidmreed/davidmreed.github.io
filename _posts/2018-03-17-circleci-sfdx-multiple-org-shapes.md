@@ -14,7 +14,7 @@ Salesforce DX and CircleCI make it very easy to automate running tests against t
  
 This article assumes that you've followed [Salesforce Lifecycle and Tooling: CircleCI and Salesforce DX]({{ site.baseurl }}{% post_url 2018-02-02-salesforce-dx-circleci %}) and are using a fairly similar `config.yml`. However, the principles are transferable to other continuous integration environments and build sequences.
  
- ## Defining Organization Types and Features
+## Defining Organization Types and Features
  
  Salesforce DX scratch org definitions don't need to be complex, and are defined in JSON. This is a simple example that adds a feature (Sites) to the default configuration: 
  
