@@ -53,7 +53,7 @@ The example tool in GitHub uses `argparse` to accept these values on the command
 
 Once we have access to SFDX, we'll run one or more scenarios with our integrated tool. Wrapper scripts can use the same approach to gain access to the scratch org and check the results, making appropriate assertions along the way:
 
-    # ... having run code that creates Accounts
+    # ... having run a script that creates Accounts
 
     connection = simple_salesforce.Salesforce(instance_url=instance_url, session_id=access_token)
     results = connection.query('SELECT Id, Name, AnnualRevenue FROM Account')
