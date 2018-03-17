@@ -4,7 +4,7 @@ title: "Salesforce Lifecycle and Tooling: Testing on Multiple Org Types with Sal
 ---
 
 Let's suppose you're running a successful continuous integration program, using [Salesforce DX and CircleCI]({{ site.baseurl }}{% post_url 2018-02-02-salesforce-dx-circleci %}) or another continuous integration provider. Your automated testing is in place, and working well. But the code you're building has to work in a number of different environments. You might be an ISV, an open-source project, or an organization with multiple Salesforce instances and a shared codebase, and you need to make sure your tests pass in both a standard Enterprise edition and a Person Accounts instance, or in Multi-Currency, or a Professional edition, or any number of other combinations of Salesforce editions and features.
-n
+
 Salesforce DX and CircleCI make it very easy to automate running tests against these different Salesforce environments, and to do so in efficient, parallel, isolated testing streams. The process is built in three steps:
 
  1. Define organization types and features in Salesforce DX [Scratch Org Definition Files](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_scratch_orgs_def_file_config_values.htm) in JSON format.
