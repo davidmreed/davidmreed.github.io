@@ -4,7 +4,7 @@ title: "Salesforce Lifecycle and Tooling: Testing on Multiple Org Types with Sal
 ---
 
 Let's suppose you're running a successful continuous integration program, using [Salesforce DX and CircleCI]({{ site.baseurl }}{% post_url 2018-02-02-salesforce-dx-circleci %}) or another continuous integration provider. Your automated testing is in place, and working well. But the code you're building has to work in a number of different environments. You might be an ISV, an open-source project, or an organization with multiple Salesforce instances and a shared codebase, and you need to make sure your tests pass in both a standard Enterprise edition and a Person Accounts instance, or in Multi-Currency, or a Professional edition, or any number of other combinations of Salesforce editions and features.
-
+n
 Salesforce DX and CircleCI make it very easy to automate running tests against these different Salesforce environments, and to do so in efficient, parallel, isolated testing streams. The process is built in three steps:
 
  1. Define organization types and features in Salesforce DX [Scratch Org Definition Files](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_scratch_orgs_def_file_config_values.htm) in JSON format.
@@ -12,7 +12,7 @@ Salesforce DX and CircleCI make it very easy to automate running tests against t
  1. Define jobs in CircleCI configuration file, either by scripting each environment's unique setup individually or by referencing a common build sequence in the context of each org type.
  1. Define a workflow in CircleCI configuration file that runs these jobs in parallel.
  
-This article assumes that you've read [Salesforce Lifecycle and Tooling: CircleCI and Salesforce DX]({{ site.baseurl }}{% post_url 2018-02-02-salesforce-dx-circleci %}) and are using a fairly similar `config.yml`. However, the principles are transferable to other continuous integration environments and build sequences.
+This article assumes that you've followed [Salesforce Lifecycle and Tooling: CircleCI and Salesforce DX]({{ site.baseurl }}{% post_url 2018-02-02-salesforce-dx-circleci %}) and are using a fairly similar `config.yml`. However, the principles are transferable to other continuous integration environments and build sequences.
  
  ## Defining Organization Types and Features
  
@@ -27,7 +27,7 @@ This article assumes that you've read [Salesforce Lifecycle and Tooling: CircleC
         }
     }
 
-The feature set that is accessible through the org definition file is still somewhat in flux. New features are being added, and some important facets are still not available (at the time of this writing, `AccountContactRelation` is one of them). The best references for what's available are the [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_scratch_orgs_def_file_config_values.htm) and the [Salesforce DX](https://success.salesforce.com/_ui/core/chatter/groups/GroupProfilePage?g=0F93A000000HTp1) group in the Trailblazer Community.
+The feature set that is accessible through the org definition file is still somewhat in flux. New features are being added, and some important facets are still not available. The best references for what *is* available are the [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_scratch_orgs_def_file_config_values.htm) and the [Salesforce DX](https://success.salesforce.com/_ui/core/chatter/groups/GroupProfilePage?g=0F93A000000HTp1) group in the Trailblazer Community.
 
 Org definition files live in the `config` directory in a DX project. When you create a scratch org, you provide a definition file with the `-f` switch; you're free to add multiple definition files to your repository.
 
