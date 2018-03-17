@@ -57,7 +57,7 @@ Here's what it looks like. (The complete `config.yml` file is [available on GitH
         steps:
             ...
 
-`&jobdef` defines an alias, a name to which we can refer to include the following material, which we've factored out from the core `config.yml` developed previously. To that core build sequece, we make just one change, in the "Create Scratch Org" step:
+`&jobdef` defines an alias, a name to which we can refer to include the following material, which we've factored out from the core `config.yml` developed previously. To that core build sequence, we make just one change, in the "Create Scratch Org" step:
 
         - run: 
             name: Create Scratch Org
