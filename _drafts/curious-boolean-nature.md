@@ -45,7 +45,7 @@ But we learn [elsewhere](https://developer.salesforce.com/docs/atlas.en-us.soql_
 
 > In a WHERE clause that uses a Boolean field, the Boolean field never has a `null` value. Instead, `null` is treated as `false`. Boolean fields on outer-joined objects are treated as `false` when no records match the query.
 
-So Booleans in the database are tri-valued, but in SOQL are treated as binary-valued. Isn't it rather odd, then, that we can do something like this:
+So Booleans in the database are tri-valued, but in SOQL are treated as binary-valued. This generates rather odd situations like the following,
 
     List<Custom_Object__c> objects = [SELECT Boolean_Field__c FROM Custom_Object__c WHERE Boolean_Field__c = false];
     
@@ -53,6 +53,8 @@ So Booleans in the database are tri-valued, but in SOQL are treated as binary-va
         System.debug(o.Boolean_Field__c);
     }
     
-and find a mixture of `false` and `null` values?
+where we'll find a mixture of `false` and `null` values.
 
 The picture grows still more confusing if we look at Hierarchy Custom Settings. Custom Settings, of course, are custom objects, and they can contain checkbox fields. But Hierarchy Custom Settings have a unique feature allowing them to cascade populated field values down the hierarchy (Organization to Profile to User) until overriden at a lower level.
+
+Suppose we have a custom setting `Instance_Settings__c`, with a single Checkbox field `Run__c` and some arbitrary set of other fields.
