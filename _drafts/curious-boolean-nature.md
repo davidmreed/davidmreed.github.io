@@ -55,4 +55,4 @@ So Booleans in the database are tri-valued, but in SOQL are treated as binary-va
     
 and find a mixture of `false` and `null` values?
 
-The picture grows still more confusing if we look at Hierarchy Custom Settings. Custom Settings, of course, are custom objects, and they can contain checkbox fields.
+The picture grows still more confusing if we look at Hierarchy Custom Settings. Custom Settings, of course, are custom objects, and they can contain checkbox fields. But Hierarchy Custom Settings have a unique feature allowing them to cascade populated field values down the hierarchy (Organization to Profile to User) until overriden at a lower level.
