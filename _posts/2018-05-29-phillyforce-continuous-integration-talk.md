@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Talk on Continuous Integration now on YouTube
+title: Talk on Continuous Integration Now on YouTube
 ---
 
 My presentation from PhillyForce '18, "Continuous Integration with Salesforce DX: Practices and Principles for All", is now [available on YouTube](https://www.youtube.com/watch?v=VLl1uUPF97g).
