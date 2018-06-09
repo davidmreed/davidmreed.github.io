@@ -8,7 +8,7 @@ title:               'David Reed'
 tagline:             ''
 description:         ''
 url:                 https://www.ktema.org
-baseurl:             https://www.ktema.org
+baseurl:             ''
 paginate:            5
 
 # About/contact
