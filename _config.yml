@@ -17,8 +17,20 @@ author:
   url:               https://www.ktema.org
   email:             david@ktema.org
 
+twitter:
+  username: aoristdual
+  card: summary
+
+social:
+  name: David Reed
+  links:
+    - https://twitter.com/aoristdual
+    - https://www.linkedin.com/in/david-reed-16175b31/
+    - https://github.com/davidmreed
+
 # Custom vars
 version:             1.0.0
 
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag
