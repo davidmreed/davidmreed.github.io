@@ -38,6 +38,8 @@ This pattern is appropriate for use when the filtration criteria for child objec
 
 This can be an anti-pattern for situations with high data volume in the parent or child object, when query performance will be a huge concern and heap size could become an issue. Adding selective filters on the parent object, adding filters on the child object, and reducing the number of columns queried will help obviate these issues.
 
+While parent-child queries can only descend one level of relationship in the object hierarchy, Apex post-processing can gather child object Ids and re-query to descend additional plies.
+
 ## Parent Query with `IN` or `NOT IN` Child Subquery (Semi-Join/Anti-Join)
 
 Parent queries with `IN` and `NOT IN` child subqueries are particularly useful for cases 3 and 5. This query format takes advantage of the fact that the subquery is treated as returning a typed `Id` value, not an sObject instance. If we ran the subquery below, on `Subject_Area__c`, separately in Apex, we'd get back a `List<Subject_Area__c>`, which we'd have to iterate over and accumulate parent `Project__c` Ids before re-querying that object. When we present it as a subquery, no intermediate steps or type conversion are required; the Ids are used directly. (Salesforce does require that they be Ids of the correct type of object, however).
