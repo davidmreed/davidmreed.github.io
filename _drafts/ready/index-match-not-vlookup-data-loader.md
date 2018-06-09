@@ -20,4 +20,4 @@ Because we use column references rather than rectangular ranges, you can fill th
 
 ![INDEX/MATCH Results]({{ site.baseurl }}/public/index-match/index-match-results.png)
 
-Of course, nothing in the Excel world can be quite perfect. `INDEX()/MATCH()` still isn't case-safe, so we're stuck with 18-character Salesforce Ids, or must use excruciatingly slow [array formulas](https://exceljet.net/formula/exact-match-lookup-with-index-and-match)to avoid collisions when Excel treats `001000000000aaj` and `001000000000aaJ` as equivalent values.
+Of course, nothing in the Excel world can be quite perfect. `INDEX()/MATCH()` still isn't case-safe, so we're stuck with 18-character Salesforce Ids, or must use excruciatingly slow [array formulas](https://exceljet.net/formula/exact-match-lookup-with-index-and-match)to avoid collisions when Excel treats `001000000000aaj` and `001000000000aaJ` as equivalent values. I'm working on a programmatic solution to make fixing this issue quick and easy - more updates to come!
