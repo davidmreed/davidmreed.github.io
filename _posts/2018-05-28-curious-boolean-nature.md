@@ -91,7 +91,7 @@ Suppose we have a custom setting `Instance_Settings__c`, with a single Checkbox 
 
 If we populate these fields at the Organization level (`SetupOwnerId` = `UserInfo.getOrganizationId()`), we expect rightly that the values at the Organization level will cascade down to the User level, if they're not overriden. And for `Test__c`, our text field, that's true. If we set that field to `"foo"` at the Organization level, and `null` at the User level, sure enough our `Instance_Settings__c.getInstance()` value will inherit the Organization's value `"foo"`. 
 
-But Booleans work differently, because they're treated as binary-valued here - they're never `null`. So a `true` value for `Run__c` will never cascade down to the User or Profile level of our Custom Setting. The instances at those levels always have `false` set for that Checkbox field if we don't explicitly populate `true` upon creation *at that setup level*.
+But Booleans work differently, because they're treated as binary-valued here - they're never `null`. So a `true` value for `Run__c` will never cascade down to the User or Profile level of our Custom Setting if an instance is populated at that level. The instances at those levels always have `false` set for that Checkbox field if we don't explicitly populate `true` upon creation *at that setup level*.
 
     Instance_Setting__c s = new Instance_Setting__c();
     s.Test__c = 'So say some';
@@ -118,5 +118,6 @@ But Booleans work differently, because they're treated as binary-valued here - t
 ## The Upshot is...
 
  - Booleans are more complicated that one might expect. 
- - Never rely on behavior around uninitialized variables.
+ - Never rely on behavior around uninitialized variables (in any language!)
  - `NullPointerException` can arise even without a dot-notation object dereference.
+ - Booleans can't be relied upon to cascade in Hierarchy Custom Settings.
