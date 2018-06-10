@@ -26,7 +26,12 @@ We'd like to be able to a perform a variety of queries that express different ki
 
 ## Parent-Child Query
 
-    for (Project__c sr : [SELECT Id, (SELECT Id FROM Subject_Areas__r WHERE Name LIKE '%Industry%') FROM Project__c WHERE Client__c = :clientId]) {
+    for (Project__c sr : [SELECT Id, 
+                                 (SELECT Id 
+                                  FROM Subject_Areas__r 
+                                  WHERE Name LIKE '%Industry%') 
+                          FROM Project__c 
+                          WHERE Client__c = :clientId]) {
         if (sr.Subject_Areas__r.size() == 0) {
             // We've identified a Project on the client whose Id is `clientId` with no Subject Areas that contain 'Industry'.
             // (but potentially other Subject Areas)
@@ -42,13 +47,17 @@ While parent-child queries can only descend one level of relationship in the obj
 
 ## Parent Query with `IN` or `NOT IN` Child Subquery (Semi-Join/Anti-Join)
 
-Parent queries with `IN` and `NOT IN` child subqueries are particularly useful for cases 3 and 5. This query format takes advantage of the fact that the subquery is treated as returning a typed `Id` value, not an sObject instance. If we ran the subquery below, on `Subject_Area__c`, separately in Apex, we'd get back a `List<Subject_Area__c>`, which we'd have to iterate over and accumulate parent `Project__c` Ids before re-querying that object. When we present it as a subquery, no intermediate steps or type conversion are required; the Ids are used directly. (Salesforce does require that they be Ids of the correct type of object, however).
+Parent queries with `IN` and `NOT IN` child subqueries are particularly useful for cases 3 and 4. This query format takes advantage of the fact that the subquery is treated as returning a typed `Id` value, not an sObject instance. If we ran the subquery below, on `Subject_Area__c`, separately in Apex, we'd get back a `List<Subject_Area__c>`, which we'd have to iterate over and accumulate parent `Project__c` Ids before re-querying that object. When we present it as a subquery, no intermediate steps or type conversion are required; the Ids are used directly. (Salesforce does require that they be Ids of the correct type of object, however).
 
-    SELECT Id FROM Project__c WHERE Id NOT IN (SELECT Linked_Project__c FROM Subject_Area__c WHERE Name LIKE '%Industry%')
+    SELECT Id 
+    FROM Project__c 
+    WHERE Id NOT IN (SELECT Linked_Project__c 
+                     FROM Subject_Area__c 
+                     WHERE Name LIKE '%Industry%')
 
 See [Semi Joins and Anti-Joins](https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql_select_comparisonoperators.htm#semijoin_and_antijoin) for more in-depth information, including the numerous restrictions that apply to this type of query.
 
-This pattern is particularly suitable for case 3 and case 4, where we're looking for parent objects based on specific criteria (but not volume) of child objects. Note that it can return parent object data but doesn't include child object data unless we include a separate sub-select. 
+This pattern is particularly suitable for case 3 and case 4, where we're looking for parent objects based on specific criteria on (but not volume of) child objects. Note that it can return parent object data but doesn't include child object data unless we include a separate sub-select. 
 
 In particularly complex cases or if multiple levels of subquery are required, it's necessary to run the subqueries separately in Apex and accumulate relevant Ids in a `Set` for inclusion in the next query layer. Salesforce only allows one level of semi-join or anti-join, so we perform a sort of synthetic join in Apex of two separately expressed SOQL queries. For example, we can cover case 5 in a fashion like this:
 
@@ -65,15 +74,24 @@ In particularly complex cases or if multiple levels of subquery are required, it
         subjectAreaIds.add(e.Subject_Area__c);
     }
     
-    List<Project__c> = [SELECT Id FROM Project__c WHERE Id IN (SELECT Linked_Project__c FROM Subject_Area__c WHERE Id IN :subjectIds)];
+    List<Project__c> = [SELECT Id 
+                        FROM Project__c 
+                        WHERE Id IN (SELECT Linked_Project__c 
+                                     FROM Subject_Area__c 
+                                     WHERE Id IN :subjectIds)];
 
 The same Apex/SOQL pattern can be extended to cover a more or less arbitrary depth of complexity, up to the point where governor limits are implicated.
 
 ## Child Aggregate Query
 
-The child aggregate query is suitable for locating (and ordering) parent records based on a non-zero count of child records, optionally matching the child records against some criterion. As such, it can cover our Cases 2 and 33 well. It's not suitable for any situation where parent records without children should be included. It can provide a count of child records matching specific criteria, but doesn't return the child or parent record data itself. The query can express some filtration that would otherwise need to be performed in Apex.
+The child aggregate query is suitable for locating (and ordering) parent records based on a non-zero count of child records, optionally matching the child records against some criterion. As such, it can cover our Cases 2 and 3 well. It's not suitable for any situation where parent records without children should be included. It can provide a count of child records matching specific criteria, but doesn't return the child or parent record data itself. The query can express some filtration that would otherwise need to be performed in Apex.
 
-    SELECT count(Id) count, Linked_Project__c FROM Subject_Area__c WHERE Name LIKE '%Industry%' GROUP BY Linked_Project__c HAVING count(Id) > 2 ORDER BY count(Id) DESC
+    SELECT count(Id) count, Linked_Project__c 
+    FROM Subject_Area__c 
+    WHERE Name LIKE '%Industry%' 
+    GROUP BY Linked_Project__c 
+    HAVING count(Id) > 2 
+    ORDER BY count(Id) DESC
 
 This query will give us a `List<AggregateResult>` with the Ids of every `Project__c` having at least two associated `Subject_Area__c` records whose Names contain 'Industry', in descending order of the count of such records. We'll have to re-query to get more information about the Projects themselves or otherwise post-process the `AggregateResult` list in Apex.
 
