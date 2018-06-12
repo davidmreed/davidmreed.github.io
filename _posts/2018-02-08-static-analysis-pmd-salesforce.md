@@ -3,7 +3,7 @@ layout: post
 title: Integrating Static Analysis with PMD in the Salesforce Development Lifecycle
 ---
 
-This is the second in a series looking at setting up a Salesforce project with a full suite of modern software engineering tools and services. (See the first for more on [setting up CI with Salesforce DX](https://www.ktema.org/2018/02/02/salesforce-dx-circleci/))
+This is the second in a series looking at setting up a Salesforce project with a full suite of modern software engineering tools and services. (See the first for more on [setting up CI with Salesforce DX]({{ site.baseurl }}{% post_url 2018-02-02-salesforce-dx-circleci %}))
 
 Static analysis is a powerful complement to unit tests, helping to identify bugs early in the development lifecycle and root out dangerous code practices - even before the source is compiled. [PMD](http://pmd.github.io/) is a multi-language static analysis tool that includes support for [Apex](https://pmd.github.io/pmd-6.0.1/pmd_rules_apex.html) and, to a limited extent, [Visualforce](https://pmd.github.io/pmd-6.0.1/pmd_rules_vf.html).
 
@@ -21,7 +21,7 @@ Then, install the extension in Visual Studio Code. Open your User Preferences an
 
 You can also configure the `apexPMD.runOnFileOpen` and `apexPMD.runOnFileSave` settings to determine when static analysis is performed. Apex PMD feeds all static analysis warnings into the Visual Studio Code Problems view, and they're also surfaced as green underlines in the source code view. (Mouse over the affected area for warning details). You can invoke the static analyzer explicitly from the command palette with `Apex Static Analysis: On File` or `Apex Static Analysis: On Workspace` to get a codebase-wide analysis.
 
-![Apex PMD results in Visual Studio Code]({{ site.baseurl }}/public/apex-pmd/apex-pmd-results.png)
+![Apex PMD results in Visual Studio Code]({{ "/public/apex-pmd/apex-pmd-results.png" | absolute_url }})
 
 Apex PMD comes with a comprehensive rule set. However, you'll likely want to define your own, to silence warnings that aren't relevant or change the warning level for specific rules. See the section below on Developing Rule Sets to create a rule set. Once you've created your own rule set, enable it by setting `apexPMD.useDefaultRuleset` to `false`, and populating the path to your rule set in `apexPMD.rulesetPath`.
 
@@ -31,11 +31,11 @@ PMD provides an official plugin for Eclipse, which works well with Apex. Install
 
 Once installed, PMD is controlled in the Project Properties window. A custom rule set can be designated here, but the Eclipse plugin also allows for the individual activation and deactivation of specific rules, helping to reduce the need for rule set development.
 
-![Eclipse PMD Configuration]({{ site.baseurl }}/public/apex-pmd/pmd-project-config.png)
+![Eclipse PMD Configuration]({{ "/public/apex-pmd/pmd-project-config.png" | absolute_url }})
 
 Unlike the Visual Studio Code extension, Eclipse's PMD plugin runs on demand. To run the static analyzer, right-click a source code file, a directory, or a project, and choose PMD->Check Code. Static analyzer results are shown in one or more special panes, accessible via Window->Show View->Other->PMD. The Violations Outline pane shows a simple list of flagged areas in the code; they're also shown with colored indicators in the source code view's gutter area. Color coding is counterintuitive; green translates to "urgent" violations, and files in the explorer are badged with a muddy color blend of their violation lists. Violations can be cleared from the PMD section of the context menu.
 
-![Eclipse PMD Violations]({{ site.baseurl }}/public/apex-pmd/pmd-violations-view.png)
+![Eclipse PMD Violations]({{ "/public/apex-pmd/pmd-violations-view.png" | absolute_url }})
 
 ## Static Analysis in the Cloud: Code Climate
 
@@ -94,7 +94,7 @@ All we need to do, then, is commit an XML rule set file to our repository and pu
 
 A failure in either job - build and test with Salesforce DX, or static analysis with PMD - then marks our build as failed in CircleCI and in GitHub.
 
-![GitHub Build Status]({{ site.baseurl }}/public/apex-pmd/github-build-status.png)
+![GitHub Build Status]({{ "/public/apex-pmd/github-build-status.png" | absolute_url }})
 
 ## Developing Rule Sets
 

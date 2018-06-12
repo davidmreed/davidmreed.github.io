@@ -103,7 +103,7 @@ The final step is to create a `workflow` entry in `config.yml`. The workflow tie
           
 Here, we define a three-job workflow - one each for the two org definitions against which we want to test, and a third job for our PMD static analysis (see [Integrating Static Analysis with PMD in the Salesforce Development Lifecycle]({{ site.baseurl }}{% post_url 2018-02-08-static-analysis-pmd-salesforce %})). When we push to Git, CircleCI will initiate these three jobs in parallel. Each will succeed or fail individually, and you'll get status indicators in GitHub for each job.
 
-![GitHub Results]({{ site.baseurl }}/public/multi-org-shape/github-results.png)
+![GitHub Results]({{ "/public/multi-org-shape/github-results.png" | absolute_url }})
 
 The workflow as a whole shows success or failure aggregated from its component jobs, and you can rerun the entire workflow or individual failed jobs as needed.
 
