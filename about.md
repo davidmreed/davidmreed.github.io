@@ -11,7 +11,7 @@ I hold these [Salesforce certifications](http://certification.salesforce.com/ver
 
 <div>
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_II_RGB.png" alt="Salesforce Certified Platform Developer II" /> 
-<img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_I_RGB.png" alt="Salesforce Certified Platform Developer I" />
+<img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_I_RGB.png" alt="Salesforce Certified Platform Developer I" /><br />
 <img style="display: inline;" src="{{ site.baseurl }}/public/Salesforce_Sharing_Visibility_Designer.png" alt="Salesforce Certified Sharing and Visibility Designer" />
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Admin_RGB.png" alt="Salesforce Certified Administrator" />
 </div>
@@ -20,7 +20,7 @@ You can find me at [david@ktema.org](mailto:david@ktema.org); [@aoristdual](http
 You can find my public key at [Keybase](https://keybase.io/davidreed).
 
 <a href="https://salesforce.stackexchange.com/users/46017/david-reed">
-<img src="https://salesforce.stackexchange.com/users/flair/46017.png?theme=clean" width="208" height="58" alt="profile for David Reed at Salesforce Stack Exchange, Q&amp;A for Salesforce administrators, implementation experts, developers and anybody in-between" title="profile for David Reed at Salesforce Stack Exchange, Q&amp;A for Salesforce administrators, implementation experts, developers and anybody in-between">
+<img src="https://salesforce.stackexchange.com/users/flair/46017.png" width="208" height="58" alt="profile for David Reed at Salesforce Stack Exchange, Q&amp;A for Salesforce administrators, implementation experts, developers and anybody in-between" title="profile for David Reed at Salesforce Stack Exchange, Q&amp;A for Salesforce administrators, implementation experts, developers and anybody in-between">
 </a>
 
 > <span class="greek">κτῆμά τε ἐς αἰεὶ μᾶλλον ἢ ἀγώνισμα ἐς τὸ παραχρῆμα ἀκούειν ξύγκειται.</span><br />
