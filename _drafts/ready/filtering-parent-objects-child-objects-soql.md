@@ -65,7 +65,7 @@ In particularly complex cases or if multiple levels of subquery are required, it
 
     List<Subject_Area_Expert__c> experts = [SELECT Subject_Area__c
                                             FROM Subject_Area_Expert__c
-                                            WHERE Contact__c.Title = 'Solution Architect'
+                                            WHERE Contact__r.Title = 'Solution Architect'
                                                   AND Start_Date__c <= TODAY
                                                   AND End_Date__c >= TODAY];
     Set<Id> subjectAreaIds = new Set<Id>();
@@ -86,7 +86,7 @@ The same Apex/SOQL pattern can be extended to cover a more or less arbitrary dep
 
 The child aggregate query is suitable for locating (and ordering) parent records based on a non-zero count of child records, optionally matching the child records against some criterion. As such, it can cover our Cases 2 and 3 well. It's not suitable for any situation where parent records without children should be included. It can provide a count of child records matching specific criteria, but doesn't return the child or parent record data itself. The query can express some filtration that would otherwise need to be performed in Apex.
 
-    SELECT count(Id) count, Linked_Project__c 
+    SELECT count(Id), Linked_Project__c 
     FROM Subject_Area__c 
     WHERE Name LIKE '%Industry%' 
     GROUP BY Linked_Project__c 
