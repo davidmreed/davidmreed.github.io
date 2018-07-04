@@ -56,7 +56,7 @@ a `null` variable *will* result in an exception being thrown, one cannot directl
 
 There are a couple of ways to work around this limitation.
 
-One is to check the sObject variable's nullity using a Decision element before using any formulas that references its fields. (See the [release notes](https://releasenotes.docs.salesforce.com/en-us/summer14/release-notes/rn_forcecom_process_flow_crossobject.htm) on cross-object references in Flow). Unfortunately, this may not be practicable in a flow where formulas make complex decisions or calculate across a number of different objects (see my discussion of [bridging Click & Pledge with Salesforce Campaigns]({{ site.baseurl}}{% post_url bridging-click-and-pledge-and-salesforce-campaigns %}) for an example).
+One is to check the sObject variable's nullity using a Decision element before using any formulas that references its fields. (See the [release notes](https://releasenotes.docs.salesforce.com/en-us/summer14/release-notes/rn_forcecom_process_flow_crossobject.htm) on cross-object references in Flow). Unfortunately, this may not be practicable in a flow where formulas make complex decisions or calculate across a number of different objects.
 
 Another option, if the variable is populated using a lookup element from a given Id value, is to check the nullity of the Id value field in the formula that performs the cross-object reference. Like in Process Builder, logical functions in Flow formulas use short-circuit evaluation. This allows you to effectively guard cross-object references against nulls in the circumstance that the potentially-null sObject variable is looked up from an Id field, rather than other criteria.
 
