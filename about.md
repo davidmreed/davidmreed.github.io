@@ -3,11 +3,11 @@ layout: page
 title: About
 ---
 
-I am a 3x certified Salesforce developer. My other interests include officiating roller derby, Ancient Greek, Plato, botanical gardens, and cryptography.
+I am a 4x certified Salesforce developer. My other interests include officiating roller derby, Ancient Greek, Plato, botanical gardens, and cryptography.
 
 I [consult]({{site.baseurl}}/consulting) on Salesforce and welcome your inquiries. In addition to the full breadth of platform development, I have a strong interest in Salesforce for nonprofit organizations.
 
-I hold the [four Salesforce certifications](http://certification.salesforce.com/verification-email?init=1&email=david@ktema.org):
+I hold these [Salesforce certifications](http://certification.salesforce.com/verification-email?init=1&email=david@ktema.org):
 
 <div>
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_II_RGB.png" alt="Salesforce Certified Platform Developer II" /> 
