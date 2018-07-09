@@ -55,7 +55,9 @@ Parent queries with `IN` and `NOT IN` child subqueries are particularly useful f
                      FROM Subject_Area__c 
                      WHERE Name LIKE '%Industry%')
 
-See [Semi Joins and Anti-Joins](https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql_select_comparisonoperators.htm#semijoin_and_antijoin) for more in-depth information, including the numerous restrictions that apply to this type of query.
+See [Semi Joins and Anti-Joins](https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql_select_comparisonoperators.htm#semijoin_and_antijoin) for more in-depth information, including the numerous restrictions that apply to this type of query. In particular, note that you can only use two `IN` semi-joins or anti-joins in a single query.
+
+It's also important to note that this pattern isn't limited to parent-child filtration. The semi-join and anti-join can be used to filter Object A based upon Object B using *any shared reference field*, including reference fields on the two objects that both point to some other Object C.  See the Salesforce documentation linked above for in-depth discussion of more use cases.
 
 This pattern is particularly suitable for case 3 and case 4, where we're looking for parent objects based on specific criteria on (but not volume of) child objects. Note that it can return parent object data but doesn't include child object data unless we include a separate sub-select. 
 
