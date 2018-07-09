@@ -33,7 +33,8 @@ We'd like to be able to a perform a variety of queries that express different ki
                           FROM Project__c 
                           WHERE Client__c = :clientId]) {
         if (sr.Subject_Areas__r.size() == 0) {
-            // We've identified a Project on the client whose Id is `clientId` with no Subject Areas that contain 'Industry'.
+            // We've identified a Project on the client whose Id 
+            // is `clientId` with no Subject Areas that contain 'Industry'.
             // (but potentially other Subject Areas)
             // Do something about it.
         }
@@ -65,11 +66,13 @@ In particularly complex cases or if multiple levels of subquery are required, it
 
     // 5. Locating `Project__c` records with at least one `Subject_Area__c` record that itself has at least one `Subject_Area_Expert__c` assignment with current dates to a Contact whose Title is "Solution Architect".
 
-    List<Subject_Area_Expert__c> experts = [SELECT Subject_Area__c
-                                            FROM Subject_Area_Expert__c
-                                            WHERE Contact__r.Title = 'Solution Architect'
-                                                  AND Start_Date__c <= TODAY
-                                                  AND End_Date__c >= TODAY];
+    List<Subject_Area_Expert__c> experts;
+
+    experts = [SELECT Subject_Area__c
+               FROM Subject_Area_Expert__c
+               WHERE Contact__r.Title = 'Solution Architect'
+                     AND Start_Date__c <= TODAY
+                     AND End_Date__c >= TODAY];
     Set<Id> subjectAreaIds = new Set<Id>();
 
     for (Subject_Area_Expert__c e : experts) {
