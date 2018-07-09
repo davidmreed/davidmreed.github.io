@@ -11,4 +11,4 @@ There are existing online Id converters, but I wanted a solution I could use fro
 
 to convert the columns "Id" and "AccountId" in the file `test.csv` and write the result to `done.csv`.
 
-The tool is tiny, tested, and MIT-licensed. No dependencies outside the Python standard library.
+The tool is tiny, tested, and MIT-licensed. It has no dependencies outside the Python standard library and doesn't require access to Salesforce (or, for that matter, a network connection).
