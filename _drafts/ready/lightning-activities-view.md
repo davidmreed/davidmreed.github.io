@@ -37,7 +37,7 @@ The one route we have is to override the category at the time of creation of the
 
 ![Task converted to Call]({{ "/public/lightning-activities-view/task-converted-to-call.png" | absolute_url }})
 
-However, this does not work in the other direction. Records that are being created as Emails, List Emails, or Calls can't have their `TaskSubtype` set to `'Task'`, or to any of the other available values. Attempting to do so simply has no effect, although it doesn't cause an error. 
+However, this does not work in the other direction. Records that are being created as Emails, List Emails, or Calls can't have their `TaskSubtype` set to `'Task'`, or to any of the other available values. Attempting to do so has no effect on the created `Task`, although it doesn't cause an error. 
 
 Additionally, `before insert` trigger code cannot introspect the value of the `TaskSubtype` field in any logic, because it is not populated by the system until the `after insert` context - where it cannot be altered. Since it doesn't appear to be inferred from any values that *are* populated at `before insert` time, it seems to simply be magic.
 
