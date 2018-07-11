@@ -15,9 +15,11 @@ How, though, does Lightning distinguish between these different activities to po
 
 The answers turn out to be "a bit of magic" and "sort of." Lightning recognizes five categories of activity: Emails, Events, List Emails, Logged Calls, and Tasks.
 
-Events are distinguished from Emails, List Emails, Logged Calls, and Tasks by sObject type. Events have the object type `Event`, while the other four are all of type `Task`. The Emails, List Emails, Logged Calls, and Tasks filters work differently. All of them filter based upon the picklist value in the hidden field `TaskSubtype` on the `Task` object. 
+Events are distinguished from Emails, List Emails, Logged Calls, and Tasks by sObject type. Events have the object type `Event`, while the other four are all of type `Task`. The Emails, List Emails, Logged Calls, and Tasks filters work differently. All of them filter based upon the picklist value in the field `TaskSubtype` on the `Task` object. 
 
-This field is populated at the time of creation of the `Task` record, and cannot be updated. At the database level, it's [createable but not updateable](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_objects_task.htm). 
+Confusingly, this field isn't connected to the `Type` field whatsoever - it's not a dependent field, and the `Type` field plays no role in Activity filtering.
+
+This field is populated by the system, and cannot be changed. At the database level, it's [createable but not updateable](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_objects_task.htm). 
 
 > \[`TaskSubtype`\] Provides standard subtypes to facilitate creating and searching for specific task subtypes. This field isn’t updateable.
 
@@ -45,6 +47,6 @@ There's still one more caveat of applying this technique, though: if the Task-to
 
 This mismatch does not occur when the `Task` is inserted via code, which doesn’t produce a Chatter post and hence preserves the illusion of being (say) a Call the entire time.
 
-The question of whether it's *wise* to manipulate the Activity timeline in this way is another story. Because this functionality is at least somewhat undocumented, I wouldn't rely on it continuing to work exactly the same way in future API versions.
+The question of whether it's *wise* to manipulate the Activity timeline in this way is another story. Because this functionality is at least somewhat undocumented, I wouldn't rely on it continuing to work exactly the same way in future API versions. Vote for [this Idea](https://success.salesforce.com/ideaView?id=0873A000000COq5QAG) to make `TaskSubtype` editable!
 
 One last interesting facet: there's similar data model on `Event`, with [`Event.EventSubtype`](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_objects_event.htm). Like with `Task`, this field isn’t updateable. However, permitted values are not documented, and the picklist has only a single value, 'Event', which is populated on standard events. Perhaps we'll see more functionality around timeline filtering in future releases.
