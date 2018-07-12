@@ -33,20 +33,20 @@ We cannot change the behavior of the filters. The Activity timeline is a non-con
 
 Because the `TaskSubtype` field is createable, but not updateable, we cannot move existing records from one category to another.
 
-The one route we have is to override the category at the time of creation of the `Task`, and it works only in one situation. If the `TaskSubtype` is ultimately going to be `'Task'` (i.e., it is not an Email, List Email, or Call), we can, in a `before insert` trigger on `Task`, set the `TaskSubtype` to one of the other three values. A putative Task can be transmogrified into an Email, Call, or List Email:
+The one route we have is to override the category at the time of creation of the `Task`, and there are some unique behaviors to this approach. When inserting records via the publisher, if the `TaskSubtype` is ultimately going to be `'Task'` (i.e., it is not an Email, List Email, or Call), we can, in a `before insert` trigger on `Task`, set the `TaskSubtype` to one of the other three values. A putative Task can be transmogrified into an Email, Call, or List Email:
 
 ![Task converted to Call]({{ "/public/lightning-activities-view/task-converted-to-call.png" | absolute_url }})
 
-However, this does not work in the other direction. Records that are being created as Emails, List Emails, or Calls can't have their `TaskSubtype` set to `'Task'`, or to any of the other available values. Attempting to do so has no effect on the created `Task`, although it doesn't cause an error. 
+However, this does not work in the other direction. Records that are being created from the publisher as Emails, List Emails, or Calls can't have their `TaskSubtype` overridden to `'Task'`, or to any of the other available values. Attempting to do so has no effect on the created `Task`, although it doesn't cause an error. The `TaskSubtype` field is `null` upon publisher creation; it's set behind the scenes at some point between the before and after trigger invocations, but by the time we reach `after insert`, the field's inherent non-updateability takes over.
 
-Additionally, `before insert` trigger code cannot introspect the value of the `TaskSubtype` field in any logic, because it is not populated by the system until the `after insert` context - where it cannot be altered. Since it doesn't appear to be inferred from any values that *are* populated at `before insert` time, it seems to simply be magic.
+None of this applies to `Tasks` inserted via Apex. If the publisher isn't the source of the `Task`, any `TaskSubtype` value can be transformed into any other.
 
-There's still one more caveat of applying this technique, though: if the Task-to-be-converted is added via the interactive publisher, Chatter records the original type of the task in its feed:
+There's still one more caveat of applying this technique, though: if the Task-to-be-converted is added via the publisher, Chatter records the original type of the task in its feed:
 
 ![Chatter post]({{ "/public/lightning-activities-view/converted-task-record-chatter.png" | absolute_url }})
 
 This mismatch does not occur when the `Task` is inserted via code, which doesn’t produce a Chatter post and hence preserves the illusion of being (say) a Call the entire time.
 
-The question of whether it's *wise* to manipulate the Activity timeline in this way is another story. Because this functionality is at least somewhat undocumented, I wouldn't rely on it continuing to work exactly the same way in future API versions. Vote for [this Idea](https://success.salesforce.com/ideaView?id=0873A000000COq5QAG) to make `TaskSubtype` editable!
+The question of whether it's *wise* to manipulate the Activity timeline in this way is another story. Because this functionality is at least somewhat undocumented, I wouldn't rely on the publisher continuing to work exactly the same way in future API versions. Vote for [this Idea](https://success.salesforce.com/ideaView?id=0873A000000COq5QAG) to make `TaskSubtype` editable!
 
 One last interesting facet: there's similar data model on `Event`, with [`Event.EventSubtype`](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_objects_event.htm). Like with `Task`, this field isn’t updateable. However, permitted values are not documented, and the picklist has only a single value, 'Event', which is populated on standard events. Perhaps we'll see more functionality around timeline filtering in future releases.
