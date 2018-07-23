@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Testing the Connect API without `seeAllData=true` 
+title: Testing Chatter in Apex without `seeAllData=true` 
 ---
 
 One of the key limitations of the Connect API, which provides interaction with Chatter inside Apex, is that unit tests of Connect API code typically [require the use of `seeAllData=true`](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/connectAPI_TestingApex.htm):
@@ -9,11 +9,11 @@ One of the key limitations of the Connect API, which provides interaction with C
 
 > Most Chatter in Apex methods require access to real organization data, and fail unless used in test methods marked `@IsTest(SeeAllData=true)`.
 
-While a few Connect API methods provide dedicated `setTest...()`-style methods to supply standardized data, others simply cannot be called at all in test context without the `seeAllData=true` annotation - something all good Apex programmers avoid like the plague!
+While some Connect API methods provide dedicated `setTest...()`-style methods to supply standardized data, others simply cannot be called at all in test context without the `seeAllData=true` annotation - something all good Apex programmers avoid like the plague!
 
-In some very simple cases, it may be enough to guard a Connect API call with `if (!Test.isRunningTest()) { }`. If used as a one-liner, it'll even still receive code coverage. But, of course, this abrogates our duty to validate code behavior in our unit tests. To do that, we need to apply dependency injection so that we can see what our code under test is doing, without actually invoking the Connect API.
+In some very simple cases, it may be enough to guard a Connect API call with `if (!Test.isRunningTest()) { }`. If used as a one-liner, it'll even still receive code coverage. But, of course, this abrogates our duty to validate code behavior in our unit tests. To do that, we need to apply dependency injection so that we can see what our code under test is doing *without* actually invoking the Connect API.
 
-Here's a simple and very explicit example. Note that I'm not using a mocking library or `StubProvider` here. This is a simple example, but I often prefer in real code that's not too complex to use this explicit pattern as well.
+Here's a simple and very explicit example. Note that I'm not using a mocking library or `StubProvider` here, but hand-building a mock for this situation. For simple needs in environments that don't use a pervasive mocking framework, I like this explicit model because it's direct and easy to follow.
 
 The outer class `PostsToChatter` represents our class that calls the Connect API.
 
@@ -32,16 +32,17 @@ We establish an inner interface, `ChatterPoster`, that must be implemented by ou
             }
         }
 
-        @TestVisible private ChatterPoster myPoster;
-
-        // ... constructors and code ...
+        private ChatterPoster myPoster;
 
         public PostsToChatter() {
-            // Add a default delegate (the real Chatter poster class
-            myPoster = new RealChatterPoster();
+            // Add a default delegate (the real Chatter poster class)
+            this(new RealChatterPoster());
         }
 
-        // In real code, we'd likely have a constructor accepting a `ChatterPoster` parameter too.
+        // This constructor could be `@TestVisible private` if the delegate isn't part of our public API.
+        public PostsToChatter(ChatterPoster delegate) {
+            myPoster = delegate;
+        }
 
         public void doSomethingRequiringAChatterPost() {
             // ... stuff happens ...
@@ -69,17 +70,17 @@ Here's an example of what one approach to this test class could look like. (This
         
         @isTest
         public static void testTheClass() {
-            PostsToChatter p = new PostsToChatter();
-            p.myPoster = new MockChatterPoster();
+            MockChatterPoster mp = new MockChatterPoster();
+            PostsToChatter p = new PostsToChatter(mp);
             
             // ... invoke class functionality...
              
-            System.assertEquals(1, p.myPoster.timesCalled, 'chatter post called');
+            System.assertEquals(1, mp.timesCalled, 'chatter post called');
             // Post contents are validated in the mock - or store the supplied parameters 
             // in the mock and validate them here, if preferred.
         }
     }
 
-Avoiding `seeAllData=true` is still possible! It's true that many real-world Chatter applications will involve more complex uses of the Connect API, and it will take work to apply the dependency-injection approach. The refactoring effort is likely to pay off, however, in quicker, easier, more reliable testing, and easier extensibility for the future.
+Avoiding `seeAllData=true` is still possible! It's true that many real-world Chatter applications will involve more complex uses of the large and sophisticated Connect API, of which the feed posting shown here is only a small selection. In those cases, it will take work - or might even be infeasible - to apply the dependency-injection approach. The refactoring effort is likely to pay off, however, in quicker, easier, more reliable testing, and easier extensibility for the future.
 
-And for many straightforward uses of Chatter, like posting of notifications, code much like the above will be enough to cover the testing needs.
+For many straightforward uses of Chatter, though, like posting of notifications, code similar to the above will be enough to cover the testing needs.
