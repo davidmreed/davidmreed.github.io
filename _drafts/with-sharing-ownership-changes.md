@@ -6,7 +6,7 @@ title: Trigger Handlers, `without sharing`, and Ownership Transfers
 There's a set of sharing configurations that can cause very interesting - and tricky to debug - access exceptions in Apex. They share in common the following features:
 
  1. The code is running `with sharing`, often in a trigger handler, or doesn't declare a sharing model and inherits `with sharing` from its caller.
- 2. The code is operating on an object whose Organization-Wide Default is Private.
+ 2. The code is operating on an object whose Organization-Wide Default is Private, or in some situations Public Read Only.
  3. The code performs an ownership transfer as well some other privileged operation, such a read/write operation or programmatic sharing.
  4. Usually, the code is affecting a standard object (i.e., *not* using Apex Managed Sharing).
 
@@ -36,9 +36,9 @@ Because of the multiplicity of routes to Full Access and common tendency to test
 
 There's a couple of routes to a fix.
 
-The blunt-instrument approach is to run the trigger handler `without sharing`. In many circumstances that's fine (or required) for a trigger handler, but it's a decision that must be made based on the totality of the organization's sharing architecture and visibility needs.
+The blunt-instrument approach is to run the trigger handler `without sharing`. In many circumstances that's fine (or even *required*) for a trigger handler, but it's a decision that must be made based on the totality of the organization's sharing architecture and visibility needs.
 
-One finer-instrument fix is to use a small helper class that runs `without sharing`. This could be an inner class of the trigger handler, and its only job would be to perform the privileged operation that cannot succeed in the parent trigger:
+One finer-instrument fix is to use a small helper class that runs `without sharing`. This could be an inner class of the trigger handler, and its only job would be to perform the privileged operation that cannot succeed in the parent trigger handler:
 
     private without sharing class ShareHelper {
         private static void addShares(List<LeadShare> shares) {
