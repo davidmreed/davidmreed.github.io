@@ -14,7 +14,7 @@ Dynamic SOQL with complex queries and filters can easily become an unreadable me
 
     return query;
 
-What it's *trying* to do is dynamically query a child object of Contact that's determined at runtime, for records associated to Contacts with a specific title, and which are valid for a specific date.
+What it's *trying* to do is query a dynamically-determined child object of Contact for records associated to Contacts with a specific title, and which are valid for a specific date.
 
 This query also exhibits (at least) five common issues with Dynamic SOQL, in no particular order:
 
@@ -46,13 +46,15 @@ I strongly prefer to use a query template string with Dynamic SOQL, coupled with
         )
     );
 
-By making this switch, we increase the readability of the query, clearly showing which elements are dynamic and which are the static core. We completely eliminate spacing issues. The compile-time type checking on the `List<String>` ensures that we cannot (unless we have additional logic in the parameters to `new List<String>{}`) perform implicit `Date` conversion, or other implicit type conversions. While we're still vulnerable to SOQL injection, explicitly listing out our parameters helps make clear which user-controlled values might need to be escaped.
+By making this switch, we increase the readability of the query, clearly showing which elements are dynamic and which are the static core. We eliminate spacing issues. The compile-time type checking on the `List<String>` ensures that we cannot (unless we have additional logic in the parameters to `new List<String>{}`) perform implicit `Date` conversion, or other implicit type conversions. 
+
+While we're still vulnerable to SOQL injection, explicitly listing out our parameters helps make clear which user-controlled values might need to be escaped. (Note that we're escaping every user-supplied parameter here, even those for which a rogue quote doesn't pose an injection risk; this keeps the static analyzer happy!)
 
 `String.format()` isn't a silver bullet: you still have to remain aware of Dynamic SOQL issues.
 
 While this structure encourages us to use string substitution in lieu of Apex binds, we can still use binds and still encounter dangling bind issues. We'd typically want to retain use of binds anywhere a collection is used with `IN`. It's best to keep those binds within a single method, rather than returning a query string that contains bind values, to avoid those dangling references.
 
-While it's easier to show that user input is correctly escaped in this format, it's still not enforced by the compiler, and a static analyzer (if in use) may or may not catch failure to apply escaping. 
+It's easier to show that user input is correctly escaped in this format, but it's still not enforced by the compiler. A good static analyzer is needed to locate such issues. 
 
 Lastly, `String.format()` comes with a few interesting wrinkles due to its inheritance of the format used by Java's [`MessageFormat`](https://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html). The most obvious consequence of this is the need to repeat all single quotes in the template string, as above (`''{0}''`). See the Java documentation for more nuances involved in this approach.
 
@@ -75,7 +77,7 @@ It's tempting to build a dynamic `SELECT` query by just performing string concat
     }
     // Do more work to build the query...
 
-is about as clean as this approach gets, and I've seen far worse. It's easy to make simple mistakes that cause hard-to-debug syntax errors, field deduplication to avoid `QueryException`s is messy (note that the above example doesn't actually work!), and it's hard to handle FLS properly.
+is about as clean as this approach gets, and I've seen far worse. It's easy to make simple mistakes that cause hard-to-debug syntax errors, field deduplication to avoid `QueryException`s is messy (note that the above example doesn't actually work in all cases!), and it's hard to handle FLS properly.
 
 Much better is to build the `SELECT` clause by constructing a `List<String>` whose contents are the API names of the desired fields. This offers three benefits:
 
