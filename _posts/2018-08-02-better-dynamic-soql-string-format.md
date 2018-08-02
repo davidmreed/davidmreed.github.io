@@ -18,7 +18,7 @@ What it's *trying* to do is query a dynamically-determined child object of Conta
 
 This query also exhibits (at least) five common issues with Dynamic SOQL, in no particular order:
 
- 1. Issues with spacing. A missing space after both `objectName` and `filterValue` results in a parse error at runtime, since Dynamic SOQL syntax cannot be checked at compile time. These errors are very easy to make in Dynamic SOQL and aren't always apparent upon inspection.
+ 1. Issues with spacing. A missing space after `objectName` results in a parse error at runtime, since Dynamic SOQL syntax cannot be checked at compile time. These errors are very easy to make in Dynamic SOQL and aren't always apparent upon inspection.
  2. Hanging Apex variable binds. The `:title` bind will be evaluated against the local scope at the time this query string is passed to `Database.query()`, not at the time of its creation. This makes storing and passing query strings as parameters fraught with risk: either you must construct and use all query strings within a single scope, or you must not use Apex binding (for which see more below), or you must risk evaluating binds in a different scope and introduce a non-compiler-checkable dependency in your code.
  3. SOQL injection vulnerabilities. Presumably user-supplied values (`filterField`, `filterValue`) aren't escaped with `String.escapeSingleQuotes()` to mitigate potential injection attacks.
  4. Incorrect `Date` format conversion. While it's legal and compiles, implicit `Date`-to-`String` conversion by doing `myString + myDate` results in the wrong `Date` format for SOQL and will yield runtime errors. It's critical to convert Dates to SOQL format with `String.valueOf(myDate)`, or to use Apex binding instead (resurfacing issue 2).
