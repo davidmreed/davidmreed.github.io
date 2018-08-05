@@ -3,7 +3,7 @@ layout: page
 title: About
 ---
 
-I am a 4x certified Salesforce developer. My other interests include officiating roller derby, Ancient Greek, Plato, botanical gardens, and cryptography.
+I am a 5x certified Salesforce developer. My other interests include officiating roller derby, Ancient Greek, Plato, botanical gardens, and cryptography.
 
 I [consult]({{site.baseurl}}/consulting) on Salesforce and welcome your inquiries. In addition to the full breadth of platform development, I have a strong interest in Salesforce for nonprofit organizations.
 
@@ -11,8 +11,10 @@ I hold these [Salesforce certifications](http://certification.salesforce.com/ver
 
 <div>
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_II_RGB.png" alt="Salesforce Certified Platform Developer II" /> 
-<img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_I_RGB.png" alt="Salesforce Certified Platform Developer I" /><br />
+<img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_I_RGB.png" alt="Salesforce Certified Platform Developer I" />
 <img style="display: inline;" src="{{ site.baseurl }}/public/Salesforce_Sharing_Visibility_Designer.png" alt="Salesforce Certified Sharing and Visibility Designer" />
+<br />
+<img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_App_Blder_RGB.png" alt="Salesforce Certified App Builder" />
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Admin_RGB.png" alt="Salesforce Certified Administrator" />
 </div>
 
