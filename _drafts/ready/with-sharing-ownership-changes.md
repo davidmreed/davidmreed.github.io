@@ -31,9 +31,11 @@ An affected solution tends to look like this, albeit often more complex:
 		// Exception is thrown! INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY, insufficient access rights on cross-reference id: []
 	}
 
-The critical issue is that lead ownership is transferred away from the running user, assuming they're working on their own records, during the trigger's operation. Once that update has taken place, based on a Private Organization-Wide Default, the running user no longer has the right to add a `LeadShare` entry in the `after update` event (they're not the owner anymore), unless they possess some overriding permission like "Modify All Data" or occupy a position above the new owner in the role hierarchy. Similarly, they wouldn't be able to find the original `Lead` by querying against its Id in a Private sharing environment, unless some sharing rule or permission provided them with access.
+The critical issue is that lead ownership is transferred away from the running user, assuming they're working on their own records, during the trigger's operation. Once that update has taken place, based on a Private Organization-Wide Default, the running user no longer has the right to add a `LeadShare` entry in the `after update` event (they're not the owner anymore), unless they possess some overriding permission like "Modify All Data" or occupy a position above the new owner in the role hierarchy. 
 
-Because of the multiplicity of routes to Full Access and common tendency to test code as a System Administrator who possesses Modify All Data permission, this error class can sneak by unit testing processes and can be tricky to pin down and debug, particularly in a situation with complex trigger-handler logic or even multiple triggers. Possessing the affected sObjects or their Ids in memory from prior to the ownership transfer hides the usual point where the error would surface (a SOQL query), further complicating identification of the underlying issue.
+Similarly, they wouldn't be able to find the original `Lead` by querying against its Id in a Private sharing environment, unless some sharing rule or permission provided them with access, but the programmatic sharing issue is more insidious because Apex retains in-memory sObjects and Ids from the point when the user *did* have access to them.
+
+Because of the multiplicity of routes to Full Access and common tendency to test code as a System Administrator who possesses Modify All Data permission (unless the test class generates its own user), this error class can sneak by unit testing processes and can be tricky to pin down and debug. 
 
 There's a couple of routes to a fix.
 
