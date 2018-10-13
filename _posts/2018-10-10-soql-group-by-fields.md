@@ -56,4 +56,4 @@ Types are listed below by UI type, with the SOAP type in parentheses. This infor
  - Time (time)
  - Formulas of types other than Checkbox and Date, **including the otherwise-groupable String type**.
 
- This post grew out of an interesting question on [Salesforce Stack Exchange](https://salesforce.stackexchange.com/questions/235370/error-thrown-while-trying-to-do-a-group-by/235383#235383). I was intrigued by the lack of definition to this facet of SOQL and spent some time putting together a [community wiki answer](https://salesforce.stackexchange.com/questions/235528/what-types-of-fields-are-groupable-in-a-soql-group-by-clause).
+ This post grew out of an interesting question on [Salesforce Stack Exchange](https://salesforce.stackexchange.com/questions/235370/error-thrown-while-trying-to-do-a-group-by/235383#235383). I was intrigued by the lack of definition to this facet of SOQL and spent some time putting together a [community wiki answer](https://salesforce.stackexchange.com/questions/235528/what-types-of-fields-are-groupable-in-a-soql-group-by-clause), which revealed that my original answer was mistaken: `GROUP BY` is stranger than I thought.
