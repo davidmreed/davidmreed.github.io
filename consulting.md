@@ -11,18 +11,6 @@ Services I provide include application development, customization, implementatio
 
 I can be reached any time at [david@ktema.org](david@ktema.org), or enter your information below to receive a quick response. I'm located in Philadelphia, Pennsylvania, and happy to work with organizations anywhere. I am currently available on a part-time basis.
 
-<form action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
-
-<input type=hidden name="oid" value="00D36000000YDbo">
-<input type=hidden name="retURL" value="https://www.ktema.org/consulting/">
-
-<label for="first_name">First Name</label><input  id="first_name" maxlength="40" name="first_name" size="20" type="text" /><br>
-<label for="last_name">Last Name</label><input  id="last_name" maxlength="80" name="last_name" size="20" type="text" /><br>
-<label for="email">Email</label><input  id="email" maxlength="80" name="email" size="20" type="text" /><br>
-<label for="company">Company</label><input  id="company" maxlength="40" name="company" size="20" type="text" /><br>
-<input type="submit" name="submit">
-</form>
-
 ## Technologies
 
 I'm fluent with all of the core Salesforce technologies, including Apex, Visualforce, Lightning, JavaScript, SOQL and SOSL, high data volume processing, batch and queueable asynchronous code, and REST and JSON services. I use the latest development technologies, including Salesforce DX. And I have experience applying the Salesforce Data Loader and other ETL tools - including fully custom solutions written in Python - to integrate, process, and transform Salesforce data.
