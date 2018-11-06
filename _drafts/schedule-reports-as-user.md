@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Running Reports as Selected Users with JWT and the Reports and Dashboards API
+title: Running Reports as Selected Users with JWT Oauth and the Reports and Dashboards API
 ---
 
 Salesforce reporting introduces some fascinating complexities to data visibility and exposure, particularly for organizations using Private Organization-Wide Defaults. 
@@ -84,61 +84,34 @@ The feature set shown here in JSON is at parity with the user interface, and has
 
 While the Reporting and Analytics API doesn't support setting the context user for a subscription, it does take action as the user as whom we authenticate to the API. And that we **can** control.
 
-While an admin can Login As a user to create a one-off subscription, we're more interested here in industrial-strength solutions that can support thousands of users. So we're going to build a script to create subscriptions by talking to the Reports and Dashboards API, using the Javascript Web Token (JWT) OAuth authentication mechanism. Why? Because the JWT flow is our only route to seamlessly authenticating as *any* (admin-approved) user, with no manual intervention or setup required on a per-user basis.
+While an admin can Login As a user to create a one-off subscription, we're more interested here in industrial-strength solutions that can support thousands of users. So we're going to build a script to create subscriptions by talking to the Reports and Dashboards API, using the Javascript Web Token (JWT) Oauth authentication mechanism. Why? Because the JWT flow is our only route to seamlessly authenticating as *any* (admin-approved) user, with no manual intervention or setup required on a per-user basis.
 
-## On Platform: UI and Data Model
+## Setup: Connected Apps and Certificates
 
-First, though, the UI side. Have your Lightning component persist the user's report selections into a custom object - call it `Report_Subscription__c`. Include the details (API name) of the selected reports on that object, and a status ('New', 'Current', or 'Cancelled'). Make the Org-Wide Default Private.
+Setting up the JWT flow involves building a Connected App in Salesforce, under which our scripts will authenticate. JWT is secured using a certificate and associated public key/private key pair - Salesforce holds the public key, our script holds the private key. 
 
-Create a Connected App and configure it for JWT authentication in Salesforce, in the same fashion as you would for [using SFDX for continuous integration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_jwt_flow.htm#!).
+This is the same mechanism used for authentication in many Continuous Integration solutions. I'm not going to rehash all of the details here, because they're well-covered elsewhere. You can follow Salesforce's steps in [using SFDX for continuous integration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_jwt_flow.htm#!), or read through my own article about [setting up CircleCI with Salesforce DX](https://www.ktema.org/2018/02/02/salesforce-dx-circleci/). 
 
-Add the profiles of each of the users who are to be subscribed to the Connected App as a pre-approved Profile, or assign all of those users to a Permission Set and assign that Permission Set as pre-approved on the Connected App.
+When you're finished building the Connected App, add the Profiles of each of the users who are to be subscribed to reports to the Connected App as a pre-approved Profile, or assign all of those users a Permission Set and assign that Permission Set as pre-approved on the Connected App. This ensures that we can authenticate to the API as those users without any intervention.
 
-Additionally, ensure that some designated administrator or API user is pre-approved on the Connected App. This user will be employed by the scripts to query for users who need subscriptions maintained, and should have View All permission on `Report_Subscription__c` (or a superseding permission like View All Data).
+## Building the Scripts
 
-## Off Platform: Subscription Maintenance Scripts
+We're going to stick to sketching out a solution here that can be adapted to many different business problems, as we discussed earlier. For simplicity, we'll use Salesforce DX to handle the JWT authentication, even though we're not using SFDX for development here. Because it's my preferred scripting workflow, I'll be using Python with `simple_salesforce`, but you could just as easily achieve this in Ruby, Java, JavaScript, or even just bash and curl.
 
-Then, the backend scripts. This involves some off-Salesforce machine.
+The main job of our script is to login as a user and create a report subscription for them. We might build this towards a specific business process by adding scaffolding to, for example, query a custom object out of Salesforce to define *which* reports should be subscribed automatically for which users, but we'll leave that elaboration to a later date. Once we've got that core functionality achieved, we can wrap it in the logic we need for specific applications.
 
-You can use SFDX to [authenticate with JWT](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_jwt_flow.htm) and get an access token, just like one does in setting up a Continuous Integration pipeline, or you can implement JWT within your own application. You'll need to do this repeatedly - once for each user to be subscribed, and once at the beginning of the process to locate all of the users who are to be subscribed.
+Let's put the key field (private key) from our JWT setup in a file called `server.key`. Put the username of the user we want to subscribe (who must be pre-authorized to the Connected App) in the environment variable `$USERNAME` and the Connected App's Consumer Key in `$CONSUMERKEY`. 
 
-The first job of the script is to authenticate to Salesforce as your administrative user. It should query for all `Report_Subscription__c` records and the usernames of their owners.
-
-Then, it must iterate over the users who have these records present.
-
-For each user, it authenticates to Salesforce as them, again using JWT authentication against our Connected App. For each of that user's `Report_Subscription__c` records that is in status 'New', it should call the Reports and Dashboards API to initiate the subscription as the current user, and update the record to 'Current'. For each that is 'Cancelled', it should call the Reports and Dashboards API to cancel the subscription, and delete the `Report_Subscription__c` record.
-
-This script or scripts will need to run on a regular basis, perhaps nightly. You could do this in a number of ways:
-
- - Run manually on a local machine. 
- - Run in a cron job on your on-prem or cloud server.
- - Run in Heroku.
- - Repurpose a Continuous Integration pipeline on the Git repository where your scripts are kept to execute it on a schedule ([for example, on CircleCI using scheduled workflows](https://circleci.com/docs/2.0/workflows/#scheduling-a-workflow)).
-
-The key here is that you have to be able to protect your secrets - the private key file for your JWT authentication. I'm most familiar and happy with doing that in a CI context, where you encrypt the key file in your repo and make the passphrase available only through environment variables. But the actual architecture can take a number of different forms.
-
-Personally, I would probably do this as two Python/`simple_salesforce` scripts, calling out to SFDX to handle the authentication and grabbing the auth token out of `sfdx force:org:display`, and I'd have my CI solution execute the script every night, because that's the most efficient use of the architecture I already work with. But there's a lot of ways to get it done, and your organization's architecture (and security needs) will dictate a lot of those choices.
-
-As I mentioned, I've not done the full build-out of an app like this, but I've been thinking about it recently and I believe it's fundamentally feasible. (Edit: I've done a small PoC, below). Feedback and critique would be quite welcome.
-
-## Proof of Concept
-
-I've thrown together a tiny demo that this approach is practical.
-
-Get your Connected App setup for JWT and place your server key in a file `server.key`. Put the username of the user you want to subscribe (must be pre-authorized to the Connected App) in `$USERNAME` and your Connected App's Consumer Key in `$CONSUMERKEY`. Then run
+Then we can get an Access Token to make an API call into Salesforce, letting SFDX do the heavy lifting:
 
     sfdx force:auth:jwt:grant --clientid $CONSUMERKEY
     --jwtkeyfile server.key --username $USERNAME -a reports-test
     export INSTANCE_URL=$(sfdx force:org:display --json -u reports-test | python -c "import json; import sys; print(json.load(sys.stdin)['result']['instanceUrl'])")
     export ACCESS_TOKEN=$(sfdx force:org:display --json -u reports-test | python -c "import json; import sys; print(json.load(sys.stdin)['result']['accessToken'])")
 
-That establishes an authenticated session as `$USERNAME`, even though we do not have that user's credentials or any setup for that user besides preauthorizing their profile on the Connected App.
+Now we've established an authenticated session as `$USERNAME`, even though we do not have that user's credentials or any setup for that user besides preauthorizing their profile on the Connected App, and we have the values we need (the Access Token and Instance URL) stored in our environment.
 
-Then execute this Python script
-
-    python add-subscription.py $REPORTID
-
-where `$REPORTID` is the Salesforce Id of the report you wish to subscribe the user for, and `add-subscription.py` is the following script:
+Now we'll switch over to Python. A simple script grabs those environment variables and uses `simple_salesforce` to make an API call to generate the report subscription.
 
     import simple_salesforce
     import os
@@ -190,9 +163,31 @@ where `$REPORTID` is the Salesforce Id of the report you wish to subscribe the u
 
 (Yes, I know I shouldn't call `simple_salesforce`'s internal API like that! One could also do this with no more than `bash` and `curl`, if desired.)
 
-And then if we log in as that user in the UI, we'll find a shiny new Lightning report subscription established for them. Note that it's set for daily at 0300, as specified in the example JSON.
+Execute the script
 
-[![enter image description here][1]][1]
+    python add-subscription.py $REPORTID
+
+where `$REPORTID` is the Salesforce Id of the report you wish to subscribe the user for, and then if we log in as that user in the UI, we'll find a shiny new Lightning report subscription established for them. 
+
+FIXME: image here
+
+Note that it's set for daily at 0300, as specified in the example JSON.
+
+## Building the Business Process
+
+This script or scripts will need to run on a regular basis, perhaps nightly. You could do this in a number of ways:
+
+ - Run manually on a local machine. 
+ - Run in a cron job on your on-prem or cloud server.
+ - Run in Heroku.
+ - Repurpose a Continuous Integration pipeline on the Git repository where your scripts are kept to execute it on a schedule ([for example, on CircleCI using scheduled workflows](https://circleci.com/docs/2.0/workflows/#scheduling-a-workflow)).
+
+The key here is that you have to be able to protect your secrets - the private key file for your JWT authentication. I'm most familiar and happy with doing that in a CI context, where you encrypt the key file in your repo and make the passphrase available only through environment variables. But the actual architecture can take a number of different forms.
+
+Personally, I would probably do this as two Python/`simple_salesforce` scripts, calling out to SFDX to handle the authentication and grabbing the auth token out of `sfdx force:org:display`, and I'd have my CI solution execute the script every night, because that's the most efficient use of the architecture I already work with. But there's a lot of ways to get it done, and your organization's architecture (and security needs) will dictate a lot of those choices.
+
+As I mentioned, I've not done the full build-out of an app like this, but I've been thinking about it recently and I believe it's fundamentally feasible. (Edit: I've done a small PoC, below). Feedback and critique would be quite welcome.
+
 
 ## Limits Notes
 
