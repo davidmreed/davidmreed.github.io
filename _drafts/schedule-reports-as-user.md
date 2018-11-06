@@ -13,23 +13,74 @@ A naive solution would create one subscription to this report, say for Frank Q. 
 
 FIXME: image here
 
-But this runs afoul of the principle mentioned above: the report's context user is Frank, and the recipients of the report will see data *as if they were Frank*. This is unlikely to be an acceptable outcome.
+But this runs afoul of the principle mentioned above: the report's context user is Frank, and the recipients of the report will see data *as if they were Frank*. From [Salesforce](https://help.salesforce.com/articleView?id=reports_subscribe_lex.htm&type=5):
+
+> IMPORTANT Recipients see emailed report data as the person running the report. Consider that they may see more or less data than they normally see in Salesforce.
+
+This is unlikely to be an acceptable outcome. 
+
+Further, we can't simply have Frank create many subscriptions to the same report, adding one user as both the recipient and the running user to each: Frank only gets five total report subscriptions, and he can only have one subscription to each report.
 
 Of course, users can schedule reports themselves, in their own context, and they can run them manually, and we can build dynamic dashboards (which come with their own limits). But what if we really need to create these subscriptions for our users automatically, or allow our admins to manage them for thousands of users at a time? What if, in fact, we want to offer the users a bespoke user interface to let them select subscriptions to standard corporate reports, or run reports in their contexts to feed into an external reporting or business intelligence solution?
 
-This is a question I've [struggled with before](https://salesforce.stackexchange.com/questions/202952/subscribe-users-to-reports-run-as-themselves-using-api-or-apex), and I was excited to see Martin Borthiry propose the issue on [Salesforce Stack Exchange](https://salesforce.stackexchange.com/questions/237526/schedule-and-run-a-report-as-an-specific-user-from-apex). Here', I'd like to expand on the solution I developed. 
+This is a question I've [struggled with before](https://salesforce.stackexchange.com/questions/202952/subscribe-users-to-reports-run-as-themselves-using-api-or-apex), and I was excited to see Martin Borthiry propose the issue on [Salesforce Stack Exchange](https://salesforce.stackexchange.com/questions/237526/schedule-and-run-a-report-as-an-specific-user-from-apex). Here, I'd like to expand on the solution I sketched out in response to Martin's question. 
 
 ## Background
 
-There are two report subscription functionalities on Salesforce, and they work rather differently.
+There are two report subscription functionalities on Salesforce, and they work rather differently. Report subscriptions are summarized in the Salesforce documentation under [Schedule and Subscribe to Reports](https://help.salesforce.com/articleView?id=reports_subscribe_overview.htm&type=0).
 
-> The Classic Schedule Future Runs functionality is represented under the hood as `CronTrigger` and `CronJobDetail` records, which cannot be created programmatically. 
+On Classic, one can "Subscribe" to a report, and one can "Schedule Future Runs". The nomenclature here is confusing: a Classic "Subscribe" asks Salesforce to notify us if the report's results meet certain thresholds, but it's *not* for regularly receiving copies of the report. We're not going to look at this feature. "Schedule Future Runs" is equivalent to a report subscription in Lightning and is the feature corresponding to the business problem discussed above.
 
-> I've also looked into creating Lightning report subscriptions using the Analytics [Reports and Dashboards] API. However, that API appears to only create subscriptions for the logged-in user, and the API returns an error if a subscription already exists for the logged-in user. This makes it impossible to subscribe other users individually using the API.
+FIXME: image here
 
-The most promising avenue appears to be the Reports and Dashboards API, because it offers an [endpoint](https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/analytics_api_notification_example_post_notifications.htm) to create an Analytics Notification (a Lightning report subscription). The maximum subscription count for a user [is 5](https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/sforce_analytics_rest_api_limits_limitations.htm). 
+On Lightning, we simply have an option to Subscribe. There's no Lightning equivalent to the Classic "Subscribe" feature.
 
-This endpoint offers a phantom of hope for an easy solution, in the sense that it allows you to add **recipients** of the report notification. The problem is that you, like me, are relying on the org's visibility settings to control the report content - you need each outbound report notification to be based on the user's **own** record-level access, not some other user's.
+FIXME: image here
+
+So what happens when we subscribe to a report?
+
+The Classic Schedule Future Runs and the Lightning Subscribe functionality is represented under the hood as [`CronTrigger`](https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_crontrigger.htm) and [`CronJobDetail`](https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_cronjobdetail.htm) records with the `CronJobDetail.JobType` field set to `'A'`, for Analytics Notification. You can find them in queries from the Developer Console or Workbench via queries like
+
+    SELECT CronExpression, OwnerId, CronJobDetail.Name FROM CronTrigger WHERE CronJobDetail.JobType = 'A'
+
+Unfortunately, knowing this doesn't help us very much. Neither `CronTrigger` nor `CronJobDetail` can be created directly in Apex or via the API, and the objects provide very little detail about existing report subscriptions. The Report Id, for example, is notable by its absence, and the `Name` field is just a UUID.
+
+A more promising avenue for our use case is the Reports and Dashboards API, because it offers an [endpoint](https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/analytics_api_notification_example_post_notifications.htm) to create an Analytics Notification. 
+
+    POST /services/data/vXX.0/analytics/notifications
+
+with a JSON body like this 
+
+    {
+      "active" : true,
+      "createdDate" : "",
+      "deactivateOnTrigger" : false,
+      "id" : "",
+      "lastModifiedDate" : "",
+      "name" : "New Notification",
+      "recordId" : "00OXXXXXXXXXXXXXXX",
+      "schedule" : {
+        "details" : {
+          "time" : 3
+        },
+        "frequency" : "daily"
+      },
+      "source" : "lightningReportSubscribe",
+      "thresholds" : [ {
+        "actions" : [ {
+          "configuration" : {
+            "recipients" : [ ]
+          },
+          "type" : "sendEmail"
+        } ],
+        "conditions" : null,
+        "type" : "always"
+      } ]
+    }
+    
+The feature set shown here in JSON is at parity with the user interface, and has the same limitations. Adding a recipient for the subscription over the API, for example, suffers from the same visibility flaws as doing so in the UI. And the API doesn't let us do what we truly want to - create report subscriptions *for* other users that run *as* those other users - because we cannot set the owner of the subscription programmatically.
+
+... or can we?
 
 Since the Reporting and Analytics API doesn't support setting the context user for the subscription, we're stuck with controlling the user as whom we authenticate to the API.
 
@@ -148,7 +199,7 @@ And then if we log in as that user in the UI, we'll find a shiny new Lightning r
 ## Limits Notes
 
 The Reports and Dashboards API has relatively low limits. As noted above, your users can only subscribe to 5 reports. If you're actually running the reports yourself via the API, be aware of the [limits involved](https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/sforce_analytics_rest_api_limits_limitations.htm) (trimmed here):
-
+The maximum subscription count for a user [is 5](https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/sforce_analytics_rest_api_limits_limitations.htm). 
 >  - The API can process only reports that contain up to 100 fields selected as columns.
  - **Your org can request up to 500 synchronous report runs per hour.**
  - **The API supports up to 20 synchronous report run requests at a time.**
