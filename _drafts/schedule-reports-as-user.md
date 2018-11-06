@@ -82,11 +82,9 @@ The feature set shown here in JSON is at parity with the user interface, and has
 
 ... or can we?
 
-Since the Reporting and Analytics API doesn't support setting the context user for the subscription, we're stuck with controlling the user as whom we authenticate to the API.
+While the Reporting and Analytics API doesn't support setting the context user for a subscription, it does take action as the user as whom we authenticate to the API. And that we **can** control.
 
-With 1,000+ users to schedule, creating individual Named Credentials to authenticate as each user back into the same instance does not seem like a fruitful approach. Instead, I'm suggesting the one route of which I'm aware that does not require each user to individually authenticate and approve access: the JWT OAuth flow. I'll rough out below what this architecture would look like, using an external script to authenticate and update report subscriptions in Salesforce. 
-
-I'm quite honestly unsure of whether you could do this in pure Apex or not; I've never tried to implement JWT from scratch. I would certainly be concerned about secret storage if attempting to build this all on-platform.
+While an admin can Login As a user to create a one-off subscription, we're more interested here in industrial-strength solutions that can support thousands of users. So we're going to build a script to create subscriptions by talking to the Reports and Dashboards API, using the Javascript Web Token (JWT) OAuth authentication mechanism. Why? Because the JWT flow is our only route to seamlessly authenticating as *any* (admin-approved) user, with no manual intervention or setup required on a per-user basis.
 
 ## On Platform: UI and Data Model
 
