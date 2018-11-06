@@ -96,7 +96,7 @@ When you're finished building the Connected App, add the Profiles of each of the
 
 ## Building the Scripts
 
-We're going to stick to sketching out a solution here that can be adapted to many different business problems, as we discussed earlier. For simplicity, we'll use Salesforce DX to handle the JWT authentication, even though we're not using SFDX for development here. Because it's my preferred scripting workflow, I'll be using Python with `simple_salesforce`, but you could just as easily achieve this in Ruby, Java, JavaScript, or even just bash and curl.
+We're going to stick to sketching out a solution here that can be adapted to many different business problems, as we discussed earlier. For simplicity, we'll use Salesforce DX to handle the JWT authentication, even though we're not using SFDX for development here. Because it's my preferred scripting workflow, I'll be using Python with `simple_salesforce`, but you could just as easily achieve this in Ruby, Java, JavaScript, or even just `bash` and `curl`.
 
 The main job of our script is to login as a user and create a report subscription for them. We might build this towards a specific business process by adding scaffolding to, for example, query a custom object out of Salesforce to define *which* reports should be subscribed automatically for which users, but we'll leave that elaboration to a later date. Once we've got that core functionality achieved, we can wrap it in the logic we need for specific applications.
 
@@ -104,14 +104,13 @@ Let's put the key field (private key) from our JWT setup in a file called `serve
 
 Then we can get an Access Token to make an API call into Salesforce, letting SFDX do the heavy lifting:
 
-    sfdx force:auth:jwt:grant --clientid $CONSUMERKEY
-    --jwtkeyfile server.key --username $USERNAME -a reports-test
+    sfdx force:auth:jwt:grant --clientid $CONSUMERKEY --jwtkeyfile server.key --username $USERNAME -a reports-test
     export INSTANCE_URL=$(sfdx force:org:display --json -u reports-test | python -c "import json; import sys; print(json.load(sys.stdin)['result']['instanceUrl'])")
     export ACCESS_TOKEN=$(sfdx force:org:display --json -u reports-test | python -c "import json; import sys; print(json.load(sys.stdin)['result']['accessToken'])")
 
 Now we've established an authenticated session as `$USERNAME`, even though we do not have that user's credentials or any setup for that user besides preauthorizing their profile on the Connected App, and we have the values we need (the Access Token and Instance URL) stored in our environment.
 
-Now we'll switch over to Python. A simple script grabs those environment variables and uses `simple_salesforce` to make an API call to generate the report subscription.
+Now we'll switch over to Python. A quick script grabs those environment variables and uses `simple_salesforce` to make an API call to generate the report subscription.
 
     import simple_salesforce
     import os
