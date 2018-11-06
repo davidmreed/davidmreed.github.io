@@ -175,6 +175,10 @@ Note that it's set for daily at 0300, as specified in the example JSON.
 
 ## Building the Business Process
 
+### Bulk One-Off Subscriptions
+
+### On-Platform Subscription App
+
 This script or scripts will need to run on a regular basis, perhaps nightly. You could do this in a number of ways:
 
  - Run manually on a local machine. 
@@ -185,22 +189,3 @@ This script or scripts will need to run on a regular basis, perhaps nightly. You
 The key here is that you have to be able to protect your secrets - the private key file for your JWT authentication. I'm most familiar and happy with doing that in a CI context, where you encrypt the key file in your repo and make the passphrase available only through environment variables. But the actual architecture can take a number of different forms.
 
 Personally, I would probably do this as two Python/`simple_salesforce` scripts, calling out to SFDX to handle the authentication and grabbing the auth token out of `sfdx force:org:display`, and I'd have my CI solution execute the script every night, because that's the most efficient use of the architecture I already work with. But there's a lot of ways to get it done, and your organization's architecture (and security needs) will dictate a lot of those choices.
-
-As I mentioned, I've not done the full build-out of an app like this, but I've been thinking about it recently and I believe it's fundamentally feasible. (Edit: I've done a small PoC, below). Feedback and critique would be quite welcome.
-
-
-## Limits Notes
-
-The Reports and Dashboards API has relatively low limits. As noted above, your users can only subscribe to 5 reports. If you're actually running the reports yourself via the API, be aware of the [limits involved](https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/sforce_analytics_rest_api_limits_limitations.htm) (trimmed here):
-The maximum subscription count for a user [is 5](https://developer.salesforce.com/docs/atlas.en-us.api_analytics.meta/api_analytics/sforce_analytics_rest_api_limits_limitations.htm). 
->  - The API can process only reports that contain up to 100 fields selected as columns.
- - **Your org can request up to 500 synchronous report runs per hour.**
- - **The API supports up to 20 synchronous report run requests at a time.**
- - A list of up to 2,000 instances of a report that was run asynchronously can be returned.
- - The API supports up to 200 requests at a time to get results of asynchronous report runs.
- - Your organization can request up to 1,200 asynchronous requests per hour.
-Asynchronous report run results are available within a 24-hour rolling period.
- - The API returns up to the first 2,000 report rows. You can narrow results using filters.
-
-
-  [1]: https://i.stack.imgur.com/OSaPw.png
