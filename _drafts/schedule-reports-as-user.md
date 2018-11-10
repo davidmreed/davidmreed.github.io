@@ -31,11 +31,11 @@ There are two report subscription functionalities on Salesforce, and they work r
 
 On Classic, one can "Subscribe" to a report, and one can "Schedule Future Runs". The nomenclature here is confusing: a Classic "Subscribe" asks Salesforce to notify us if the report's results meet certain thresholds, but it's *not* for regularly receiving copies of the report. We're not going to look at this feature. "Schedule Future Runs" is equivalent to a report subscription in Lightning and is the feature corresponding to the business problem discussed above.
 
-FIXME: image here
+FIXME: image here - taken
 
 On Lightning, we simply have an option to Subscribe. There's no Lightning equivalent to the Classic "Subscribe" feature.
 
-FIXME: image here
+FIXME: image here - taken
 
 So what happens when we subscribe to a report?
 
@@ -107,6 +107,8 @@ Then we can get an Access Token to make an API call into Salesforce, letting SFD
     sfdx force:auth:jwt:grant --clientid $CONSUMERKEY --jwtkeyfile server.key --username $USERNAME -a reports-test
     export INSTANCE_URL=$(sfdx force:org:display --json -u reports-test | python -c "import json; import sys; print(json.load(sys.stdin)['result']['instanceUrl'])")
     export ACCESS_TOKEN=$(sfdx force:org:display --json -u reports-test | python -c "import json; import sys; print(json.load(sys.stdin)['result']['accessToken'])")
+
+(If you have `jq` installed, you can simplify these one-liners).
 
 Now we've established an authenticated session as `$USERNAME`, even though we do not have that user's credentials or any setup for that user besides preauthorizing their profile on the Connected App, and we have the values we need (the Access Token and Instance URL) stored in our environment.
 
