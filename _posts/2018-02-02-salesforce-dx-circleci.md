@@ -91,7 +91,7 @@ Commit the `assets` directory and encrypted private key to Git:
 
 Here's what the Connected App will look like at the end of the process.
 
- ![Connected App screenshot]({{ site.baseurl }}/public/sfdx-circleci/connected-app.png)
+ ![Connected App screenshot]({{ "/public/sfdx-circleci/connected-app.png" | absolute_url }})
 
 ### Set up CircleCI for Authentication
 
@@ -106,7 +106,7 @@ CircleCI itself must be configured to talk to the Dev Hub using the private key 
 
 Since CircleCI won't allow you to access the values of these variables later, make sure to retain `$KEY` in a secure store, like a password manager.
 
-![CircleCI screenshot]({{ site.baseurl }}/public/sfdx-circleci/circleci-environment.png)
+![CircleCI screenshot]({{ "/public/sfdx-circleci/circleci-environment.png" | absolute_url }})
 
 ## Add the Project to Codecov.io
 
@@ -132,7 +132,7 @@ Add `.circleci` to Git and push:
 
 The project builds in SFDX on CircleCI, and if all goes well, you get a green checkmark in your commit log in GitHub.
 
-![CI success on GitHub]({{ site.baseurl }}/public/sfdx-circleci/ci-success.png)
+![CI success on GitHub]({{ "/public/sfdx-circleci/ci-success.png" | absolute_url }})
 
 Congratulations - you have a fully-fledged CI solution in place!
 

@@ -33,7 +33,7 @@ The only action is Run Flow, triggering Flow 2 with the Registrant ID as a param
 
 This flow contains the meat of the functionality. It accepts one input variable, holding the ID of the `C&P Event Registered Attendee`. The flow has the following structure.
 
-![Update Campaign Members flow]({{ site.baseurl }}/public/cnp-campaign-screens/flow1.png)
+![Update Campaign Members flow]({{ "/public/cnp-campaign-screens/flow1.png" | absolute_url }})
 
 Four Fast Lookup elements assign the `C&P Event Registered Attendee`, `C&P Event`, `Campaign Member`, and `C&P Event Registrant` objects to sObject variables. Note that the registered attendee is guaranteed not to be `null` by the calling process, but the other objects are nullable, and the registrant will often be `null` dependent upon the user's processing of temporary contacts.
 
@@ -87,7 +87,7 @@ If the registrant has not yet been populated (for a named event), the `Registere
 
 This flow is required for handling anonymous registrations (where a contact is assigned only to the registrant object) and for populating the "Registered by" field on the `Campaign Member` in the circumstance that the `C&P Temporary Contact` corresponding to the registrant is processed after one or more of those corresponding to the associated attendees. It accepts as input parameter the ID of the modified `C&P Event Registrant` object. The flow has the following structure.
 
-![Update Registered Attendees flow]({{ site.baseurl }}/public/cnp-campaign-screens/flow2.png)
+![Update Registered Attendees flow]({{ "/public/cnp-campaign-screens/flow2.png" | absolute_url }})
 
 A Fast Lookup assigns all `C&P Registered Attendees` linked to the registrant to an sObject collection variable. A loop iterates over the collection and invokes Flow 1 with the required parameter. No criteria are applied to the registered attendees; all evaluation is handled in Flow 1.
 
