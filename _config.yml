@@ -17,10 +17,6 @@ author:
   url:               https://www.ktema.org
   email:             david@ktema.org
 
-plugins:
-  - jekyll-feed
-  - jekyll-seo-tag
-
 twitter:
   username: aoristdual
   card: summary
@@ -34,3 +30,7 @@ social:
 
 # Custom vars
 version:             1.0.0
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
