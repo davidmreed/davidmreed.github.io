@@ -8,6 +8,7 @@ layout: default
   {{ content }}
 </div>
 <div class="sharebuttons">
+  <p>Share this piece: </p>
   <ul class="share-buttons">
     <li>
         <a href="https://twitter.com/intent/tweet?text={{ page.title }}&url={{ site.url }}{{ page.url }}&via={{ site.twitter_username }}&related={{ site.twitter_username }}" rel="nofollow" target="_blank" title="Share on Twitter">
@@ -25,4 +26,5 @@ layout: default
       </a>
     </li>
   </ul>
+  <p>or respond via <a href="https://twitter.com/@{{ site.twitter_username }}">Twitter</a> or <a href="mailto:david@ktema.org?subject={{ page.title }}">email.</a></p>
 </div>
