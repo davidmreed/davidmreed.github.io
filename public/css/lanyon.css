@@ -501,6 +501,7 @@ a.pagination-item:hover {
 
 .share-buttons img {
   padding:0px;
-  padding-right: 4px;
+  margin:0px;
+  margin-right: 4px;
   display:inline;
 }
