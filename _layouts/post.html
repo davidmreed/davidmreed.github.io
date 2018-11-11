@@ -8,17 +8,16 @@ layout: default
   {{ content }}
 </div>
 <div class="sharebuttons">
-  <p>Share this piece: </p>
-  <p class="share-buttons">
-        <a href="https://twitter.com/intent/tweet?text={{ page.title }}&url={{ site.url }}{{ page.url }}&via={{ site.twitter_username }}&related={{ site.twitter_username }}" rel="nofollow" target="_blank" title="Share on Twitter">
-          <img height="32" width="32" alt="Tweet" src="{{ "/public/social_flat_rounded_rects_svg/Twitter.svg" | absolute_url }}" />
-      </a>
-      <a href="http://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ page.url }}&title={{ page.title }}&summary={{ page.title }}&source={{ site.url }}" target="_blank" title="Share on LinkedIn">
-        <img height="32" width="32" alt="Share on LinkedIn" src="{{ "/public/social_flat_rounded_rects_svg/LinkedIn.svg" | absolute_url }}" />
-      </a>
-      <a href="mailto:?subject={{ page.title }}&body={{ page.title }} - {{ site.url }}{{ page.url }}" target="_blank" title="Send email">
-        <img height="32" width="32" alt="Send email" src="{{ "/public/social_flat_rounded_rects_svg/Email.svg" | absolute_url }}" />
-      </a>
-  </ul>
-  <p>or respond via <a href="https://twitter.com/@{{ site.twitter_username }}">Twitter</a> or <a href="mailto:david@ktema.org?subject={{ page.title }}">email.</a></p>
+  <p class="share-buttons">Share this piece: 
+    <a href="https://twitter.com/intent/tweet?text={{ page.title }}&url={{ site.url }}{{ page.url }}&via={{ site.twitter_username }}&related={{ site.twitter_username }}" rel="nofollow" target="_blank" title="Share on Twitter">
+        <img height="32" width="32" alt="Tweet" src="{{ "/public/social_flat_rounded_rects_svg/Twitter.svg" | absolute_url }}" />
+    </a>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ page.url }}&title={{ page.title }}&summary={{ page.title }}&source={{ site.url }}" target="_blank" title="Share on LinkedIn">
+      <img height="32" width="32" alt="Share on LinkedIn" src="{{ "/public/social_flat_rounded_rects_svg/LinkedIn.svg" | absolute_url }}" />
+    </a>
+    <a href="mailto:?subject={{ page.title }}&body={{ page.title }} - {{ site.url }}{{ page.url }}" target="_blank" title="Send email">
+      <img height="32" width="32" alt="Send email" src="{{ "/public/social_flat_rounded_rects_svg/Email.svg" | absolute_url }}" />
+    </a>
+  </p>
+  <p>or respond via <a href="https://twitter.com/@{{ site.twitter_username }}">Twitter</a> or <a href="mailto:david@ktema.org?subject={{ page.title }}">email.</a>
 </div>
