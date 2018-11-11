@@ -154,13 +154,12 @@ Now we'll switch over to Python. A quick script grabs those environment variable
     
     sf = simple_salesforce.Salesforce(session_id=access_token, instance_url=instance_url)
     
-    sf._call_salesforce(
-        'POST',
-        sf.base_url + 'analytics/notifications',
+    sf.restful(
+        'analytics/notifications',
+        None,
+        method='POST',
         data=outbound_json % report_id
     )
-
-(Yes, I know I shouldn't call `simple_salesforce`'s internal API like that! One could also do this with no more than `bash` and `curl`, if desired.)
 
 Execute the script
 
