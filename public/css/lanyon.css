@@ -499,6 +499,7 @@ a.pagination-item:hover {
   color: #990000;
 }
 
-.share-buttons a {
+.share-buttons img {
   padding-right: 4px;
+  display:inline;
 }
