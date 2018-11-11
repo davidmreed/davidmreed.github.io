@@ -505,7 +505,7 @@ ul.share-buttons{
 }
 
 ul.share-buttons li{
-  display: inline;
+  display: inline !important;
 }
 
 ul.share-buttons .sr-only{
