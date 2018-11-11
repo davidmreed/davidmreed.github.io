@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Running Reports as Selected Users with JWT Oauth and the Reports and Dashboards API
+title: Running Reports as Selected Users with JWT OAuth and the Reports and Dashboards API
 ---
 
 Salesforce reporting introduces some fascinating complexities to data visibility and exposure, particularly for organizations using Private Organization-Wide Defaults. 
@@ -11,7 +11,7 @@ Suppose your organization builds a critical report that many users will need to 
 
 A naive solution would create one subscription to this report, say for Frank Q. Exec, and add all of the users who need to receive it as recipients:
 
-FIXME: image here
+![Lightning Subscription]({{ "/public/schedule-reports-as-user/lightning-subscribe.png" | absolute_url }})
 
 But this runs afoul of the principle mentioned above: the report's context user is Frank, and the recipients of the report will see data *as if they were Frank*. From [Salesforce](https://help.salesforce.com/articleView?id=reports_subscribe_lex.htm&type=5):
 
@@ -31,11 +31,9 @@ There are two report subscription functionalities on Salesforce, and they work r
 
 On Classic, one can "Subscribe" to a report, and one can "Schedule Future Runs". The nomenclature here is confusing: a Classic "Subscribe" asks Salesforce to notify us if the report's results meet certain thresholds, but it's *not* for regularly receiving copies of the report. We're not going to look at this feature. "Schedule Future Runs" is equivalent to a report subscription in Lightning and is the feature corresponding to the business problem discussed above.
 
-FIXME: image here - taken
+![Classic Subscription]({{ "/public/schedule-reports-as-user/classic-schedule-future-runs.png" | absolute_url }})
 
-On Lightning, we simply have an option to Subscribe. There's no Lightning equivalent to the Classic "Subscribe" feature.
-
-FIXME: image here - taken
+On Lightning, we simply have an option to Subscribe, as we saw above. There's no Lightning equivalent to the Classic "Subscribe" feature.
 
 So what happens when we subscribe to a report?
 
@@ -82,9 +80,9 @@ The feature set shown here in JSON is at parity with the user interface, and has
 
 ... or can we?
 
-While the Reporting and Analytics API doesn't support setting the context user for a subscription, it does take action as the user as whom we authenticate to the API. And that we **can** control.
+While the Reporting and Analytics API doesn't support setting the context user for a subscription, it always takes action as the user as whom we authenticate to the API. And that we **can** control.
 
-While an admin can Login As a user to create a one-off subscription, we're more interested here in industrial-strength solutions that can support thousands of users. So we're going to build a script to create subscriptions by talking to the Reports and Dashboards API, using the Javascript Web Token (JWT) Oauth authentication mechanism. Why? Because the JWT flow is our only route to seamlessly authenticating as *any* (admin-approved) user, with no manual intervention or setup required on a per-user basis.
+While an admin can Login As a user to create a one-off subscription, we're more interested here in industrial-strength solutions that can support thousands of users. So we're going to build a script to create subscriptions by talking to the Reports and Dashboards API, using the Javascript Web Token (JWT) OAuth authentication mechanism. Why? Because the JWT flow is our only route to seamlessly authenticating as *any* (admin-approved) user, with no manual intervention or setup required on a per-user basis.
 
 ## Setup: Connected Apps and Certificates
 
@@ -169,23 +167,10 @@ Execute the script
 
 where `$REPORTID` is the Salesforce Id of the report you wish to subscribe the user for, and then if we log in as that user in the UI, we'll find a shiny new Lightning report subscription established for them. 
 
-FIXME: image here
+![Lightning Final Subscription]({{ "/public/schedule-reports-as-user/final-lightning-subscription.png" | absolute_url }})
 
 Note that it's set for daily at 0300, as specified in the example JSON.
 
-## Building the Business Process
+## Next Steps
 
-### Bulk One-Off Subscriptions
-
-### On-Platform Subscription App
-
-This script or scripts will need to run on a regular basis, perhaps nightly. You could do this in a number of ways:
-
- - Run manually on a local machine. 
- - Run in a cron job on your on-prem or cloud server.
- - Run in Heroku.
- - Repurpose a Continuous Integration pipeline on the Git repository where your scripts are kept to execute it on a schedule ([for example, on CircleCI using scheduled workflows](https://circleci.com/docs/2.0/workflows/#scheduling-a-workflow)).
-
-The key here is that you have to be able to protect your secrets - the private key file for your JWT authentication. I'm most familiar and happy with doing that in a CI context, where you encrypt the key file in your repo and make the passphrase available only through environment variables. But the actual architecture can take a number of different forms.
-
-Personally, I would probably do this as two Python/`simple_salesforce` scripts, calling out to SFDX to handle the authentication and grabbing the auth token out of `sfdx force:org:display`, and I'd have my CI solution execute the script every night, because that's the most efficient use of the architecture I already work with. But there's a lot of ways to get it done, and your organization's architecture (and security needs) will dictate a lot of those choices.
+We've got a proof-of-concept in place showing that we can in fact schedule results *for* users run *as* those users. In an article to follow soon, we'll look at operationalizing this approach and building out business processes atop it.
