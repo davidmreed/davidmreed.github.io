@@ -17,7 +17,7 @@ I can be reached any time at [david@ktema.org](david@ktema.org), or enter your i
 
 I'm fluent with all of the core Salesforce technologies, including Apex, Visualforce, Lightning, JavaScript, SOQL and SOSL, high data volume processing, batch and queueable asynchronous code, and REST and JSON services. I use the latest development technologies, including Salesforce DX. And I have experience applying the Salesforce Data Loader and other ETL tools - including fully custom solutions written in Python - to integrate, process, and transform Salesforce data.
 
-I always deliver thoroughly tested, documented, and maintainable code. It's a point of pride. For examples of my work, please review my Code page, or drop me a line. I hold the Platform Developer II certification (Salesforce's highest developer credential) and I'll always work with you to ensure your solution is ready to grow and evolve with your organization.
+I always deliver thoroughly tested, documented, and maintainable code. It's a point of pride. For examples of my work, please review my [code]({{site.baseurl}}/code), or drop me a line. I hold the Platform Developer II certification (Salesforce's highest developer credential) and I'll always work with you to ensure your solution is ready to grow and evolve with your organization.
 
 ## Nonprofit
 
