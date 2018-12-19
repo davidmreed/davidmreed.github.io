@@ -3,7 +3,7 @@ layout: page
 title: About
 ---
 
-I am a 7x certified Salesforce engineer based on Philadelphia. I work full time in the financial services industry, and I'm available for [consulting engagements]({{site.baseurl}}/consulting) on small to midsize projects. In addition to the full breadth of platform development, I have strong interests in Salesforce for nonprofit organizations, building tools in Python, and devops and development lifecycle management.
+I am a 7x certified Salesforce engineer based on Philadelphia. I work full time in the financial services industry, and I'm available for part-time [consulting engagements]({{site.baseurl}}/consulting) on small to midsize projects. In addition to the full breadth of platform development, I have strong interests in Salesforce for nonprofit organizations, building tools in Python, and devops and development lifecycle management.
 
 You can find me at [david@ktema.org](mailto:david@ktema.org); [@aoristdual](https://twitter.com/aoristdual); on [Salesforce Stack Exchange](https://salesforce.stackexchange.com/users/46017/david-reed); on [LinkedIn](https://www.linkedin.com/in/david-reed-16175b31); and as [davidmreed](https://github.com/davidmreed) on GitHub.
 You can find my public key at [Keybase](https://keybase.io/davidreed).
