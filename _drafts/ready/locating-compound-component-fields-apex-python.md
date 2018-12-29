@@ -26,7 +26,7 @@ In the REST API, the Describe resource for the sObject returns metadata for the 
 
 > GET /services/data/v43.0/sobjects/Contact/describe
 
-yields, on a lightly customized Developer Edition, about 250kb of JSON. Included is a list under the key `"fields"`, which contains the data we need (abbreviated here to omit irrelevant data points):
+yields, on a lightly customized Developer Edition, about 250KB of JSON. Included is a list under the key `"fields"`, which contains the data we need (abbreviated here to omit irrelevant data points):
 
     "fields": [
         {
@@ -46,9 +46,9 @@ Each field includes its API name (`"name"`), its label, other metadata, and `"co
 This structure can be processed easily enough in Python or other API client languages to yield compound/component mappings. Given some JSON `response` (parsed with `json.loads()`), we can do
 
     def get_compound_fields(response):
-        return set(
-            [field["compoundFieldName"] for field in response["fields"] if field["compoundFieldName"] is not None]
-        )
+        return {
+            field["compoundFieldName"] for field in response["fields"] if field["compoundFieldName"] is not None
+        }
 
 Likewise, we can get the components of any given field:
 
@@ -65,7 +65,7 @@ Moreover, `Schema.DescribeFieldResult` does not include the critical `compoundFi
 
 ... or rather, it isn't [*documented*](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_methods_system_fields_describe.htm#apex_methods_system_fields_describe) to include it. In point of fact, it does contain the same data returned for a field in the API Describe call, as we can discover by inspecting the JSON result of serializing a `Schema.DescribeFieldResult` record.
 
-Unlike some JSON-enabled magic, we can get to this hidden value in plain Apex. Even though it's undocumented, these references compile and execute as expected:
+Unlike some JSON-enabled Apex magic, we can get to this hidden value without actually using serialization. Even though it's undocumented, these references compile and execute as expected:
 
     Contact.OtherStreet.getDescribe().compoundFieldName
 
@@ -73,7 +73,7 @@ and
 
     Contact.OtherStreet.getDescribe().getCompoundFieldName()
 
-This makes it possible to construct Apex utilities like we did in Python to source compound fields and compound field components. In Apex, we'll necessarily be a bit more verbose than Python. Performance is a concern in broad-based searches: both finding compound fields on one sObject and locating component fields for one compound field take between 0.07 and 0.1 second in unscientific testing. Your performance may vary.
+This makes it possible to construct Apex utilities like we did in Python to source compound fields and compound field components. In Apex, we'll necessarily be a bit more verbose than Python, and performance is a concern in broad-based searches. Both finding compound fields on one sObject and locating component fields for one compound field take between 0.07 and 0.1 second in unscientific testing. Your performance may vary.
 
     public class CompoundFieldUtil {
         public static List<SObjectField> getCompoundFields(SObjectType objectType) {
