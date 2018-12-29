@@ -7,7 +7,7 @@ Unit testing and code coverage are perennial topics on [Salesforce Stack Exchang
 
 Growing out of discussion about community challenges in managing lots of duplicative basic questions, I started a project to write up canonical answers to common questions on unit tests, and bring together the most important resources.
 
-Here's the fruits of that project, all of which were posted (by me and other writers) to StackExchange as community wikis. These articles can be expanded and evolved by the Salesforce Stack Exchange community to give learners a basic conceptual framework and connect them to the best resources available on how to test effectively on the Salesforce platform.
+Here's the first-fruits of that project, all of which were posted (by me and other writers) to StackExchange as community wikis. These articles can be expanded and evolved by the Salesforce Stack Exchange community to give learners a basic conceptual framework and connect them to the best resources available on how to test effectively on the Salesforce platform.
 
 ### Community Wiki Questions on Unit Testing
 
