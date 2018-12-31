@@ -126,6 +126,6 @@ yields
 
 Simple modifications could support the use of API names rather than `SobjectField` tokens, building maps between compound field and components, and similar workflows.
 
---
+---
 
 This post developed out of a [Salesforce Stack Exchange](https://salesforce.stackexchange.com/questions/244947/get-components-of-a-compound-field/244952#244952) answer I wrote, along with work on a soon-to-be-released data loader project.
