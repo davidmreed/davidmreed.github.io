@@ -1,6 +1,6 @@
 ---
 layout: post
-title: `INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY`, A Tricky Enemy: Ownership Transfers and Sharing Access
+title: "`INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY`, A Tricky Enemy: Ownership Transfers and Sharing Access"
 ---
 
 Ah, `INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY`, bane of Salesforce developers. The core meaning of this error message is simple: upon performing DML on some record A, there's an issue with record-level sharing associated with one of the records linked to ("cross reference") by A. But the details get very murky. Because Salesforce's record-level sharing architecture takes in so many facets of the organization's configuration and depends so heavily on the transaction context user, debugging this error is often very challenging.

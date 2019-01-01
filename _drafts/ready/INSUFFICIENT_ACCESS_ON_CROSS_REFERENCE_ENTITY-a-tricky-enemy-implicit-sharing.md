@@ -1,6 +1,6 @@
 ---
 layout: post
-title: `INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY`, A Tricky Enemy: Implicit Sharing, or, when `without sharing` Isn't Enough
+title: "`INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY`, A Tricky Enemy: Implicit Sharing, or, when `without sharing` Isn't Enough"
 ---
 
 ```apex
