@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Trigger Handlers, `without sharing`, and Ownership Transfers
+title: `INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY`, A Tricky Enemy: Ownership Transfers and Sharing Access
 ---
 
 There's a set of sharing configurations that can cause very interesting - and tricky to debug - access exceptions in Apex. They share in common the following features:
