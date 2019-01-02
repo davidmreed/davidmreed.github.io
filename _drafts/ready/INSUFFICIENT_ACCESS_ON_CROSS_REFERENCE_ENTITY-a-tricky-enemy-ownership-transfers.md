@@ -40,17 +40,3 @@ The critical issue here is that lead ownership is transferred away from the runn
 Similarly, they wouldn't be able to find the original `Lead` by querying against its Id in a Private sharing environment, unless some sharing rule or permission provided them with access, but the programmatic sharing issue is more insidious because Apex retains in-memory sObjects and Ids from the point when the user *did* have access to them.
 
 Because of the multiplicity of routes to Full Access and common tendency to test code as a System Administrator who possesses Modify All Data permission (unless the test class generates its own user), this error class can sneak by unit testing processes and can be tricky to pin down and debug. 
-
-There's a couple of routes to a fix.
-
-One blunt-instrument approach is to run the class `without sharing`. In many circumstances that's fine (or even *required*) for functionality like a trigger handler, but it's a decision that must be made based on the totality of the organization's sharing architecture and visibility needs, as well as the architecture of the specific application.
-
-A finer-instrument fix is to use a small helper class that runs `without sharing`. This could be an inner class, and its only job may be to perform the privileged operation that cannot succeed in the parent class:
-
-    private without sharing class ShareHelper {
-        private static void addShares(List<LeadShare> shares) {
-            insert shares;
-        }
-    }
-
-Specific sharing architectures and code structures can raise other possible solutions. In some situations, simply reordering operations to perform privileged actions prior to transferring ownership can be sufficient to resolve the issue. Alternately, adding programmatic shares to the original record owner prior to the transfer can allow privileged operations to succeed. Of course, this must be conformant with the origanization's visibility expectations.

@@ -3,7 +3,7 @@ layout: post
 title: Locating Salesforce Compound and Component Fields in Apex and Python
 ---
 
-One of the odder corners of the Salesforce data model is the compound fields. Coming in three main varieties (Name fields, Address fields, and Geolocation fields), these fields are accessible *both* under their own API names and in the forms of their components under their own API names. The compound field itself is always read-only, but the components may be writeable.
+One of the odder corners of the Salesforce data model is the compound fields. Coming in three main varieties (Name fields, Address fields, and Geolocation fields), these fields are accessible *both* under their own API names and in the forms of their component fields, which have their own API names. The compound field itself is always read-only, but the components may be writeable.
 
 For example, on the `Contact` object is a compound address field `OtherAddress`. (There are a total of four standard Address fields spread across the `Contact` and `Account` objects). The components of `OtherAddress` are
 
@@ -17,6 +17,8 @@ For example, on the `Contact` object is a compound address field `OtherAddress`.
  - `OtherLatitude`
  - `OtherLongitude`
  - `OtherGeocodeAccuracy`.
+
+Similarly, `Contact` has a compound `Name` field, as do Person Accounts, with components like `FirstName` and `LastName`.
 
 So, if we're working in dynamic Apex or building an API client, how do we acquire and understand the relationships between these compound and component fields?
 
@@ -35,13 +37,18 @@ yields, on a lightly customized Developer Edition, about 250KB of JSON. Included
             "name": "Id"
         },
         {
+            "compoundFieldName": "null",
+            "label": "Name",
+            "name": "Name"
+        },
+        {
             "compoundFieldName": "Name",
             "label": "First Name",
             "name": "FirstName"
         }
     ]
 
-Each field includes its API name (`"name"`), its label, other metadata, and `"compoundFieldName"`. The value of this last key is either `null`, meaning that the field we're looking at is not a component field, or the API name of the parent compound field.
+Each field includes its API name (`"name"`), its label, other metadata, and `"compoundFieldName"`. The value of this last key is either `null`, meaning that the field we're looking at is not a component field, or the API name of the parent compound field. There's no marker indicating that a field is compound.
 
 This structure can be processed easily enough in Python or other API client languages to yield compound/component mappings. Given some JSON `response` (parsed with `json.loads()`), we can do
 
