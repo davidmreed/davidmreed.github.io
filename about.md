@@ -3,7 +3,7 @@ layout: page
 title: About
 ---
 
-I am a 7x certified Salesforce engineer based on Philadelphia. I work full time in the financial services industry, and I'm available for part-time [consulting engagements]({{site.baseurl}}/consulting) on small to midsize projects. In addition to the full breadth of platform development, I have strong interests in Salesforce for nonprofit organizations, building tools in Python, and devops and development lifecycle management.
+I am an 8x certified Salesforce engineer based on Philadelphia. I work full time in the financial services industry, and I'm available for part-time [consulting engagements]({{site.baseurl}}/consulting) on small to midsize projects. In addition to the full breadth of platform development, I have strong interests in Salesforce for nonprofit organizations, building tools in Python, and devops and development lifecycle management.
 
 You can find me at [david@ktema.org](mailto:david@ktema.org); [@aoristdual](https://twitter.com/aoristdual); on [Salesforce Stack Exchange](https://salesforce.stackexchange.com/users/46017/david-reed); on [LinkedIn](https://www.linkedin.com/in/david-reed-16175b31); and as [davidmreed](https://github.com/davidmreed) on GitHub.
 You can find my public key at [Keybase](https://keybase.io/davidreed).
@@ -36,6 +36,7 @@ I've spoken several times on continuous integration and Salesforce DX. You can f
 <br />
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_II_RGB.png" alt="Salesforce Certified Platform Developer II" /> 
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_I_RGB.png" alt="Salesforce Certified Platform Developer I" />
+<img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Dev_Lfcycl_Dplymnt_Dsgnr_RGB.png" alt="Salesforce Certified Development Lifecycle and Deployment Designer" />
 <br />
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_App_Blder_RGB.png" alt="Salesforce Certified App Builder" />
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Admin_RGB.png" alt="Salesforce Certified Administrator" />
