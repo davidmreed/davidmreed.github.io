@@ -3,10 +3,7 @@ layout: page
 title: About
 ---
 
-I am an 8x certified Salesforce engineer based on Philadelphia. I work full time in the financial services industry, and I'm available for part-time [consulting engagements]({{site.baseurl}}/consulting) on small to midsize projects. In addition to the full breadth of platform development, I have strong interests in Salesforce for nonprofit organizations, building tools in Python, and devops and development lifecycle management.
-
-You can find me at [david@ktema.org](mailto:david@ktema.org); [@aoristdual](https://twitter.com/aoristdual); on [Salesforce Stack Exchange](https://salesforce.stackexchange.com/users/46017/david-reed); on [LinkedIn](https://www.linkedin.com/in/david-reed-16175b31); and as [davidmreed](https://github.com/davidmreed) on GitHub.
-You can find my public key at [Keybase](https://keybase.io/davidreed).
+I am an 8x certified Salesforce engineer based on Philadelphia. You can find me at [david@ktema.org](mailto:david@ktema.org); [@aoristdual](https://twitter.com/aoristdual); on [Salesforce Stack Exchange](https://salesforce.stackexchange.com/users/46017/david-reed); on [LinkedIn](https://www.linkedin.com/in/david-reed-16175b31); and as [davidmreed](https://github.com/davidmreed) on GitHub. You can find my public key at [Keybase](https://keybase.io/davidreed).
 
 <a href="https://stackexchange.com/users/1185774"><img src="https://stackexchange.com/users/flair/1185774.png" width="208" height="58" alt="profile for David Reed on Stack Exchange, a network of free, community-driven Q&amp;A sites" title="profile for David Reed on Stack Exchange, a network of free, community-driven Q&amp;A sites"></a>
 
