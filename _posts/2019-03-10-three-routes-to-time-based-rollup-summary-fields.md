@@ -137,3 +137,7 @@ While it's not Apex-intensive, this is the only solution of the three that is no
 Organizations with high data volume or data skew may need to experiment carefully to ensure queries are properly optimized.
 
 As with DLRS, each rollup using this strategy consumes one scheduled Apex job. Unlike DLRS, we need to run our scheduled class nightly, because we're not combining it with a trigger for (partial) real-time operation. We could add more Apex to do so if desired.
+
+## Conclusions
+
+Time-based rollup summary fields are something many organizations need, and there's a lot of ways to get there. Beyond the three approaches discussed here, one could explore other, more customized and site-specific options — like a full-scale Apex implementation using triggers and Scheduled Apex, or applying a data warehouse or middleware solution to handle rollups and analytics. Each org's ideal approach will depend on the resources available, preference for code, declarative, or hybrid solutions, and important considerations around data volume and performance.
