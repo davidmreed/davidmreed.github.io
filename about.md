@@ -18,10 +18,12 @@ My GitHub is [`davidmreed`](https://github.com/davidmreed). Additional project n
 
 ## Presentations
 
-I've spoken several times on continuous integration and Salesforce DX. You can find my talks on YouTube, and articles I've written on this subject are available on this website.
+I've spoken several times on continuous integration and Salesforce DX, version control, and other Salesforce-related topics. You can find my talks on YouTube, and articles I've written on this subject are available on this website.
 
+ - “Clicks, Not Code” to “Clicks are Code”: Add Git to your #AwesomeAdmin Superpowers, a talk at the Philadelphia Salesforce User's Group with Andrés Catalán. The workshop's [GitHub repo](https://github.com/davidmreed/clicks-are-code) is available.
  - [Continuous Integration with Salesforce DX: Concepts and Connections](https://www.youtube.com/watch?v=8obwIwvzmMw) at Dreamforce '18.
  - [Continuous Integration with Salesforce DX and CircleCI: Practices and Principles](https://www.youtube.com/watch?v=VLl1uUPF97g) at PhillyForce '18
+ - Staying on Top of Salesforce & NPSP Releases at Dreamforce '16, with Adam Kramer.
 
 ## Certifications
 
