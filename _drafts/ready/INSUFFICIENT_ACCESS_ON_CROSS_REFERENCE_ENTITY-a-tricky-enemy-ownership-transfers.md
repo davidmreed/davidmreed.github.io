@@ -37,6 +37,8 @@ At `insert shares`, we'll get
 
 The critical issue here is that lead ownership is transferred away from the running user during the trigger's operation. Once that update has taken place, based on a Private Organization-Wide Default, the running user no longer has the right to add a `LeadShare` entry (they're not the owner anymore), unless they possess some overriding permission like "Modify All Data" or occupy a position above the new owner in the role hierarchy.
 
-Similarly, they wouldn't be able to find the original `Lead` by querying against its Id in a Private sharing environment, unless some sharing rule or permission provided them with access, but the programmatic sharing issue is more insidious because Apex retains in-memory sObjects and Ids from the point when the user *did* have access to them.
+Similarly, they wouldn't be able to find the original `Lead` by querying against its Id in a Private sharing environment, unless some sharing rule or permission provided them with access. The programmatic sharing issue is more insidious because Apex retains in-memory sObjects and Ids from the point when the user *did* have access to them.
 
-Because of the multiplicity of routes to Full Access and common tendency to test code as a System Administrator who possesses Modify All Data permission (unless the test class generates its own user), this error class can sneak by unit testing processes and can be tricky to pin down and debug. 
+Because of the multiplicity of routes to Full Access and common tendency to test code as a System Administrator who possesses Modify All Data permission (unless the test class generates its own user), this error class can sneak by unit testing processes and can be tricky to pin down and debug.
+
+Luckily, this manifestation of `INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY` is pretty easy to fix. It stems from a sort of visibility mismatch — our code's gotten its hands on some information, a Salesforce Id, that the current sharing regime doesn't allow it to see at the database level. We can fix that by running the code in system mode with a `without sharing` declaration.
