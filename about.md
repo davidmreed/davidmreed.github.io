@@ -29,9 +29,10 @@ You can find me at
 
 I've given a number of talks on Salesforce, mostly focusing on development lifecycle topics like continuous integration, Salesforce DX, and version control.
 
+ - ["Real-World Unit Testing: Get to 100% Coverage, The Right Way](https://www.youtube.com/watch?v=JkjTDxbYPgY) at PhillyForce '19.
  - '“Clicks, Not Code” to “Clicks are Code”: Add Git to your #AwesomeAdmin Superpowers', a talk at the Philadelphia Salesforce User's Group with Andrés Catalán. The workshop's [GitHub repo](https://github.com/davidmreed/clicks-are-code) is available.
  - ["Continuous Integration with Salesforce DX: Concepts and Connections"](https://www.youtube.com/watch?v=8obwIwvzmMw) at Dreamforce '18.
- - ["Continuous Integration with Salesforce DX and CircleCI: Practices and Principles"](https://www.youtube.com/watch?v=VLl1uUPF97g) at PhillyForce '18
+ - ["Continuous Integration with Salesforce DX and CircleCI: Practices and Principles"](https://www.youtube.com/watch?v=VLl1uUPF97g) at PhillyForce '18.
  - "Staying on Top of Salesforce & NPSP Releases" at Dreamforce '16, with Adam Kramer.
 
 ## Certifications
