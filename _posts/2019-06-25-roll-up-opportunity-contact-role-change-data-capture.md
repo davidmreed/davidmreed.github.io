@@ -57,7 +57,7 @@ To synchronize data from `OpportunityContactRole` into our shadow table, we'll u
 
 Then, we build a trigger. The code is [here](https://github.com/davidmreed/cdc-opportunitycontactrole-rollups/blob/master/force-app/main/default/triggers/OpportunityContactRoleChangeEventTrigger.trigger).
 
-Our trigger's operation is different from what we'd see in typical, synchronous Apex. We iterate in order over the change events we recieve and use them to build up two data sets: a `Map<Id, Shadow_Opportunity_Contact_Role__c>`, which we use to store both new and updated shadow records derived from the change events. The keys, worth noting, are `OpportunityContactRole` Ids, ensuring that we create or update exactly one record for each `OpportunityContactRole` whose state incorporates all of the changes in our inbound event stream.
+Our trigger's operation is different from what we'd see in typical, synchronous Apex. We iterate in order over the change events we receive and use them to build up two data sets. The first is a `Map<Id, Shadow_Opportunity_Contact_Role__c>`, which we use to store both new and updated shadow records derived from the change events. The keys, worth noting, are `OpportunityContactRole` Ids, ensuring that we create or update exactly one record for each `OpportunityContactRole` whose state incorporates all of the changes in our inbound event stream.
 
 We also store a `Set<Id>` of the Ids of deleted `OpportunityContactRole` records. As we find delete events in our stream, we remove corresponding entries from our create and update `Map`, and add those Ids to the `Set`.
 
@@ -74,7 +74,7 @@ The index on `Opportunity_Contact_Role_Id__c` should keep these operations perfo
 
 ## Testing
 
-There's just a couple of extra wrinkles to testing Async Apex Triggers. We've got a new method in the system `Test` class to enable the Change Data Capture feature, and it overrides system CDC settings to ensure that the code under test executes regardless of org settings:
+There's just a couple of extra wrinkles to testing Async Apex Triggers. We have a new method in the system `Test` class to enable the Change Data Capture feature, and it overrides system CDC settings to ensure that the code under test executes regardless of org settings:
 
     Test.enableChangeDataCapture();
 
@@ -82,7 +82,7 @@ Then, we require that CDC events are delivered and processed synchronously, usin
 
 Intermediate testing results, while working towards passage and full code coverage, can be tough to interpret: most logs are found under the `Automated Process` user rather than the context user, [requiring the use of trace flags](https://salesforce.stackexchange.com/questions/266283/how-do-i-see-debug-logs-for-change-data-capture-triggers-in-salesforce), but some (possibly those from `@testSetup` methods) do appear for the context user. Code coverage maps can also produce misleading results until full passage is achieved.
 
-As part of the demo, I built a test class that achieves full coverage on the Async Apex Trigger. It's also part of the [GitHub project](https://github.com/davidmreed/cdc-opportunitycontactrole-rollups/blob/master/force-app/main/default/classes/OpportunityContactRoleChangeEvent_TEST.cls). (While the tests have good logic path coverage, they could stand to be exercise bulk use cases better!)
+As part of the demo, I built a test class that achieves full coverage on the Async Apex Trigger. It's also part of the [GitHub project](https://github.com/davidmreed/cdc-opportunitycontactrole-rollups/blob/master/force-app/main/default/classes/OpportunityContactRoleChangeEvent_TEST.cls). (While the tests have good logic path coverage, they could stand to exercise bulk use cases better!)
 
 ## Results
 
