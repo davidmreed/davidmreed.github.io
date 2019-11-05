@@ -3,7 +3,7 @@ layout: post
 title: "Nested Iteration: A Quick Look at Computational Complexity in Apex"
 ---
 
-The logic of nested iteration can be a real trap for new programmers. I see this a lot on Salesforce Stack Exchange, coming from two different angles. One angle simply asserts, having been taught so, that "nested loops are bad." Well, not exactly - not as such, although they *can* be in specific implementations. The other side perceives no danger at all in nested loops - indeed, finds them the most natural, if naive, route to expressing certain search constructs.
+The logic of nested iteration can be a real trap for new programmers. I see this a lot on [Salesforce Stack Exchange](https://salesforce.stackexchange.com), coming from two different angles. One angle simply asserts, having been taught so, that "nested loops are bad." Well, not exactly - not as such, although they *can* be in specific implementations. The other side perceives no danger at all in nested loops - indeed, finds them the most natural, if naive, route to expressing certain search constructs.
 
 Both miss the mark through not understanding the notion of *computational complexity* and how to evaluate it in programmatic logic. While it's important to programmers everywhere, computational complexity can be especially important for developers on the Salesforce platform, where governor limits bite hard on reckless use of resources like CPU time.
 
