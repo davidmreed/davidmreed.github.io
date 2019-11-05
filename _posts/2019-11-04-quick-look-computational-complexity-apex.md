@@ -7,7 +7,7 @@ The logic of nested iteration can be a real trap for new programmers. I see this
 
 Both miss the mark through not understanding the notion of *computational complexity* and how to evaluate it in programmatic logic. While it's important to programmers everywhere, computational complexity can be especially important for developers on the Salesforce platform, where governor limits bite hard on reckless use of resources like CPU time.
 
-I want to look at a simple but broadly applicable example of a "bad" nested iteration, one that needlessly consumes CPU time through inefficient logic, and the patterns by which one fixes that pattern. Secondly, I'd like to look at an example of nested iteration that's quite correct, and needed for its intended purpose.
+I want to look at a simple but broadly applicable example of a "bad" nested iteration, one that needlessly consumes CPU time through inefficient logic, and the patterns by which one fixes that problem. Secondly, I'd like to look at an example of nested iteration that's quite correct, and needed for its intended purpose.
 
 ## Updating Opportunities Based on Account Changes
 
