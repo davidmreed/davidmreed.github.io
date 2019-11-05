@@ -144,7 +144,17 @@ However, what this code _doesn't_ do is fall into the same trap as the trigger w
 
 Look at how many times the loops run. We'll call `CaseUtility` exactly once per Case - *not* the total number of Cases multiplied by the total number of Accounts. We'll never run a loop iteration that's irrelevant, that has no possibility of yielding action, because we're not "matrixing" our Accounts and Cases and generating data most of which is irrelevant to the work we're aiming to do. Hence, we hit each Case exactly once. There's no optimization possible via Maps here.
 
-There are other counter-examples where nested iteration is perfectly valid. Consider for example a board-game algorithm. We might need to iterate over each space on the board, across rows and down columns. A nested `for` loop is just right for this use case, and it wastes no CPU time because traversing the entire two-dimensional space is exactly what is called for. 
+There are other counter-examples where nested iteration is perfectly valid. Consider for example a board-game algorithm. We might need to iterate over each space on the board, across rows and down columns:
+
+```apex
+for (Integer i = 0; i < board.width(); i++) {
+	for (Integer j = 0; j < board.height(); j++) {
+		// Take some action for each space on the board.
+	}
+}
+```
+
+ A nested `for` loop is just right for this use case, and it wastes no CPU time because traversing the entire two-dimensional space is exactly what is called for. 
 
 In both situations, the computational complexity of the solution we've implemented is in line with the problem we're solving.
 
