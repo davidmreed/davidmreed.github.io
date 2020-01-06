@@ -58,7 +58,7 @@ try {
 
 At first blush, the handler looks like it could make sense. It's providing a default value for the following logic if the SOQL query should fail, which is what a good exception handler might in fact do.
 
-But the problem here is that the SOQL query shown _cannot throw any catchable exception_. It won't throw a `QueryException` regardless of data volume, because we're assigning to a `List<Account>` rather than an `Account` sObject, and we're not using any of the other SOQL clauses (such as `FOR UPDATE` or `WITH SECURITY_ENFORCED`) that might cause an exception to be thrown. It can't throw a `NullPointerException`. And if a `LimitException` were thrown, we could not catch it anyway.
+But the problem here is that the SOQL query shown _cannot throw any catchable exception_. It won't throw a `QueryException` regardless of data volume, because we're assigning to a `List<Account>` rather than an `Account` sObject, and we're not using any of the other SOQL clauses (such as [`FOR UPDATE`](https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql_select_for_update.htm) or [`WITH SECURITY_ENFORCED`](https://developer.salesforce.com/docs/atlas.en-us.222.0.apexcode.meta/apexcode/apex_classes_with_security_enforced.htm)) that might cause an exception to be thrown. It can't throw a `NullPointerException`. And if a `LimitException` were thrown, we could not catch it anyway.
 
 Using this pattern worsens our code in several ways:
 
@@ -103,7 +103,7 @@ Keeping exception handlers focused also makes it easier to define the relevant f
 
 Unhandled exceptions cause Salesforce to rollback the entire transaction. This rollback ensures that inconsistent data are not committed to the database. Handling an exception prevents this rollback from occurring - but code which handles the exception is then responsible for maintaining database integrity.
 
-This action often takes the form of a `Database.rollback()` call. Here's a pathological example:
+Here's a pathological example:
 
 ```apex
 public static void commitRecords(List<Account> accounts, List<Opportunity> opportunities) {
@@ -120,7 +120,7 @@ This code _attempts_ to do the right thing. It handles a single, specific except
 
 But there's a subtle issue here. If the `DmlException` is thrown by the _second_ DML operation (`insert opportunities`), the Accounts inserted will _not_ be rolled back. They'll remain committed to the database, even though the user was told the operation failed, and if the user should retry will be inserted again. Depending on the implementation of the Visualforce page, other exceptions could occur due to the stored sObjects being in an unexpected state.
 
-The solution is to use a savepoint/rollback structure to maintain database integrity, since we're not allowing Salesforce to rollback the entire transaction:
+The solution is to use a [savepoint/rollback structure](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_transaction_control.htm) to maintain database integrity, since we're not allowing Salesforce to rollback the entire transaction:
 
 ```apex
 public static void commitRecords(List<Account> accounts, List<Opportunity> opportunities) {
@@ -155,11 +155,11 @@ Exceptions in Apex, again, connote *exceptional circumstances*: something went w
  2. The logic fails to handle a potential data state.
  3. The logic fails to guard against an issue in some external component upon which it relies.
  
-When such exceptions occur, your code is no longer in a position to guarantee to the user that their data will be complete, consistent, and correct after it is saved to the database. Suppressing those exceptions by catching them and writing them to the debug log - where no one in production is likely to see them - allows the transaction to complete successfully, even though an unknown failure has occurred. 
+When such exceptions occur, your code is no longer in a position to guarantee to the user that their data will be complete, consistent, and correct after it is saved to the database. Suppressing those exceptions by catching them and writing them to the debug log - where no one in production is likely to see them - allows the transaction to complete successfully, even though an unknown failure has occurred and the results can no longer be reasoned about.
 
 That's _really, really bad_. Swallowing exceptions can cause loss of data, corruption of data, desynchronization between Salesforce and integrated external systems, violation of expected invariants in your data, and more and more failures downstream as the application and its users continue to interact with the damaged data set. 
 
-Swallowing exceptions violates user trust and creates subtle, difficult-to-debug problems that often manifest in real-world usage but evade unit tests - which may show a false positive because exceptions are suppressed! - and simple user acceptance testing. **Don't use this pattern**. 
+Swallowing exceptions violates user trust and creates subtle, difficult-to-debug problems that often manifest in real-world usage but evade some unit tests - which may show a false positive because exceptions are suppressed! - and simple user acceptance testing. **Don't use this pattern**. 
 
 ## A Brief Word on Writing Good Exception Handlers
 
@@ -170,3 +170,5 @@ My rubric is pretty straightforward. A good exception handler:
  1. Handles a specific exception that can be thrown by the code in its `try` block.
  2. Handles an exception that cannot be averted by reasonable logic, or which is the documented failure mode of a specific action.
  3. Handles the exception in such a way as to maintain the integrity of the transaction, using rollbacks as necessary.
+ 
+Ultimately, it's key to remember what exception handlers are made to do: they're not to suppress or hide errors, but to provide a cogent logical path to either recovering from an error or protecting the database from its effects. All else follows from rigorous evaluation of this principle.
