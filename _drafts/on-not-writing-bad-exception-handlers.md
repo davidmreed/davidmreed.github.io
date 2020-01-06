@@ -99,6 +99,44 @@ There are some contexts where fairly broad exception handlers are desirable. In 
 
 Keeping exception handlers focused also makes it easier to define the relevant failure modes and logical paths, and can facilitate construction of unit tests. Since tests that exercise exception handlers are often tricky to build in the first place, it's a net gain to write code that's as testable as possible - even if writing very broad exception handlers can sometimes make it easier to force an exception to be thrown in test context.
 
+## Failing to Roll Back Side Effects
+
+Unhandled exceptions cause Salesforce to rollback the entire transaction. This rollback ensures that inconsistent data are not committed to the database. Handling an exception prevents this rollback from occurring - but code which handles the exception is then responsible for maintaining database integrity.
+
+This action often takes the form of a `Database.rollback()` call. Here's a pathological example:
+
+```apex
+public static void commitRecords(List<Account> accounts, List<Opportunity> opportunities) {
+    try {
+        insert accounts;
+        insert opportunities;
+    } catch (DmlException e) {
+        ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.FATAL, 'Unable to save the records');
+    }
+}
+```
+
+This code _attempts_ to do the right thing. It handles a single, specific exception across a narrow scope of operations, and it presents a message to the user (in this case, in a Visualforce context) to indicate what happened.
+
+But there's a subtle issue here. If the `DmlException` is thrown by the _second_ DML operation (`insert opportunities`), the Accounts inserted will _not_ be rolled back. They'll remain committed to the database, even though the user was told the operation failed, and if the user should retry will be inserted again. Depending on the implementation of the Visualforce page, other exceptions could occur due to the stored sObjects being in an unexpected state.
+
+The solution is to use a savepoint/rollback structure to maintain database integrity, since we're not allowing Salesforce to rollback the entire transaction:
+
+```apex
+public static void commitRecords(List<Account> accounts, List<Opportunity> opportunities) {
+    Database.Savepoint sp = Database.setSavepoint();
+    try {
+        insert accounts;
+        insert opportunities;
+    } catch (DmlException e) {
+        ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.FATAL, 'Unable to save the records');
+        Database.rollback(sp);
+    }
+}
+```
+
+Now, our handler properly maintains database integrity, and does not allow partial results to be committed.
+
 ## Swallowing Exceptions
 
 This pattern is far too common, and it's pure poison.
@@ -125,11 +163,10 @@ Swallowing exceptions violates user trust and creates subtle, difficult-to-debug
 
 ## A Brief Word on Writing Good Exception Handlers
 
-We've seen four examples of patterns that create poor exception handlers. What does a good one 
+We've seen four examples of patterns that create poor exception handlers. How can you recognize a good one?
 
-My rubric for when you should write an exception handler is pretty simple: you should write an exception handler if and only if you know that a specific piece of code 
+My rubric is pretty straightforward. A good exception handler: 
  
- 1. Can throw a _specific_ exception.
- 2. Cannot avert the exception by reasonable logic, or the exception is the documented failure mode of a specific action.
- 3. Can be meaningfully handled while maintaining the integrity of the transaction.
-
+ 1. Handles a specific exception that can be thrown by the code in its `try` block.
+ 2. Handles an exception that cannot be averted by reasonable logic, or which is the documented failure mode of a specific action.
+ 3. Handles the exception in such a way as to maintain the integrity of the transaction, using rollbacks as necessary.
