@@ -145,7 +145,7 @@ This pattern is far too common, and it's pure poison.
 try {
     // Do some complex code here
 } catch (Exception e) {
-    System.debug(e.message());
+    System.debug(e.getMessage());
 }
 ```
 
