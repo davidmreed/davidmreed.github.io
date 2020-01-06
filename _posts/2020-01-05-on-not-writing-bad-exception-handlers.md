@@ -79,12 +79,14 @@ List<Account> accountList;
 
 try {
     accountList = [
-        SELECT Id, Name, Parent.Name 
+        SELECT Id, Name, Parent.Name
         FROM Account 
         WHERE Name = :someAccountName 
         FOR UPDATE
     ];
-    accountList[0].Description = 'Child of ' + accountList[0].Parent.Name;
+    if (accountList[0].Parent.Name.contains('ACME')) {
+        accountList[0].Description = 'ACME Subsidiary';
+    }
     update accountList;
 } catch (Exception e) {
     throw new AuraHandledException('Could not acquire a lock on this account');
