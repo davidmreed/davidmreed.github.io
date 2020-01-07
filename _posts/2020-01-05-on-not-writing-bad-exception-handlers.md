@@ -101,6 +101,11 @@ There are some contexts where fairly broad exception handlers are desirable. In 
 
 Keeping exception handlers focused also makes it easier to define the relevant failure modes and logical paths, and can facilitate construction of unit tests. Since tests that exercise exception handlers are often tricky to build in the first place, it's a net gain to write code that's as testable as possible - even if writing very broad exception handlers can sometimes make it easier to force an exception to be thrown in test context.
 
+> ... τὰς μὲν ἐλλείπειν τὰς δ᾽ ὑπερβάλλειν τοῦ δέοντος ἔν τε τοῖς πάθεσι καὶ ἐν ταῖς πράξεσι, τὴν δ᾽ ἀρετὴν τὸ μέσον καὶ εὑρίσκειν καὶ αἱρεῖσθαι <br />
+> Some vices fall short, while others overreach what is needed, in both feelings and in deeds, but virtue both finds and selects the mean.<br />
+— Aristotle, *Nicomachean Ethics* 1107a
+
+
 ## Failing to Roll Back Side Effects
 
 Unhandled exceptions cause Salesforce to rollback the entire transaction. This rollback ensures that inconsistent data are not committed to the database. Handling an exception prevents this rollback from occurring - but code which handles the exception is then responsible for maintaining database integrity.
