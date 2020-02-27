@@ -43,7 +43,7 @@ If we let the Opportunity update fail while the Payment update succeeds, do we l
 Let the exception be raised and dealt with at a higher level, or allowed to cause a rollback.
 
 > ἐὰν μὴ ἔλπηται ἀνέλπιστον, οὐκ ἐξευρήσει, ἀνεξερεύνητον ἐὸν καὶ ἄπορον<br />
-> Should one not expect the unexpected, one shan't find it, as it is hard-sought and trackless.
+> Should one not expect the unexpected, one shan't find it, as it is hard-sought and trackless.<br />
 > — Heraclitus, Fragment 18
 
 ### Non-Critical Backend Functionality
