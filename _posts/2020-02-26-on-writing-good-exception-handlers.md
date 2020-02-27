@@ -3,9 +3,9 @@ layout: post
 title: On Writing Good Exception Handlers
 ---
 
-> This post is adapted from an [answer](https://salesforce.stackexchange.com/a/295713/46017) I wrote on [Salesforce Stack Exchange](https://salesforce.stackexchange.com/), and follows a previous [discussion](https://www.ktema.org/2020/01/05/on-not-writing-bad-exception-handlers/) about what makes a *bad* exception handler.
+> This post is adapted from an [answer](https://salesforce.stackexchange.com/a/295713/46017) I wrote on [Salesforce Stack Exchange](https://salesforce.stackexchange.com/).
 
-The `try`/`catch` construct might be a little bit misnamed: catching exceptions doesn't matter very much. What matters is what you choose to do with the exception once you've caught it. I might like the construct better if it were called `try`/`handle`.
+This post follows a previous [discussion](https://www.ktema.org/2020/01/05/on-not-writing-bad-exception-handlers/) about what makes a *bad* exception handler. I'd like to talk a little bit about what good exception handling patterns look like and where in an application one ought to use them.
 
 What it means to handle an exception is to take an *exception*al situation - something bad and out of the ordinary happened - and allow the application to safely move back into an anticipated pathway of operation, preserving
 
