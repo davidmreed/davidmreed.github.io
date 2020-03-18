@@ -3,7 +3,9 @@ layout: page
 title: About
 ---
 
-I am a Senior Member of Technical Staff in Release Engineering at Salesforce.org. Opinions expressed on this site are my own. I'm 8x certified on the Salesforce platform; I specialize in Apex development, Python, and development lifecycle.
+I am a Senior Member of Technical Staff in Release Engineering at Salesforce.org. Opinions expressed on this site are my own. I'm 9x certified on the Salesforce platform; I specialize in Apex development, Python, and development lifecycle.
+
+My outside interests include Ancient Greek, Plato, science fiction, curling, and officiating women's flat track roller derby.
 
 You can find me at 
 
@@ -16,26 +18,7 @@ You can find me at
 
 <a href="https://stackexchange.com/users/1185774"><img src="https://stackexchange.com/users/flair/1185774.png" width="208" height="58" alt="profile for David Reed on Stack Exchange, a network of free, community-driven Q&amp;A sites" title="profile for David Reed on Stack Exchange, a network of free, community-driven Q&amp;A sites"></a>
 
-## Projects
-
- I'm `davidmreed` on both [GitHub](https://github.com/davidmreed) and [GitLab](https://gitlab.com/davidmreed). Additional project notes are under [Code]({{site.baseurl}}/code) or at GitHub itself; here are a few highlights:
-  - [Amaxa](https://gitlab.com/davidmreed/amaxa), a multi-object ETL tool/data loader for Salesforce written in Python.
-  - A [Lightning transit tracker application](https://github.com/davidmreed/septaTrains) (if you live in Philadelphia, you can see your SEPTA regional rail trains on your Lightning homepage!) that I use as a demonstration of CI, automated testing, and toolchain design.
-  - A [library](https://github.com/davidmreed/DMRNoteAttachmentImporter) for doing bulk data loads of `ContentNote` and `ContentVersion` records.
-  - A [Python tool](https://github.com/davidmreed/fix15) for converting Salesforce Ids in CSV files.
-  - [Demonstrations and example configuration files](https://github.com/davidmreed/circleci-sfdx-examples) for different continuous integration workflows with Salesforce DX, CircleCI, and [Python `simple_salesforce`](https://github.com/davidmreed/sfdx-simplesalesforce).
-
-## Presentations
-
-I've given a number of talks on Salesforce, mostly focusing on development lifecycle topics like continuous integration, Salesforce DX, and version control.
-
- - [Orchestrating the Salesforce Lifecycle with CCI](https://trailblazercommunitygroups.com/events/details/salesforce-mount-laurel-nj-administrators-group-presents-orchestrating-the-salesforce-lifecycle-with-cci-salesforceorg-special-event/) with Jason Lantz at the Mount Laurel, NJ Administrators Group.
- - ["Real-World Unit Testing: Get to 100% Coverage, The Right Way](https://www.youtube.com/watch?v=JkjTDxbYPgY) at PhillyForce '19.
- - [Unit Testing](https://salesforceway.com/podcast/unit-testing/), an episode of Xi Xiao's [SalesforceWay](https://salesforceway.com/) podcast.
- - '“Clicks, Not Code” to “Clicks are Code”: Add Git to your #AwesomeAdmin Superpowers', a talk at the Philadelphia Salesforce User's Group with Andrés Catalán. The workshop's [GitHub repo](https://github.com/davidmreed/clicks-are-code) is available.
- - ["Continuous Integration with Salesforce DX: Concepts and Connections"](https://www.youtube.com/watch?v=8obwIwvzmMw) at Dreamforce '18.
- - ["Continuous Integration with Salesforce DX and CircleCI: Practices and Principles"](https://www.youtube.com/watch?v=VLl1uUPF97g) at PhillyForce '18.
- - "Staying on Top of Salesforce & NPSP Releases" at Dreamforce '16, with Adam Kramer.
+I request that all Salesforce Stack Exchange business be handled on Salesforce Stack Exchange: unless your concern is confidential, please do not email me with issues related to that site, but instead open a question on [Meta Stack Exchange](https://salesforce.meta.stackexchange.com) where the whole community can engage.
 
 ## Certifications
 
@@ -48,6 +31,7 @@ I've given a number of talks on Salesforce, mostly focusing on development lifec
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_Dev_I_RGB.png" alt="Salesforce Certified Platform Developer I" />
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Dev_Lfcycl_Dplymnt_Dsgnr_RGB.png" alt="Salesforce Certified Development Lifecycle and Deployment Designer" />
 <br />
+<img style="display: inline;" src="{{ site.baseurl }}/public/Nonprofit-Cloud-Consultant_RGB.png" alt="Salesforce Certified Nonprofit Cloud Consultant" />
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Pltfrm_App_Blder_RGB.png" alt="Salesforce Certified App Builder" />
 <img style="display: inline;" src="{{ site.baseurl }}/public/SFU_CRT_BDG_Admin_RGB.png" alt="Salesforce Certified Administrator" />
 </div>

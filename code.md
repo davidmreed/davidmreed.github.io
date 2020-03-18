@@ -3,13 +3,17 @@ layout: page
 title: Code
 ---
 
-You can find all of my projects at [GitHub](https://github.com/davidmreed?tab=repositories). I work primarily on the Salesforce platform and in Python.
+My full-time position is in developing and applying the [Salesforce.org toolchain](https://github.com/SFDO-Tooling), particularly [CumulusCI](https://github.com/SFDO-Tooling/CumulusCI).
 
-### [Amaxa](https://gitlab.com/davidmreed/amaxa)
+You can find all of my personal projects at [GitHub](https://github.com/davidmreed?tab=repositories) and [GitLab](https://gitlab.com/davidmreed). I work primarily on the Salesforce platform and in Python.
+
+## [Amaxa](https://gitlab.com/davidmreed/amaxa)
 
 Amaxa is a multi-object ETL tool/data loader for Salesforce. It's designed to extract and load whole networks of records, like a selected set of Accounts with all of their Contacts, Opportunities, Contact Roles, and Campaigns, in a single repeatable operation while preserving the relationships between those records.
 
 Core use cases for Amaxa include sandbox seeding, data migration, and retrieving connected data sets.
+
+## Unmaintained Projects
 
 ### [septaTrains](https://github.com/davidmreed/septaTrains)
 
@@ -48,7 +52,6 @@ A demonstration of using Salesforce DX to execute integration tests against Sale
 
 These Python-based tools are designed to facilitate the manipulation and combination of record data in tabular form - in particular, CSV files containing database output. Trapeza-Import is designed to streamline the importing of large amounts of records into a database by matching duplicates in user-configurable ways. Originally designed for use with Blackbaud Raiser's Edge.
 
-### [bouncingbots](https://github.com/davidmreed/bouncingbots) — a *Ricochet Robots* Solver
+### [iMan](https://github.com/davidmreed/iman)
 
-This C library implements a simulation and solver for the board game [Ricochet Robots](http://www.riograndegames.com/games.html?id=163). Included are the library, a command-line tool and a rudimentary Mac OS X interface. Supply a board layout, in a fairly simple
-text format or using the GUI tool, and `bouncingbots` will offer a list of solutions.
+A graphical manpage viewer for Mac OS X.
