@@ -5,9 +5,9 @@ title: Code
 
 My full-time position is in developing and applying the [Salesforce.org toolchain](https://github.com/SFDO-Tooling), particularly [CumulusCI](https://github.com/SFDO-Tooling/CumulusCI).
 
-You can find all of my personal projects at [GitHub](https://github.com/davidmreed?tab=repositories) and [GitLab](https://gitlab.com/davidmreed). I work primarily on the Salesforce platform and in Python.
+You can find all of my personal projects at [GitHub](https://github.com/davidmreed?tab=repositories). I work primarily on the Salesforce platform and in Python.
 
-## [Amaxa](https://gitlab.com/davidmreed/amaxa)
+## [Amaxa](https://github.com/davidmreed/amaxa)
 
 Amaxa is a multi-object ETL tool/data loader for Salesforce. It's designed to extract and load whole networks of records, like a selected set of Accounts with all of their Contacts, Opportunities, Contact Roles, and Campaigns, in a single repeatable operation while preserving the relationships between those records.
 
