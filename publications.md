@@ -1,11 +1,12 @@
 ---
 layout: page
-title: Publications
+title: Talks & Publications
 ---
 
 I've given a number of talks on Salesforce, mostly focusing on topics like Apex testing, continuous integration, CumulusCI, Salesforce DX, and version control. I love meeting with Salesforce groups to teach and advocate in these areas. If your group is looking for content in these areas, please drop me a line.
 
- - "Automate the App Lifecycle with CumulusCI" at the Denver Salesforce Developers' Group.
+ - [Build Applications with CumulusCI](https://trailhead.salesforce.com/en/content/learn/trails/build-applications-with-cumulusci), a six-module trail on Trailhead (coauthored).
+ - ["Automate the App Lifecycle with CumulusCI"](https://www.ktema.org/public/cumulusci/Automate_the_App_Lifecycle_with_CumulusCI.pdf) (PDF link) at the Denver Salesforce Developers' Group.
  - ["Orchestrating the Salesforce Lifecycle with CCI"](https://trailblazercommunitygroups.com/events/details/salesforce-mount-laurel-nj-administrators-group-presents-orchestrating-the-salesforce-lifecycle-with-cci-salesforceorg-special-event/) with Jason Lantz at the Mount Laurel, NJ Administrators Group.
  - ["Real-World Unit Testing: Get to 100% Coverage, The Right Way"](https://www.youtube.com/watch?v=JkjTDxbYPgY) at PhillyForce '19.
  - ["Unit Testing"](https://salesforceway.com/podcast/unit-testing/), an episode of Xi Xiao's [SalesforceWay](https://salesforceway.com/) podcast.
