@@ -7,6 +7,10 @@ My full-time position is in developing and applying the [Salesforce.org toolchai
 
 You can find all of my personal projects at [GitHub](https://github.com/davidmreed?tab=repositories). I work primarily on the Salesforce platform and in Python.
 
+## [Bibliothekai](https://bibliothekai.ktema.org)
+
+Bibliothekai is an application for finding and evaluating the best translations of classical Greek and Latin texts.
+
 ## [Amaxa](https://github.com/davidmreed/amaxa)
 
 Amaxa is a multi-object ETL tool/data loader for Salesforce. It's designed to extract and load whole networks of records, like a selected set of Accounts with all of their Contacts, Opportunities, Contact Roles, and Campaigns, in a single repeatable operation while preserving the relationships between those records.

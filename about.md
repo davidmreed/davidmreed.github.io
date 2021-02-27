@@ -3,7 +3,7 @@ layout: page
 title: About
 ---
 
-I am a Senior Member of Technical Staff in Release Engineering at Salesforce.org. Opinions expressed on this site are my own. I'm 9x certified on the Salesforce platform; I specialize in Apex development, Python, and development lifecycle.
+I am a Lead Member of Technical Staff in Release Engineering at Salesforce.org. Opinions expressed on this site are my own. I'm 9x certified on the Salesforce platform; I specialize in Apex development, Python, and development lifecycle.
 
 My outside interests include Ancient Greek, Plato, science fiction, curling, and officiating women's flat track roller derby.
 
